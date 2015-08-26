@@ -1,0 +1,1 @@
+<span class="re0">$username</span> <span class="sy0">=</span> <span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">old</span><span class="br0">&#40;</span><span class="st_h">'username'</span><span class="br0">&#41;</span><span class="sy0">;</span>

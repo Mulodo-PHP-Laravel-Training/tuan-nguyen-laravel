@@ -1,0 +1,107 @@
+====== Laravel Views ======
+
+===== Basic Usage =====
+
+Views contain the HTML served by your application, and serve as a convenient method of separating your controller and domain logic from your presentation logic. Views are stored in the resources/views directory.
+
+A simple view looks like this:
+<code html>
+<!-- View stored in resources/views/greeting.php -->
+<html>
+    <body>
+        <h1>Hello, <?php echo $name; ?></h1>
+    </body>
+</html>
+</code>
+
+The view may be returned to the browser like so:
+<code php>
+Route::get('/', function()
+{
+    return view('greeting', ['name' => 'James']);
+});
+</code>
+
+Of course, views may also be nested within sub-directories of the resources/views directory. For example, if your view is stored at resources/views/admin/profile.php, it should be returned like so:
+
+<code php>
+return view('admin.profile', $data);
+</code>
+==== Passing Data To Views ====
+
+<code php>
+// Using conventional approach
+$view = view('greeting')->with('name', 'Victoria');
+
+// Using Magic Methods
+$view = view('greeting')->withName('Victoria');
+</code>
+
+==== Sharing Data With All Views ====
+Occasionally, you may need to share a piece of data with all views that are rendered by your application. You have several options: the view helper, the Illuminate\Contracts\View\Factory contract, or a wildcard view composer.
+<code php>
+// helper
+view()->share('data', [1, 2, 3]);
+
+// facade
+View::share('data', [1, 2, 3]);
+</code>
+
+==== Determining If A View Exists ====
+
+<code php>
+if (view()->exists('emails.customer'))
+{
+    //
+}
+</code>
+
+
+==== Returning A View From A File Path ====
+
+<code php>
+return view()->file($pathToFile, $data);
+</code>
+
+===== View Composers =====
+View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want to be bound to a view each time that view is rendered, a view composer organizes that logic into a single location.
+
+==== Defining A View Composer ====
+Let's organize our view composers within a service provider. We'll use the View facade to access the underlying Illuminate\Contracts\View\Factory contract implementation:
+<code php>
+<?php namespace App\Providers;
+
+use View;
+use Illuminate\Support\ServiceProvider;
+
+class ComposerServiceProvider extends ServiceProvider {
+
+    /**
+     * Register bindings in the container.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        // Using class based composers...
+        View::composer('profile', 'App\Http\ViewComposers\ProfileComposer');
+
+        // Using Closure based composers...
+        View::composer('dashboard', function($view)
+        {
+
+        });
+    }
+
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+
+}
+</code>

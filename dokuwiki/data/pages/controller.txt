@@ -1,0 +1,235 @@
+====== Laravel Controller ======
+
+==== Basic Controllers ===
+
+To create a new controller, use the make:controller Artisan command: 
+<code>
+php artisan make:controller UserController
+</code>
+
+Here is an example of a basic controller class. All Laravel controllers should extend the base controller class included with the default Laravel installation:
+<code php>
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+class UserController extends Controller {
+	/**
+	 * Show the profile for the given user.
+	 *
+	 * @param  int $id        	
+	 * @return  Response
+	 */
+	public function showProfile($id) {
+		return view('user.profile', ['userid' => $id]);
+	}
+}
+</code>
+
+Define a route to access this controller 
+
+<code php>
+Route::get ( 'user-profile/{id}', [ 
+		'uses' => 'UserController@showProfile',
+		'as' => 'user-profile-2' 
+] );
+</code>
+
+
+==== Controller Middleware ===
+
+Middleware may be assigned to the controller's routes like so: 
+
+<code php>
+Route::get('profile', [
+    'middleware' => 'auth',
+    'uses' => 'UserController@showProfile'
+]);
+</code>
+
+However, it is more convenient to specify middleware within your controller's constructor. Using the middleware method from your controller's constructor, you may easily assign middleware to the controller. You may even restrict the middleware to only certain methods on the controller class:
+
+<code php>
+class UserController extends Controller
+{
+    /**
+     * Instantiate a new UserController instance.
+     *
+     * @return  void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware('log', ['only' => ['fooAction', 'barAction']]);
+
+        $this->middleware('subscribed', ['except' => ['fooAction', 'barAction']]);
+    }
+}
+</code>
+
+
+==== RESTful Resource Controllers ===
+
+
+Ex : Create a Photo RESTful Resource Controller 
+
+Add photo route :
+<code php>
+Route::resource('photo', 'PhotoController');
+</code>
+
+Basic functions in PhotoController file
+
+<code php>
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+class PhotoController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return  Response
+     */
+    public function index()
+    {
+        return "Photo index function";
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return  Response
+     */
+    public function create()
+    {
+        return "Photo create function";
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param    Request  $request
+     * @return  Response
+     */
+    public function store(Request $request)
+    {
+        return "Photo store function";
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param    int  $id
+     * @return  Response
+     */
+    public function show($id)
+    {
+        return "Photo show function";
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param    int  $id
+     * @return  Response
+     */
+    public function edit($id)
+    {
+        return "Photo edit function";
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param    Request  $request
+     * @param    int  $id
+     * @return  Response
+     */
+    public function update(Request $request, $id)
+    {
+        return "Photo update function";
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param    int  $id
+     * @return  Response
+     */
+    public function destroy($id)
+    {
+        return "Photo destroy function";
+    }
+}
+</code>
+
+
+==== Implicit Controllers ===
+ Laravel allows you to easily define a single route to handle every action in a controller class. First, define the route using the Route::controller method . The controller method accepts two arguments. The first is the base URI the controller handles, while the second is the class name of the controller:
+
+In routes.php
+
+<code php>
+Route::controller('users', 'UserController');
+</code>
+
+In app/Http/Controllers/UserController.php
+
+<code php>
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+class UserController extends Controller {
+	/**
+	 * Responds to requests to GET /users
+	 */
+	public function getIndex() {
+		return "getIndex function";
+	}
+	
+	/**
+	 * Responds to requests to GET /users/show/1
+	 */
+	public function getShow($id) {
+		return "getShow function";
+	}
+	
+	/**
+	 * Responds to requests to Post /users/show/1
+	 */
+	public function postShow($id) {
+		return "getShow function";
+	}
+	
+	/**
+	 * Responds to requests to GET /users/admin-profile
+	 */
+	public function getAdminProfile() {
+		return "getAdminProfile function";
+	}
+}
+</code>
+
+==== Nested Resources ===
+<code php>
+Route::resource('photos.comments', 'PhotoCommentController');
+</code>
+This route will register a "nested" resource that may be accessed with URLs like the following: photos/{photos}/comments/{comments}. 
+
+==== ... ===
+
+
+==== ... ===
+
+

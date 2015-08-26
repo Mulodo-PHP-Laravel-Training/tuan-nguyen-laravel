@@ -1,0 +1,5 @@
+<span class="kw1">return</span> response<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">download</span><span class="br0">&#40;</span><span class="re0">$pathToFile</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw1">return</span> response<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">download</span><span class="br0">&#40;</span><span class="re0">$pathToFile</span><span class="sy0">,</span> <span class="re0">$name</span><span class="sy0">,</span> <span class="re0">$headers</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw1">return</span> response<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">download</span><span class="br0">&#40;</span><span class="re0">$pathToFile</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">deleteFileAfterSend</span><span class="br0">&#40;</span><span class="kw4">true</span><span class="br0">&#41;</span><span class="sy0">;</span>

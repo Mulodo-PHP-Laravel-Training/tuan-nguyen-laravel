@@ -1,0 +1,4 @@
+Route<span class="sy0">::</span><span class="me2">get</span> <span class="br0">&#40;</span> <span class="st_h">'user-profile/{id}'</span><span class="sy0">,</span> <span class="br0">&#91;</span> 
+		<span class="st_h">'uses'</span> <span class="sy0">=&gt;</span> <span class="st_h">'UserController@showProfile'</span><span class="sy0">,</span>
+		<span class="st_h">'as'</span> <span class="sy0">=&gt;</span> <span class="st_h">'user-profile-2'</span> 
+<span class="br0">&#93;</span> <span class="br0">&#41;</span><span class="sy0">;</span>

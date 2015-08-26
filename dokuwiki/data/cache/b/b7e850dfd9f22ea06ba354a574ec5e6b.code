@@ -1,0 +1,5 @@
+<span class="co1">// Using conventional approach</span>
+<span class="re0">$view</span> <span class="sy0">=</span> view<span class="br0">&#40;</span><span class="st_h">'greeting'</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">with</span><span class="br0">&#40;</span><span class="st_h">'name'</span><span class="sy0">,</span> <span class="st_h">'Victoria'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Using Magic Methods</span>
+<span class="re0">$view</span> <span class="sy0">=</span> view<span class="br0">&#40;</span><span class="st_h">'greeting'</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">withName</span><span class="br0">&#40;</span><span class="st_h">'Victoria'</span><span class="br0">&#41;</span><span class="sy0">;</span>

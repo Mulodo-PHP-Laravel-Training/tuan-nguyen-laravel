@@ -1,0 +1,280 @@
+
+<h1 class="sectionedit1" id="blade_template">Blade Template</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT1 SECTION "Blade Template" [1-30] -->
+<h2 class="sectionedit2" id="introduction">Introduction</h2>
+<div class="level2">
+
+<p>
+Blade is the simple, yet powerful templating engine provided with Laravel. Unlike other popular PHP templating engines, Blade does not restrict you from using plain PHP code in your views. All Blade views are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade view files use the .blade.php file extension and are typically stored in the resources/views directory.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Introduction" [31-507] -->
+<h2 class="sectionedit3" id="directive">Directive</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <strong>@yield</strong> : directive is used to display the contents of a given section.</div>
+</li>
+<li class="level1"><div class="li"> <strong>@section</strong> : directive, as the name implies, defines a section of content.</div>
+</li>
+<li class="level1"><div class="li"> <strong>@endsection</strong> : close the section above.</div>
+</li>
+</ul>
+
+<p>
+Ex :
+</p>
+<pre class="code html4strict">@section('title', 'This is title')
+...
+<span class="sc2">&lt;<a href="http://december.com/html/4/element/title.html"><span class="kw2">title</span></a>&gt;</span>Home - @yield('title') <span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/title.html"><span class="kw2">title</span></a>&gt;</span></pre>
+<ul>
+<li class="level1"><div class="li"> <strong>@extends</strong> :  to specify which layout the child page should “inherit”.</div>
+</li>
+<li class="level1"><div class="li"> <strong>@show</strong> :</div>
+</li>
+<li class="level1"><div class="li"> <strong>@include</strong> :  allows you to easily include a Blade view from within an existing view. You can also pass paramters to view</div>
+</li>
+</ul>
+
+<p>
+Ex :
+</p>
+<pre class="code html4strict">@include('view.name', ['some' =&gt; 'data'])</pre>
+<ul>
+<li class="level1"><div class="li"> <strong>@parent</strong> :  to append (rather than overwriting) content to the layout. The @parent directive will be replaced by the content of the layout when the view is rendered.</div>
+</li>
+<li class="level1"><div class="li"> <strong>@each</strong> :  combine loops and includes into one line with Blade&#039;s @each directive.</div>
+</li>
+<li class="level1"><div class="li"> <strong>@show</strong> :</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT3 SECTION "Directive" [508-1406] -->
+<h2 class="sectionedit4" id="include_css_js_file">Include CSS &amp; JS file</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT4 SECTION "Include CSS & JS file" [1407-1441] -->
+<h3 class="sectionedit5" id="for_css">For CSS</h3>
+<div class="level3">
+<pre class="code html4strict"><span class="sc2">&lt;<a href="http://december.com/html/4/element/link.html"><span class="kw2">link</span></a> <span class="kw3">href</span><span class="sy0">=</span><span class="st0">&quot;{{ asset('css/app.css') }}&quot;</span> <span class="kw3">rel</span><span class="sy0">=</span><span class="st0">&quot;stylesheet&quot;</span> <span class="kw3">type</span><span class="sy0">=</span><span class="st0">&quot;text/css&quot;</span> &gt;</span>
+<span class="sc2">&lt;<a href="http://december.com/html/4/element/link.html"><span class="kw2">link</span></a> <span class="kw3">href</span><span class="sy0">=</span><span class="st0">&quot;{{ URL::asset('css/app.css') }}&quot;</span> <span class="kw3">rel</span><span class="sy0">=</span><span class="st0">&quot;stylesheet&quot;</span> <span class="kw3">type</span><span class="sy0">=</span><span class="st0">&quot;text/css&quot;</span> &gt;</span></pre>
+
+</div>
+<!-- EDIT5 SECTION "For CSS" [1442-1635] -->
+<h3 class="sectionedit6" id="for_js">For JS</h3>
+<div class="level3">
+<pre class="code html4strict"><span class="sc2">&lt;<a href="http://december.com/html/4/element/script.html"><span class="kw2">script</span></a> <span class="kw3">type</span><span class="sy0">=</span><span class="st0">&quot;text/javascript&quot;</span> <span class="kw3">src</span><span class="sy0">=</span><span class="st0">&quot;{{ asset('js/custom.js') }}&quot;</span>&gt;&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/script.html"><span class="kw2">script</span></a>&gt;</span>
+<span class="sc2">&lt;<a href="http://december.com/html/4/element/script.html"><span class="kw2">script</span></a> <span class="kw3">type</span><span class="sy0">=</span><span class="st0">&quot;text/javascript&quot;</span> <span class="kw3">src</span><span class="sy0">=</span><span class="st0">&quot;{{ URL::asset('js/custom.js') }}&quot;</span>&gt;&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/script.html"><span class="kw2">script</span></a>&gt;</span></pre>
+
+</div>
+<!-- EDIT6 SECTION "For JS" [1636-1828] -->
+<h3 class="sectionedit7" id="for_images">For Images</h3>
+<div class="level3">
+<pre class="code html4strict">{{ asset('img/photo.jpg'); }}</pre>
+
+</div>
+<!-- EDIT7 SECTION "For Images" [1829-1899] -->
+<h2 class="sectionedit8" id="template_inheritance">Template Inheritance</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT8 SECTION "Template Inheritance" [1900-1933] -->
+<h3 class="sectionedit9" id="defining_a_layout">Defining A Layout</h3>
+<div class="level3">
+
+<p>
+Two of the primary benefits of using Blade are template inheritance and sections. To get started, let&#039;s take a look at a simple example. First, we will examine a “master” page layout.
+</p>
+<dl class="file">
+<dt><a href="/miniblog/dokuwiki/doku.php?do=export_code&amp;id=blade_template&amp;codeblock=5" title="Download Snippet" class="mediafile mf_php">master.blade.php</a></dt>
+<dd><pre class="code file html5"><span class="sc-1">&lt;!-- Stored in resources/views/layouts/master.blade.php --&gt;</span>
+&nbsp;
+<span class="sc2">&lt;<a href="http://december.com/html/4/element/html.html"><span class="kw2">html</span></a>&gt;</span>
+    <span class="sc2">&lt;<a href="http://december.com/html/4/element/head.html"><span class="kw2">head</span></a>&gt;</span>
+        <span class="sc2">&lt;<a href="http://december.com/html/4/element/title.html"><span class="kw2">title</span></a>&gt;</span>App Name - @yield('title')<span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/title.html"><span class="kw2">title</span></a>&gt;</span>
+    <span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/head.html"><span class="kw2">head</span></a>&gt;</span>
+    <span class="sc2">&lt;<a href="http://december.com/html/4/element/body.html"><span class="kw2">body</span></a>&gt;</span>
+        @section('sidebar')
+            This is the master sidebar.
+        @show
+&nbsp;
+        <span class="sc2">&lt;<a href="http://december.com/html/4/element/div.html"><span class="kw2">div</span></a> <span class="kw3">class</span><span class="sy0">=</span><span class="st0">&quot;container&quot;</span>&gt;</span>
+            @yield('content')
+        <span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/div.html"><span class="kw2">div</span></a>&gt;</span>
+    <span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/body.html"><span class="kw2">body</span></a>&gt;</span>
+<span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/html.html"><span class="kw2">html</span></a>&gt;</span></pre>
+</dd></dl>
+<ul>
+<li class="level1"><div class="li">  <strong>@section</strong> directive, as the name implies, defines a section of content</div>
+</li>
+<li class="level1"><div class="li"> <strong>@yield</strong> directive is used to display the contents of a given section.</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT9 SECTION "Defining A Layout" [1934-2675] -->
+<h3 class="sectionedit10" id="extending_a_layout">Extending A Layout</h3>
+<div class="level3">
+
+<p>
+When defining a child page, you may use the Blade @extends directive to specify which layout the child page should “inherit”. Views which @extends a Blade layout may inject content into the layout&#039;s sections using @section directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using @yield:
+</p>
+<dl class="file">
+<dt><a href="/miniblog/dokuwiki/doku.php?do=export_code&amp;id=blade_template&amp;codeblock=6" title="Download Snippet" class="mediafile mf_php">child.blade.php</a></dt>
+<dd><pre class="code file html4strict"><span class="sc-1">&lt;!-- Stored in resources/views/child.blade.php --&gt;</span>
+&nbsp;
+@extends('layouts.master')
+&nbsp;
+@section('title', 'Page Title')
+&nbsp;
+@section('sidebar')
+    @parent
+&nbsp;
+    <span class="sc2">&lt;<a href="http://december.com/html/4/element/p.html"><span class="kw2">p</span></a>&gt;</span>This is appended to the master sidebar.<span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/p.html"><span class="kw2">p</span></a>&gt;</span>
+@endsection
+&nbsp;
+@section('content')
+    <span class="sc2">&lt;<a href="http://december.com/html/4/element/p.html"><span class="kw2">p</span></a>&gt;</span>This is my body content.<span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/p.html"><span class="kw2">p</span></a>&gt;</span>
+@endsection</pre>
+</dd></dl>
+
+<p>
+In this example, the sidebar section is utilizing the @parent directive to append (rather than overwriting) content to the layout&#039;s sidebar. The @parent directive will be replaced by the content of the layout when the view is rendered.
+</p>
+
+</div>
+<!-- EDIT10 SECTION "Extending A Layout" [2676-3610] -->
+<h2 class="sectionedit11" id="displaying_data">Displaying Data</h2>
+<div class="level2">
+
+<p>
+You may display data passed to your Blade views by wrapping the variable in “curly” braces.
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'greeting'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> view<span class="br0">&#40;</span><span class="st_h">'welcome'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'name'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Samantha'</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You may display the contents of the name variable like so:
+</p>
+<pre class="code html4strict">Hello, {{ $name }}.
+// you can put any PHP code you wish inside of a Blade echo statement:
+The current UNIX timestamp is {{ time() }}.</pre>
+
+</div>
+<!-- EDIT11 SECTION "Displaying Data" [3611-4060] -->
+<h3 class="sectionedit12" id="blade_javascript_frameworks">Blade &amp; JavaScript Frameworks</h3>
+<div class="level3">
+
+<p>
+Since many JavaScript frameworks also use “curly” braces to indicate a given expression should be displayed in the browser, you may use the @ symbol to inform the Blade rendering engine an expression should remain untouched. For example:
+</p>
+<pre class="code html4strict"><span class="sc2">&lt;<a href="http://december.com/html/4/element/h1.html"><span class="kw2">h1</span></a>&gt;</span>Laravel<span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/h1.html"><span class="kw2">h1</span></a>&gt;</span>
+Hello, @{{ name }}.</pre>
+
+<p>
+the @ symbol will be removed by Blade; however, <a href="/miniblog/dokuwiki/lib/exe/fetch.php?media=name" class="media mediafile mf_ wikilink2" title="name">name</a> expression will remain untouched by the Blade engine, allowing it to instead be rendered by your JavaScript framework.
+</p>
+
+</div>
+<!-- EDIT12 SECTION "Blade & JavaScript Frameworks" [4061-4574] -->
+<h3 class="sectionedit13" id="echoing_data_if_it_exists">Echoing Data If It Exists</h3>
+<div class="level3">
+
+<p>
+Sometimes you may wish to echo a variable, but you aren&#039;t sure if the variable has been set. We can express this in verbose PHP code like so:
+</p>
+<pre class="code html4strict">{{ isset($name) ? $name : 'Default' }}
+// Shortcut
+{{ $name or 'Default' }}</pre>
+
+</div>
+<!-- EDIT13 SECTION "Echoing Data If It Exists" [4575-4850] -->
+<h3 class="sectionedit14" id="displaying_unescaped_data">Displaying Unescaped Data</h3>
+<div class="level3">
+
+<p>
+By default, Blade <a href="/miniblog/dokuwiki/lib/exe/fetch.php?media=" class="media mediafile mf_" title=" (0 B)"></a> statements are automatically sent through PHP&#039;s htmlentities function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
+</p>
+<pre class="code html4strict">Hello, {!! $name !!}.</pre>
+
+</div>
+<!-- EDIT14 SECTION "Displaying Unescaped Data" [4851-5125] -->
+<h2 class="sectionedit15" id="control_structures">Control Structures</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT15 SECTION "Control Structures" [5126-5157] -->
+<h3 class="sectionedit16" id="if_statements">If Statements</h3>
+<div class="level3">
+<pre class="code">@if (count($records) === 1)
+    I have one record!
+@elseif (count($records) &gt; 1)
+    I have multiple records!
+@else
+    I don&#039;t have any records!
+@endif
+
+// or using unless
+@unless (Auth::check())
+    You are not signed in.
+@endunless</pre>
+
+</div>
+<!-- EDIT16 SECTION "If Statements" [5158-5433] -->
+<h3 class="sectionedit17" id="loops">Loops</h3>
+<div class="level3">
+<pre class="code">@for ($i = 0; $i &lt; 10; $i++)
+    The current value is {{ $i }}
+@endfor
+
+@foreach ($users as $user)
+    &lt;p&gt;This is user {{ $user-&gt;id }}&lt;/p&gt;
+@endforeach
+
+@forelse ($users as $user)
+    &lt;li&gt;{{ $user-&gt;name }}&lt;/li&gt;
+@empty
+    &lt;p&gt;No users&lt;/p&gt;
+@endforelse
+
+@while (true)
+    &lt;p&gt;I&#039;m looping forever.&lt;/p&gt;
+@endwhile</pre>
+
+</div>
+<!-- EDIT17 SECTION "Loops" [5434-5772] -->
+<h3 class="sectionedit18" id="including_sub-views">Including Sub-Views</h3>
+<div class="level3">
+
+<p>
+Blade&#039;s @include directive, allows you to easily include a Blade view from within an existing view. All variables that are available to the parent view will be made available to the included view:
+</p>
+<pre class="code html4strict"><span class="sc2">&lt;<a href="http://december.com/html/4/element/div.html"><span class="kw2">div</span></a>&gt;</span>
+    @include('shared.errors')
+    <span class="sc-1">&lt;!-- You may also pass parameter --&gt;</span>
+    @include('view.name', ['some' =&gt; 'data'])
+    <span class="sc2">&lt;<a href="http://december.com/html/4/element/form.html"><span class="kw2">form</span></a>&gt;</span>
+        <span class="sc-1">&lt;!-- Form Contents --&gt;</span>
+    <span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/form.html"><span class="kw2">form</span></a>&gt;</span>
+<span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/div.html"><span class="kw2">div</span></a>&gt;</span></pre>
+
+</div>
+<!-- EDIT18 SECTION "Including Sub-Views" [5773-6206] -->
+<h3 class="sectionedit19" id="rendering_views_for_collections">Rendering Views For Collections</h3>
+<div class="level3">
+
+<p>
+You may combine loops and includes into one line with Blade&#039;s @each directive:
+</p>
+<pre class="code html4strict">@each('view.name', $jobs, 'job')
+<span class="sc-1">&lt;!--  This argument determines the view that will be rendered if the given array is empty. --&gt;</span>
+@each('view.name', $jobs, 'job', 'view.empty')</pre>
+
+</div>
+<!-- EDIT19 SECTION "Rendering Views For Collections" [6207-] -->

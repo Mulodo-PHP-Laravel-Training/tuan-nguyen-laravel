@@ -1,0 +1,202 @@
+
+<h1 class="sectionedit1" id="laravel_routing">Laravel Routing</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT1 SECTION "Laravel Routing" [1-31] -->
+<h3 class="sectionedit2" id="basic_routing">Basic Routing</h3>
+<div class="level3">
+
+<p>
+You will define most of the routes for your application in the app/Http/routes.php file, which is loaded by the App\Providers\RouteServiceProvider class. The most basic Laravel routes simply accept a <abbr title="Uniform Resource Identifier">URI</abbr> and a Closure
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'/'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st_h">'Hello World'</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+Route<span class="sy0">::</span><span class="me2">post</span><span class="br0">&#40;</span><span class="st_h">'foo/bar'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st_h">'Post data'</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+Route<span class="sy0">::</span><span class="me2">put</span><span class="br0">&#40;</span><span class="st_h">'foo/bar'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st_h">'Put data'</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+Route<span class="sy0">::</span><span class="me2">delete</span><span class="br0">&#40;</span><span class="st_h">'foo/bar'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st_h">'Delete data'</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT2 SECTION "Basic Routing" [32-556] -->
+<h3 class="sectionedit3" id="registering_a_route_for_multiple_verbs">Registering A Route For Multiple Verbs</h3>
+<div class="level3">
+
+<p>
+Sometimes you may need to register a route that responds to multiple HTTP verbs. You may do so using the match method on the Route facade : 
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">match</span><span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'get'</span><span class="sy0">,</span> <span class="st_h">'post'</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="st_h">'/routing-submit'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st_h">'Registering A Route For Multiple Verbs such as: get and post.'</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Or, you may even register a route that responds to all HTTP verbs using the any method: 
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">any</span><span class="br0">&#40;</span><span class="st_h">'foo'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st_h">'Register a route that responds to all HTTP verbs such as: post, delete, put, delete'</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT3 SECTION "Registering A Route For Multiple Verbs" [557-1152] -->
+<h3 class="sectionedit4" id="route_parameters">Route Parameters</h3>
+<div class="level3">
+<pre class="code php"><span class="co1">// Required Parameters</span>
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user/{id}'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st_h">'UserId '</span><span class="sy0">.</span><span class="re0">$id</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'posts/{post}/comments/{comment}'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="re0">$postId</span><span class="sy0">,</span> <span class="re0">$commentId</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st_h">'Post '</span> <span class="sy0">.</span> <span class="re0">$postId</span> <span class="sy0">.</span> <span class="st_h">' for comment '</span> <span class="sy0">.</span> <span class="re0">$commentId</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">//Optional Parameters</span>
+&nbsp;
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user/{name?}'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="re0">$name</span> <span class="sy0">=</span> <span class="kw4">null</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st0">&quot;Username 1: &quot;</span> <span class="sy0">.</span> <span class="re0">$name</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user/{name?}'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="re0">$name</span> <span class="sy0">=</span> <span class="st_h">'John'</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st0">&quot;Username 2: &quot;</span> <span class="sy0">.</span> <span class="re0">$name</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "Route Parameters" [1153-1650] -->
+<h3 class="sectionedit5" id="regular_expression_constraints">Regular Expression Constraints</h3>
+<div class="level3">
+
+<p>
+You may constrain the format of your route parameters using the where method on a route instance. The where method accepts the name of the parameter and a regular expression defining how the parameter should be constrained: 
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user/{name}'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="re0">$name</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st0">&quot;Username 3: &quot;</span> <span class="sy0">.</span> <span class="re0">$name</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span>
+<span class="sy0">-&gt;</span><span class="me1">where</span><span class="br0">&#40;</span><span class="st_h">'name'</span><span class="sy0">,</span> <span class="st_h">'[A-Za-z]+'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user/{id}'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st0">&quot;Username 4: &quot;</span> <span class="sy0">.</span> <span class="re0">$id</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span>
+<span class="sy0">-&gt;</span><span class="me1">where</span><span class="br0">&#40;</span><span class="st_h">'id'</span><span class="sy0">,</span> <span class="st_h">'[0-9]+'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user/{id}/{name}'</span><span class="sy0">,</span> 
+<span class="kw2">function</span> <span class="br0">&#40;</span><span class="re0">$id</span><span class="sy0">,</span> <span class="re0">$name</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st0">&quot;Username 5: &quot;</span> <span class="sy0">.</span> <span class="re0">$name</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span>
+<span class="sy0">-&gt;</span><span class="me1">where</span><span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'id'</span> <span class="sy0">=&gt;</span> <span class="st_h">'[0-9]+'</span><span class="sy0">,</span> <span class="st_h">'name'</span> <span class="sy0">=&gt;</span> <span class="st_h">'[a-z]+'</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT5 SECTION "Regular Expression Constraints" [1651-2296] -->
+<h3 class="sectionedit6" id="global_constraints">Global Constraints</h3>
+<div class="level3">
+
+<p>
+If you would like a route parameter to always be constrained by a given regular expression, you may use the pattern method. You should define these patterns in the boot method of your RouteServiceProvider : 
+</p>
+<pre class="code php"><span class="co4">/**
+ * Define your route model bindings, pattern filters, etc.
+ *
+ * @param    \Illuminate\Routing\Router  $router
+ * @return  void
+ */</span>
+<span class="kw2">public</span> <span class="kw2">function</span> boot<span class="br0">&#40;</span>Router <span class="re0">$router</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$router</span><span class="sy0">-&gt;</span><span class="me1">pattern</span><span class="br0">&#40;</span><span class="st_h">'id'</span><span class="sy0">,</span> <span class="st_h">'[0-9]+'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    parent<span class="sy0">::</span><span class="me2">boot</span><span class="br0">&#40;</span><span class="re0">$router</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="sy0">...</span>
+&nbsp;
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user/{id}'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="co1">// Only called if {id} is numeric.</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT6 SECTION "Global Constraints" [2297-2890] -->
+<h3 class="sectionedit7" id="named_routes">Named Routes</h3>
+<div class="level3">
+
+<p>
+Named routes allow you to conveniently generate URLs or redirects for a specific route. You may specify a name for a route using the as array key when defining the route: 
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user6/profile'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'as'</span> <span class="sy0">=&gt;</span> <span class="st_h">'profile'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st0">&quot;User profile&quot;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// You may also specify route names for controller actions:</span>
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user7/profile/{id}'</span><span class="sy0">,</span> <span class="br0">&#91;</span>
+    <span class="st_h">'as'</span> <span class="sy0">=&gt;</span> <span class="st_h">'profile-2'</span><span class="sy0">,</span> <span class="st_h">'uses'</span> <span class="sy0">=&gt;</span> <span class="st_h">'UserController@showProfile'</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Route group</span>
+Route<span class="sy0">::</span><span class="me2">group</span><span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'as'</span> <span class="sy0">=&gt;</span> <span class="st_h">'admin::'</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'dashboard'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'as'</span> <span class="sy0">=&gt;</span> <span class="st_h">'dashboard'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Route named admin::dashboard&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'dashboard'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'as'</span> <span class="sy0">=&gt;</span> <span class="st_h">'orders'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Route named admin::orders&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Once you have assigned a name to a given route, you may use the route&#039;s name when generating URLs or redirects via the route function: 
+</p>
+<pre class="code php"><span class="re0">$url</span> <span class="sy0">=</span> route<span class="br0">&#40;</span><span class="st_h">'profile'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$redirect</span> <span class="sy0">=</span> redirect<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">route</span><span class="br0">&#40;</span><span class="st_h">'profile'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user/{id}/profile'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'as'</span> <span class="sy0">=&gt;</span> <span class="st_h">'profile-3'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st0">&quot;User profile 3&quot;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">//$url = route('profile-3', ['id' =&gt; 1]);</span></pre>
+
+</div>
+<!-- EDIT7 SECTION "Named Routes" [2891-4039] -->
+<h3 class="sectionedit8" id="route_group">Route Group</h3>
+<div class="level3">
+<pre class="code php"><span class="co1">// Middleware</span>
+Route<span class="sy0">::</span><span class="me2">group</span><span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'middleware'</span> <span class="sy0">=&gt;</span> <span class="st_h">'auth'</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'/'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span>    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Uses Auth Middleware&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user/profile'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Uses Auth Middleware&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Namespace</span>
+Route<span class="sy0">::</span><span class="me2">group</span><span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'namespace'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Admin'</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="co1">// Controllers Within The &quot;App\Http\Controllers\Admin&quot; Namespace</span>
+&nbsp;
+    Route<span class="sy0">::</span><span class="me2">group</span><span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'namespace'</span> <span class="sy0">=&gt;</span> <span class="st_h">'User'</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="co1">// Controllers Within The &quot;App\Http\Controllers\Admin\User&quot; Namespace</span>
+    <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT8 SECTION "Route Group" [4040-4615] -->
+<h3 class="sectionedit9" id="resource_controllers">Resource Controllers</h3>
+<div class="level3">
+
+<p>
+we can register a resourceful route to the controller:
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">resource</span><span class="br0">&#40;</span><span class="st_h">'photo'</span><span class="sy0">,</span> <span class="st_h">'PhotoController'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Read more in Laravel Controller : <a href="/miniblog/dokuwiki/doku.php?id=php:laravel:controller" class="wikilink2" title="php:laravel:controller" rel="nofollow">Laravel Controller</a>
+</p>
+
+</div>
+<!-- EDIT9 SECTION "Resource Controllers" [4616-] -->

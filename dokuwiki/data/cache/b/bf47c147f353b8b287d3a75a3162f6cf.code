@@ -1,0 +1,10 @@
+<span class="kw2">protected</span> <span class="re0">$middleware</span> <span class="sy0">=</span> <span class="br0">&#91;</span>
+        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+        \App\Http\Middleware\EncryptCookies<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+        \Illuminate\Session\Middleware\StartSession<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+        \Illuminate\View\Middleware\ShareErrorsFromSession<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+        \App\Http\Middleware\VerifyCsrfToken<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+    	<span class="co1">// Tien Nguyen -- adding my middlewares for global using</span>
+    	\App\Http\Middleware\TermMiddleware<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+    <span class="br0">&#93;</span><span class="sy0">;</span>

@@ -1,0 +1,85 @@
+<span class="kw2">namespace</span> App\Http\Controllers<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> Illuminate\Http\Request<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> App\Http\Requests<span class="sy0">;</span>
+<span class="kw2">use</span> App\Http\Controllers\Controller<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> PhotoController <span class="kw2">extends</span> Controller
+<span class="br0">&#123;</span>
+    <span class="co4">/**
+     * Display a listing of the resource.
+     *
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> index<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Photo index function&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+     * Show the form for creating a new resource.
+     *
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> create<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Photo create function&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+     * Store a newly created resource in storage.
+     *
+     * @param    Request  $request
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> store<span class="br0">&#40;</span>Request <span class="re0">$request</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Photo store function&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+     * Display the specified resource.
+     *
+     * @param    int  $id
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> show<span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Photo show function&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+     * Show the form for editing the specified resource.
+     *
+     * @param    int  $id
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> edit<span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Photo edit function&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+     * Update the specified resource in storage.
+     *
+     * @param    Request  $request
+     * @param    int  $id
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> update<span class="br0">&#40;</span>Request <span class="re0">$request</span><span class="sy0">,</span> <span class="re0">$id</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Photo update function&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+     * Remove the specified resource from storage.
+     *
+     * @param    int  $id
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> destroy<span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Photo destroy function&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span>

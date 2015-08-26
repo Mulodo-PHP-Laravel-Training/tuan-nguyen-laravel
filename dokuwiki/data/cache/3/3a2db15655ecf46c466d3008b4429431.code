@@ -1,0 +1,3 @@
+@each('view.name', $jobs, 'job')
+<span class="sc-1">&lt;!--  This argument determines the view that will be rendered if the given array is empty. --&gt;</span>
+@each('view.name', $jobs, 'job', 'view.empty')

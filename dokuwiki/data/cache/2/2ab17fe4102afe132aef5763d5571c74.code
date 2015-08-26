@@ -1,0 +1,8 @@
+<span class="sc2">&lt;<a href="http://december.com/html/4/element/div.html"><span class="kw2">div</span></a>&gt;</span>
+    @include('shared.errors')
+    <span class="sc-1">&lt;!-- You may also pass parameter --&gt;</span>
+    @include('view.name', ['some' =&gt; 'data'])
+    <span class="sc2">&lt;<a href="http://december.com/html/4/element/form.html"><span class="kw2">form</span></a>&gt;</span>
+        <span class="sc-1">&lt;!-- Form Contents --&gt;</span>
+    <span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/form.html"><span class="kw2">form</span></a>&gt;</span>
+<span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/div.html"><span class="kw2">div</span></a>&gt;</span>

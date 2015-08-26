@@ -1,0 +1,4 @@
+<span class="kw2">use</span> Illuminate\Http\Response<span class="sy0">;</span>
+&nbsp;
+<span class="kw1">return</span> <span class="br0">&#40;</span><span class="kw2">new</span> Response<span class="br0">&#40;</span><span class="re0">$content</span><span class="sy0">,</span> <span class="re0">$status</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+              <span class="sy0">-&gt;</span><a href="http://www.php.net/header"><span class="kw3">header</span></a><span class="br0">&#40;</span><span class="st_h">'Content-Type'</span><span class="sy0">,</span> <span class="re0">$value</span><span class="br0">&#41;</span><span class="sy0">;</span>

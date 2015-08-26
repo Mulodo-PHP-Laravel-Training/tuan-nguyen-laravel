@@ -1,0 +1,1 @@
+<span class="kw1">return</span> response<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">caps</span><span class="br0">&#40;</span><span class="st_h">'foo'</span><span class="br0">&#41;</span><span class="sy0">;</span>

@@ -1,0 +1,202 @@
+====== Blade Template ======
+
+===== Introduction =====
+
+Blade is the simple, yet powerful templating engine provided with Laravel. Unlike other popular PHP templating engines, Blade does not restrict you from using plain PHP code in your views. All Blade views are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade view files use the .blade.php file extension and are typically stored in the resources/views directory.
+
+===== Directive =====
+
+  * **@yield** : directive is used to display the contents of a given section.
+  * **@section** : directive, as the name implies, defines a section of content.
+  * **@endsection** : close the section above.
+Ex :
+<code html>
+@section('title', 'This is title')
+...
+<title>Home - @yield('title') </title>
+</code>
+  * **@extends** :  to specify which layout the child page should "inherit".
+  * **@show** :
+  * **@include** :  allows you to easily include a Blade view from within an existing view. You can also pass paramters to view
+Ex :
+<code html>
+@include('view.name', ['some' => 'data'])
+</code>
+  * **@parent** :  to append (rather than overwriting) content to the layout. The @parent directive will be replaced by the content of the layout when the view is rendered.
+  * **@each** :  combine loops and includes into one line with Blade's @each directive.
+  * **@show** :
+
+===== Include CSS & JS file =====
+
+==== For CSS ====
+<code html>
+<link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
+<link href="{{ URL::asset('css/app.css') }}" rel="stylesheet" type="text/css" >
+</code>
+
+==== For JS ====
+<code html>
+<script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('js/custom.js') }}"></script>
+</code>
+
+==== For Images ====
+<code html>
+{{ asset('img/photo.jpg'); }}
+</code>
+===== Template Inheritance =====
+
+==== Defining A Layout ====
+
+Two of the primary benefits of using Blade are template inheritance and sections. To get started, let's take a look at a simple example. First, we will examine a "master" page layout.
+
+<file html5 master.blade.php>
+<!-- Stored in resources/views/layouts/master.blade.php -->
+
+<html>
+    <head>
+        <title>App Name - @yield('title')</title>
+    </head>
+    <body>
+        @section('sidebar')
+            This is the master sidebar.
+        @show
+
+        <div class="container">
+            @yield('content')
+        </div>
+    </body>
+</html>
+</file>
+
+  *  **@section** directive, as the name implies, defines a section of content
+  * **@yield** directive is used to display the contents of a given section.
+
+==== Extending A Layout ====
+
+When defining a child page, you may use the Blade @extends directive to specify which layout the child page should "inherit". Views which @extends a Blade layout may inject content into the layout's sections using @section directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using @yield:
+
+<file html child.blade.php>
+<!-- Stored in resources/views/child.blade.php -->
+
+@extends('layouts.master')
+
+@section('title', 'Page Title')
+
+@section('sidebar')
+    @parent
+
+    <p>This is appended to the master sidebar.</p>
+@endsection
+
+@section('content')
+    <p>This is my body content.</p>
+@endsection
+</file>
+
+In this example, the sidebar section is utilizing the @parent directive to append (rather than overwriting) content to the layout's sidebar. The @parent directive will be replaced by the content of the layout when the view is rendered.
+
+===== Displaying Data =====
+
+You may display data passed to your Blade views by wrapping the variable in "curly" braces.
+<code php>
+Route::get('greeting', function () {
+    return view('welcome', ['name' => 'Samantha']);
+});
+</code>
+
+You may display the contents of the name variable like so:
+
+<code html>
+Hello, {{ $name }}.
+// you can put any PHP code you wish inside of a Blade echo statement:
+The current UNIX timestamp is {{ time() }}.
+</code>
+
+==== Blade & JavaScript Frameworks ====
+Since many JavaScript frameworks also use "curly" braces to indicate a given expression should be displayed in the browser, you may use the @ symbol to inform the Blade rendering engine an expression should remain untouched. For example:
+<code html>
+<h1>Laravel</h1>
+Hello, @{{ name }}.
+</code>
+the @ symbol will be removed by Blade; however, {{ name }} expression will remain untouched by the Blade engine, allowing it to instead be rendered by your JavaScript framework.
+
+==== Echoing Data If It Exists ====
+Sometimes you may wish to echo a variable, but you aren't sure if the variable has been set. We can express this in verbose PHP code like so:
+
+<code html>
+{{ isset($name) ? $name : 'Default' }}
+// Shortcut
+{{ $name or 'Default' }}
+</code>
+
+==== Displaying Unescaped Data ====
+By default, Blade {{ }} statements are automatically sent through PHP's htmlentities function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
+<code html>
+Hello, {!! $name !!}.
+</code>
+
+===== Control Structures =====
+
+==== If Statements ====
+
+<code>
+@if (count($records) === 1)
+    I have one record!
+@elseif (count($records) > 1)
+    I have multiple records!
+@else
+    I don't have any records!
+@endif
+
+// or using unless
+@unless (Auth::check())
+    You are not signed in.
+@endunless
+</code>
+
+==== Loops ====
+
+<code>
+@for ($i = 0; $i < 10; $i++)
+    The current value is {{ $i }}
+@endfor
+
+@foreach ($users as $user)
+    <p>This is user {{ $user->id }}</p>
+@endforeach
+
+@forelse ($users as $user)
+    <li>{{ $user->name }}</li>
+@empty
+    <p>No users</p>
+@endforelse
+
+@while (true)
+    <p>I'm looping forever.</p>
+@endwhile
+</code>
+
+==== Including Sub-Views ====
+
+Blade's @include directive, allows you to easily include a Blade view from within an existing view. All variables that are available to the parent view will be made available to the included view:
+
+<code html>
+<div>
+    @include('shared.errors')
+    <!-- You may also pass parameter -->
+    @include('view.name', ['some' => 'data'])
+    <form>
+        <!-- Form Contents -->
+    </form>
+</div>
+</code>
+
+==== Rendering Views For Collections ====
+You may combine loops and includes into one line with Blade's @each directive:
+
+<code html>
+@each('view.name', $jobs, 'job')
+<!--  This argument determines the view that will be rendered if the given array is empty. -->
+@each('view.name', $jobs, 'job', 'view.empty')
+</code>

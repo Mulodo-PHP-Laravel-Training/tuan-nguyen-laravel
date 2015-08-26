@@ -1,0 +1,1 @@
+<span class="re0">$value</span> <span class="sy0">=</span> <span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">cookie</span><span class="br0">&#40;</span><span class="st_h">'name'</span><span class="br0">&#41;</span><span class="sy0">;</span>

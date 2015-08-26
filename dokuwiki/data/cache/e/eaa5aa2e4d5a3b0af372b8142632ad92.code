@@ -1,0 +1,3 @@
+{{ isset($name) ? $name : 'Default' }}
+// Shortcut
+{{ $name or 'Default' }}

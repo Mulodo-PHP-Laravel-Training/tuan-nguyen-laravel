@@ -1,0 +1,35 @@
+<span class="kw2">&lt;?php</span> <span class="kw2">namespace</span> App\Providers<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> View<span class="sy0">;</span>
+<span class="kw2">use</span> Illuminate\Support\ServiceProvider<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> ComposerServiceProvider <span class="kw2">extends</span> ServiceProvider <span class="br0">&#123;</span>
+&nbsp;
+    <span class="co4">/**
+     * Register bindings in the container.
+     *
+     * @return void
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> boot<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="co1">// Using class based composers...</span>
+        View<span class="sy0">::</span><span class="me2">composer</span><span class="br0">&#40;</span><span class="st_h">'profile'</span><span class="sy0">,</span> <span class="st_h">'App\Http\ViewComposers\ProfileComposer'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+        <span class="co1">// Using Closure based composers...</span>
+        View<span class="sy0">::</span><span class="me2">composer</span><span class="br0">&#40;</span><span class="st_h">'dashboard'</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="re0">$view</span><span class="br0">&#41;</span>
+        <span class="br0">&#123;</span>
+&nbsp;
+        <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+     * Register the service provider.
+     *
+     * @return void
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> register<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="co1">//</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+<span class="br0">&#125;</span>

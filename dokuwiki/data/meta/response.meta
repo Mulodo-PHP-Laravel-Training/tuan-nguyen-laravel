@@ -1,0 +1,16 @@
+a:2:{s:7:"current";a:8:{s:4:"date";a:2:{s:7:"created";i:1440575792;s:8:"modified";i:1440575792;}s:7:"creator";s:11:"Tuan Nguyen";s:4:"user";s:5:"admin";s:11:"last_change";a:7:{s:4:"date";i:1440575792;s:2:"ip";s:12:"192.168.10.1";s:4:"type";s:1:"C";s:2:"id";s:8:"response";s:4:"user";s:5:"admin";s:3:"sum";s:7:"created";s:5:"extra";s:0:"";}s:5:"title";s:16:"Laravel Response";s:11:"description";a:2:{s:15:"tableofcontents";a:15:{i:0;a:4:{s:3:"hid";s:16:"laravel_response";s:5:"title";s:16:"Laravel Response";s:4:"type";s:2:"ul";s:5:"level";i:1;}i:1;a:4:{s:3:"hid";s:15:"basic_responses";s:5:"title";s:15:"Basic Responses";s:4:"type";s:2:"ul";s:5:"level";i:2;}i:2;a:4:{s:3:"hid";s:29:"returning_strings_from_routes";s:5:"title";s:29:"Returning Strings From Routes";s:4:"type";s:2:"ul";s:5:"level";i:3;}i:3;a:4:{s:3:"hid";s:25:"creating_custom_responses";s:5:"title";s:25:"Creating Custom Responses";s:4:"type";s:2:"ul";s:5:"level";i:3;}i:4;a:4:{s:3:"hid";s:28:"sending_a_view_in_a_response";s:5:"title";s:28:"Sending A View In A Response";s:4:"type";s:2:"ul";s:5:"level";i:3;}i:5;a:4:{s:3:"hid";s:9:"redirects";s:5:"title";s:9:"Redirects";s:4:"type";s:2:"ul";s:5:"level";i:2;}i:6;a:4:{s:3:"hid";s:36:"returning_a_redirect_with_flash_data";s:5:"title";s:36:"Returning A Redirect With Flash Data";s:4:"type";s:2:"ul";s:5:"level";i:3;}i:7;a:4:{s:3:"hid";s:31:"redirecting_to_the_previous_url";s:5:"title";s:31:"Redirecting To The Previous URL";s:4:"type";s:2:"ul";s:5:"level";i:3;}i:8;a:4:{s:3:"hid";s:37:"returning_a_redirect_to_a_named_route";s:5:"title";s:37:"Returning A Redirect To A Named Route";s:4:"type";s:2:"ul";s:5:"level";i:3;}i:9;a:4:{s:3:"hid";s:43:"returning_a_redirect_to_a_controller_action";s:5:"title";s:43:"Returning A Redirect To A Controller Action";s:4:"type";s:2:"ul";s:5:"level";i:3;}i:10;a:4:{s:3:"hid";s:15:"other_responses";s:5:"title";s:15:"Other Responses";s:4:"type";s:2:"ul";s:5:"level";i:2;}i:11;a:4:{s:3:"hid";s:24:"creating_a_json_response";s:5:"title";s:24:"Creating A JSON Response";s:4:"type";s:2:"ul";s:5:"level";i:3;}i:12;a:4:{s:3:"hid";s:25:"creating_a_jsonp_response";s:5:"title";s:25:"Creating A JSONP Response";s:4:"type";s:2:"ul";s:5:"level";i:3;}i:13;a:4:{s:3:"hid";s:33:"creating_a_file_download_response";s:5:"title";s:33:"Creating A File Download Response";s:4:"type";s:2:"ul";s:5:"level";i:3;}i:14;a:4:{s:3:"hid";s:15:"response_macros";s:5:"title";s:15:"Response Macros";s:4:"type";s:2:"ul";s:5:"level";i:2;}}s:8:"abstract";s:302:"Laravel Response
+
+Basic Responses
+
+Returning Strings From Routes
+
+
+Route::get('/', function()
+{
+    return 'Hello World';
+});
+
+
+Creating Custom Responses
+
+ A Response instance inherits from the Symfony\Component\HttpFoundation\Response class, providing a variety of methods for building HTTP responses:";}s:8:"internal";a:2:{s:5:"cache";b:1;s:3:"toc";b:1;}s:8:"relation";a:1:{s:10:"firstimage";s:0:"";}}s:10:"persistent";a:4:{s:4:"date";a:1:{s:7:"created";i:1440575792;}s:7:"creator";s:11:"Tuan Nguyen";s:4:"user";s:5:"admin";s:11:"last_change";a:7:{s:4:"date";i:1440575792;s:2:"ip";s:12:"192.168.10.1";s:4:"type";s:1:"C";s:2:"id";s:8:"response";s:4:"user";s:5:"admin";s:3:"sum";s:7:"created";s:5:"extra";s:0:"";}}}

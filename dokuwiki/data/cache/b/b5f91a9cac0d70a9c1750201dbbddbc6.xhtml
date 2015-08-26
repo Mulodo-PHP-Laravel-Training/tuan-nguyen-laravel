@@ -1,0 +1,198 @@
+
+<h1 class="sectionedit1" id="laravel_homestead">Laravel HomeStead</h1>
+<div class="level1">
+
+<p>
+Laravel Homestead is an official, pre-packaged Vagrant “box” that provides you a wonderful development environment without requiring you to install PHP, HHVM, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
+</p>
+
+<p>
+Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 5.6, MySQL, Postgres, Redis, Memcached, Node, and all of the other goodies you need to develop amazing Laravel applications.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Laravel HomeStead" [1-652] -->
+<h3 class="sectionedit2" id="include_software">Include Software</h3>
+<div class="level3">
+<ul>
+<li class="level1"><div class="li"> Ubuntu 14.04</div>
+</li>
+<li class="level1"><div class="li"> PHP 5.6</div>
+</li>
+<li class="level1"><div class="li"> HHVM</div>
+</li>
+<li class="level1"><div class="li"> Nginx</div>
+</li>
+<li class="level1"><div class="li"> MySQL</div>
+</li>
+<li class="level1"><div class="li"> Postgres</div>
+</li>
+<li class="level1"><div class="li"> Node (With PM2, Bower, Grunt, and Gulp)</div>
+</li>
+<li class="level1"><div class="li"> Redis</div>
+</li>
+<li class="level1"><div class="li"> Memcached</div>
+</li>
+<li class="level1"><div class="li"> Beanstalkd</div>
+</li>
+<li class="level1"><div class="li"> Laravel Envoy</div>
+</li>
+<li class="level1"><div class="li"> Blackfire Profiler</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT2 SECTION "Include Software" [653-876] -->
+<h2 class="sectionedit3" id="installation_setup">Installation &amp; Setup</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT3 SECTION "Installation & Setup" [877-910] -->
+<h3 class="sectionedit4" id="install_virtual_box_or_vmware">Install Virtual Box or VMWare</h3>
+<div class="level3">
+
+<p>
+- Download &amp; Install Virtual Box:
+<a href="https://www.virtualbox.org/wiki/Downloads" class="urlextern" title="https://www.virtualbox.org/wiki/Downloads"  rel="nofollow">Download Virtual Box</a>
+</p>
+
+<p>
+- Download &amp; Install VMWare:
+</p>
+
+<p>
+<a href="http://www.vmware.com/vn" class="urlextern" title="http://www.vmware.com/vn"  rel="nofollow">Download VMWare</a>
+</p>
+
+<p>
+- Donload &amp; Install Vargant :
+</p>
+
+<p>
+<a href="http://www.vagrantup.com/downloads.html" class="urlextern" title="http://www.vagrantup.com/downloads.html"  rel="nofollow">Download Vargant</a>
+</p>
+
+<p>
+- Install Vargant: In cmd , type 2 commands :
+</p>
+<pre class="code">$ vagrant init hashicorp/precise32
+$ vagrant up</pre>
+
+</div>
+<!-- EDIT4 SECTION "Install Virtual Box or VMWare" [911-1332] -->
+<h2 class="sectionedit5" id="install_homestead_on_windows">Install Homestead on Windows</h2>
+<div class="level2">
+
+<p>
+Install HomeStead on Windows 8.1
+</p>
+
+<p>
+Install Virtual Box : <a href="https://www.virtualbox.org/wiki/Downloads" class="urlextern" title="https://www.virtualbox.org/wiki/Downloads"  rel="nofollow">https://www.virtualbox.org/wiki/Downloads</a>
+Install Vagrant : <a href="http://www.vagrantup.com/downloads.html" class="urlextern" title="http://www.vagrantup.com/downloads.html"  rel="nofollow">http://www.vagrantup.com/downloads.html</a>
+Install Git-Scm : <a href="http://git-scm.com/" class="urlextern" title="http://git-scm.com/"  rel="nofollow">http://git-scm.com/</a>
+</p>
+
+<p>
+On desktop , create folder name Code , open this folder with Git Bash
+Cloning Homestead respository :
+</p>
+<pre class="code">$ git clone https://github.com/Mulodo-PHP-Laravel-Training/laravel-homestead.git
+      $ git clone https://github.com/laravel/homestead.git Homestead </pre>
+
+<p>
+Edit file init.sh : Change homesteadRoot
+</p>
+<pre class="code">homesteadRoot=C:/Users/mulodo/Desktop/Code/laravel-homestead</pre>
+
+<p>
+Run init.sh in laravel-homestead directory
+</p>
+<pre class="code">$ bash init.sh</pre>
+
+<p>
+bash commnad will create file Homstead.yaml  ( if you don’t see this file, that means you entered wrong path )	
+Back to root folder &amp; set SSH Key :
+</p>
+<pre class="code">$ ssh-keygen -t rsa -C &quot;you@homestead&quot;</pre>
+
+<p>
+Find and edit file Homestead.yaml
+</p>
+<pre class="code">ip: &quot;192.168.10.10&quot;
+memory: 2048
+cpus: 1
+provider: virtualbox
+
+authorize: C:/Users/mulodo/.ssh/id_rsa.pub
+
+keys:
+    - C:/Users/mulodo/.ssh/id_rsa
+
+folders:
+    - map: C:/Users/mulodo/Desktop/Code/laravel-homestead
+      to: /home/vagrant/Code
+
+sites:
+    - map: homestead.app
+      to: /vagrant/laravel/public
+
+databases:
+    - homestead</pre>
+
+<p>
+Edit hosts files :
+</p>
+<pre class="code">127.0.0.1 homestead.app</pre>
+
+<p>
+Run vagrant in folder contain Homestead.yaml
+</p>
+<pre class="code">$ vagrant up</pre>
+
+<p>
+If you see a bootstrap page, that’s success .
+</p>
+
+<p>
+Open putty or SSH client and login with this info :
+</p>
+<pre class="code">host : 127.0.0.1 	port : 2222
+user : vagrant		pass : empty or vagrant</pre>
+
+<p>
+Go to laravel folder :
+</p>
+<pre class="code">	$ cd /vagrant/laravel/</pre>
+
+<p>
+Install composer : 
+</p>
+<pre class="code">	$ curl -sS https://getcomposer.org/installer | php</pre>
+
+<p>
+Install Laravel library :
+</p>
+<pre class="code">	$ php composer.phar install</pre>
+
+<p>
+Create app key :
+</p>
+<pre class="code">$ php artisan key:generate</pre>
+
+<p>
+Note : Create app key after install libraries , if not will occurs error like this :
+</p>
+<pre class="code">PHP Warning:  require(/vagrant/laravel/bootstrap/../vendor/autoload.php): failed to open stream: No such file or directory in /vagrant/laravel/bootstrap/autoload.php on line 17.</pre>
+
+<p>
+Attention : when running vagrant up , mount share folder maybe isn’t correct with config in file Homestead.yaml. 
+</p>
+
+<p>
+In the picture , link E:/Code/laravel-homestead isn’t in file Homestead.yaml
+⇒ Logging ssh and check folder /home/vagrant/Code or /vagrant , find the correct path.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Install Homestead on Windows" [1333-] -->

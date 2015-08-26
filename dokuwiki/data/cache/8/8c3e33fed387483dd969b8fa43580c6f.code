@@ -1,0 +1,15 @@
+<span class="kw2">namespace</span> App\Http\Middleware<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> Closure<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> AfterMiddleware
+<span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> handle<span class="br0">&#40;</span><span class="re0">$request</span><span class="sy0">,</span> Closure <span class="re0">$next</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="re0">$response</span> <span class="sy0">=</span> <span class="re0">$next</span><span class="br0">&#40;</span><span class="re0">$request</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+        <span class="co1">// Perform action</span>
+&nbsp;
+        <span class="kw1">return</span> <span class="re0">$response</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span>

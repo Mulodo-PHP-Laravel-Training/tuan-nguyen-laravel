@@ -1,0 +1,1 @@
+Route<span class="sy0">::</span><span class="me2">controller</span><span class="br0">&#40;</span><span class="st_h">'users'</span><span class="sy0">,</span> <span class="st_h">'UserController'</span><span class="br0">&#41;</span><span class="sy0">;</span>

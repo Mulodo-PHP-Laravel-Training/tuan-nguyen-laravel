@@ -1,0 +1,8 @@
+<span class="kw1">return</span> redirect<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">route</span><span class="br0">&#40;</span><span class="st_h">'login'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// with parameters</span>
+<span class="co1">// For a route with the following URI: profile/{id}</span>
+<span class="kw1">return</span> redirect<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">route</span><span class="br0">&#40;</span><span class="st_h">'profile'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// For a route with the following URI: profile/{user}</span>
+<span class="kw1">return</span> redirect<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">route</span><span class="br0">&#40;</span><span class="st_h">'profile'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'user'</span> <span class="sy0">=&gt;</span> <span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>

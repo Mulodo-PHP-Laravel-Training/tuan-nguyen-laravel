@@ -1,0 +1,127 @@
+====== Laravel HomeStead ======
+
+Laravel Homestead is an official, pre-packaged Vagrant "box" that provides you a wonderful development environment without requiring you to install PHP, HHVM, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
+
+
+Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 5.6, MySQL, Postgres, Redis, Memcached, Node, and all of the other goodies you need to develop amazing Laravel applications.
+
+==== Include Software ====
+
+  * Ubuntu 14.04
+  * PHP 5.6
+  * HHVM
+  * Nginx
+  * MySQL
+  * Postgres
+  * Node (With PM2, Bower, Grunt, and Gulp)
+  * Redis
+  * Memcached
+  * Beanstalkd
+  * Laravel Envoy
+  * Blackfire Profiler
+
+===== Installation & Setup =====
+
+==== Install Virtual Box or VMWare ====
+- Download & Install Virtual Box:
+[[https://www.virtualbox.org/wiki/Downloads|Download Virtual Box]]
+
+- Download & Install VMWare:
+
+[[http://www.vmware.com/vn|Download VMWare]]
+
+- Donload & Install Vargant :
+
+[[http://www.vagrantup.com/downloads.html|Download Vargant]]
+
+- Install Vargant: In cmd , type 2 commands :
+<code>
+$ vagrant init hashicorp/precise32
+$ vagrant up
+</code>
+
+
+===== Install Homestead on Windows =====
+Install HomeStead on Windows 8.1
+
+Install Virtual Box : https://www.virtualbox.org/wiki/Downloads
+Install Vagrant : http://www.vagrantup.com/downloads.html
+Install Git-Scm : http://git-scm.com/
+
+On desktop , create folder name Code , open this folder with Git Bash
+Cloning Homestead respository :
+	$ git clone https://github.com/Mulodo-PHP-Laravel-Training/laravel-homestead.git
+        $ git clone https://github.com/laravel/homestead.git Homestead 
+
+Edit file init.sh : Change homesteadRoot
+	homesteadRoot=C:/Users/mulodo/Desktop/Code/laravel-homestead
+
+Run init.sh in laravel-homestead directory
+	$ bash init.sh
+bash commnad will create file Homstead.yaml  ( if you don’t see this file, that means you entered wrong path )	
+Back to root folder & set SSH Key :
+	$ ssh-keygen -t rsa -C "you@homestead"
+
+Find and edit file Homestead.yaml
+<code>
+ip: "192.168.10.10"
+memory: 2048
+cpus: 1
+provider: virtualbox
+
+authorize: C:/Users/mulodo/.ssh/id_rsa.pub
+
+keys:
+    - C:/Users/mulodo/.ssh/id_rsa
+
+folders:
+    - map: C:/Users/mulodo/Desktop/Code/laravel-homestead
+      to: /home/vagrant/Code
+
+sites:
+    - map: homestead.app
+      to: /vagrant/laravel/public
+
+databases:
+    - homestead
+</code>
+
+Edit hosts files :
+	127.0.0.1 homestead.app
+Run vagrant in folder contain Homestead.yaml
+<code>
+$ vagrant up
+</code>
+If you see a bootstrap page, that’s success .
+
+Open putty or SSH client and login with this info :
+<code>
+host : 127.0.0.1 	port : 2222
+user : vagrant		pass : empty or vagrant
+</code>
+Go to laravel folder :
+<code>
+	$ cd /vagrant/laravel/
+</code>
+
+Install composer : 
+<code>
+	$ curl -sS https://getcomposer.org/installer | php
+</code>
+Install Laravel library :
+<code>
+	$ php composer.phar install
+</code>
+Create app key :
+<code>
+$ php artisan key:generate
+</code>
+Note : Create app key after install libraries , if not will occurs error like this :
+<code>
+PHP Warning:  require(/vagrant/laravel/bootstrap/../vendor/autoload.php): failed to open stream: No such file or directory in /vagrant/laravel/bootstrap/autoload.php on line 17.
+</code>
+Attention : when running vagrant up , mount share folder maybe isn’t correct with config in file Homestead.yaml. 
+
+
+In the picture , link E:/Code/laravel-homestead isn’t in file Homestead.yaml
+⇒ Logging ssh and check folder /home/vagrant/Code or /vagrant , find the correct path.

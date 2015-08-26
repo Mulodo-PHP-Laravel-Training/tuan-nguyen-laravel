@@ -1,0 +1,9 @@
+<span class="kw2">public</span> <span class="kw2">function</span> checkMethod<span class="br0">&#40;</span>Request <span class="re0">$request</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+	<span class="re0">$method</span> <span class="sy0">=</span> <span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">method</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="kw1">if</span> <span class="br0">&#40;</span><span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">isMethod</span><span class="br0">&#40;</span><span class="st_h">'post'</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="st0">&quot;This is Post method.&quot;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">else</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="st0">&quot;<span class="es4">{$method}</span> method ...&quot;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span>

@@ -1,0 +1,15 @@
+<span class="st0">'mysql'</span> <span class="sy0">=&gt;</span> <span class="br0">&#91;</span>
+    <span class="st0">'read'</span> <span class="sy0">=&gt;</span> <span class="br0">&#91;</span>
+        <span class="st0">'host'</span> <span class="sy0">=&gt;</span> <span class="st0">'192.168.1.1'</span>,
+    <span class="br0">&#93;</span>,
+    <span class="st0">'write'</span> <span class="sy0">=&gt;</span> <span class="br0">&#91;</span>
+        <span class="st0">'host'</span> <span class="sy0">=&gt;</span> <span class="st0">'196.168.1.2'</span>
+    <span class="br0">&#93;</span>,
+    <span class="st0">'driver'</span>    <span class="sy0">=&gt;</span> <span class="st0">'mysql'</span>,
+    <span class="st0">'database'</span>  <span class="sy0">=&gt;</span> <span class="st0">'database'</span>,
+    <span class="st0">'username'</span>  <span class="sy0">=&gt;</span> <span class="st0">'root'</span>,
+    <span class="st0">'password'</span>  <span class="sy0">=&gt;</span> <span class="st0">''</span>,
+    <span class="st0">'charset'</span>   <span class="sy0">=&gt;</span> <span class="st0">'utf8'</span>,
+    <span class="st0">'collation'</span> <span class="sy0">=&gt;</span> <span class="st0">'utf8_unicode_ci'</span>,
+    <span class="st0">'prefix'</span>    <span class="sy0">=&gt;</span> <span class="st0">''</span>,
+<span class="br0">&#93;</span>,

@@ -1,0 +1,18 @@
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user6/profile'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'as'</span> <span class="sy0">=&gt;</span> <span class="st_h">'profile'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st0">&quot;User profile&quot;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// You may also specify route names for controller actions:</span>
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user7/profile/{id}'</span><span class="sy0">,</span> <span class="br0">&#91;</span>
+    <span class="st_h">'as'</span> <span class="sy0">=&gt;</span> <span class="st_h">'profile-2'</span><span class="sy0">,</span> <span class="st_h">'uses'</span> <span class="sy0">=&gt;</span> <span class="st_h">'UserController@showProfile'</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Route group</span>
+Route<span class="sy0">::</span><span class="me2">group</span><span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'as'</span> <span class="sy0">=&gt;</span> <span class="st_h">'admin::'</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'dashboard'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'as'</span> <span class="sy0">=&gt;</span> <span class="st_h">'dashboard'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Route named admin::dashboard&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'dashboard'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'as'</span> <span class="sy0">=&gt;</span> <span class="st_h">'orders'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Route named admin::orders&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>

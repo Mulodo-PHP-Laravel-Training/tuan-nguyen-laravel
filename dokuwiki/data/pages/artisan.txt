@@ -1,0 +1,43 @@
+====== Laravel Artisan ======
+
+==== Introduction ====
+
+Artisan is the name of the command-line interface included with Laravel. It provides a number of helpful commands for your use while developing your application. It is driven by the powerful Symfony Console component.
+
+===== Lists of command line =====
+
+==== View list commands ====
+<code>
+php artisan list
+</code>
+
+==== Create key ====
+<code>
+php artisan key:generate
+</code>
+
+===== Make ( create new things) =====
+
+==== Create new Controller class ====
+<code>
+php artisan make:controller UserController
+</code>
+
+
+===== Routes =====
+
+==== List all the registered routes ====
+<code>
+php artisan route:list
+</code>
+
+==== Create the route cache file ====
+<code>
+php artisan route:cache
+</code>
+
+==== Clear route cache file ====
+<code>
+php artisan route:clear
+</code>
+

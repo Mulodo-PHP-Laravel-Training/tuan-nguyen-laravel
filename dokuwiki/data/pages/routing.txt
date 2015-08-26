@@ -1,0 +1,179 @@
+====== Laravel Routing ======
+
+==== Basic Routing ====
+
+You will define most of the routes for your application in the app/Http/routes.php file, which is loaded by the App\Providers\RouteServiceProvider class. The most basic Laravel routes simply accept a URI and a Closure
+
+<code php>
+Route::get('/', function () {
+    return 'Hello World';
+});
+
+Route::post('foo/bar', function () {
+    return 'Post data';
+});
+
+Route::put('foo/bar', function () {
+    return 'Put data';
+});
+
+Route::delete('foo/bar', function () {
+    return 'Delete data';
+});
+
+</code>
+
+==== Registering A Route For Multiple Verbs ====
+Sometimes you may need to register a route that responds to multiple HTTP verbs. You may do so using the match method on the Route facade : 
+<code php>
+Route::match(['get', 'post'], '/routing-submit', function () {
+    return 'Registering A Route For Multiple Verbs such as: get and post.';
+});
+</code>
+
+Or, you may even register a route that responds to all HTTP verbs using the any method: 
+
+<code php>
+Route::any('foo', function () {
+    return 'Register a route that responds to all HTTP verbs such as: post, delete, put, delete';
+});
+</code>
+==== Route Parameters ====
+<code php>
+// Required Parameters
+Route::get('user/{id}', function ($id) {
+    return 'UserId '.$id;
+});
+
+Route::get('posts/{post}/comments/{comment}', function ($postId, $commentId) {
+    return 'Post ' . $postId . ' for comment ' . $commentId;
+});
+
+//Optional Parameters
+
+Route::get('user/{name?}', function ($name = null) {
+    return "Username 1: " . $name;
+});
+
+Route::get('user/{name?}', function ($name = 'John') {
+    return "Username 2: " . $name;
+});
+
+</code>
+
+==== Regular Expression Constraints ====
+You may constrain the format of your route parameters using the where method on a route instance. The where method accepts the name of the parameter and a regular expression defining how the parameter should be constrained: 
+<code php>
+Route::get('user/{name}', function ($name) {
+    return "Username 3: " . $name;
+})
+->where('name', '[A-Za-z]+');
+
+Route::get('user/{id}', function ($id) {
+    return "Username 4: " . $id;
+})
+->where('id', '[0-9]+');
+
+Route::get('user/{id}/{name}', 
+function ($id, $name) {
+    return "Username 5: " . $name;
+})
+->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
+</code>
+
+==== Global Constraints ====
+
+If you would like a route parameter to always be constrained by a given regular expression, you may use the pattern method. You should define these patterns in the boot method of your RouteServiceProvider : 
+
+<code php>
+
+/**
+ * Define your route model bindings, pattern filters, etc.
+ *
+ * @param    \Illuminate\Routing\Router  $router
+ * @return  void
+ */
+public function boot(Router $router)
+{
+    $router->pattern('id', '[0-9]+');
+
+    parent::boot($router);
+}
+
+...
+
+Route::get('user/{id}', function ($id) {
+    // Only called if {id} is numeric.
+});
+
+</code>
+
+==== Named Routes ====
+Named routes allow you to conveniently generate URLs or redirects for a specific route. You may specify a name for a route using the as array key when defining the route: 
+
+<code php>
+Route::get('user6/profile', ['as' => 'profile', function () {
+    return "User profile";
+}]);
+
+// You may also specify route names for controller actions:
+Route::get('user7/profile/{id}', [
+    'as' => 'profile-2', 'uses' => 'UserController@showProfile'
+]);
+
+// Route group
+Route::group(['as' => 'admin::'], function () {
+    Route::get('dashboard', ['as' => 'dashboard', function () {
+        return "Route named admin::dashboard";
+    }]);
+    Route::get('dashboard', ['as' => 'orders', function () {
+        return "Route named admin::orders";
+    }]);
+});
+</code>
+
+Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via the route function: 
+<code php>
+$url = route('profile');
+$redirect = redirect()->route('profile');
+
+Route::get('user/{id}/profile', ['as' => 'profile-3', function ($id) {
+    return "User profile 3";
+}]);
+
+//$url = route('profile-3', ['id' => 1]);
+
+</code>
+
+==== Route Group ====
+<code php>
+// Middleware
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', function ()    {
+        return "Uses Auth Middleware";
+    });
+
+    Route::get('user/profile', function () {
+        return "Uses Auth Middleware";
+    });
+});
+
+// Namespace
+Route::group(['namespace' => 'Admin'], function()
+{
+    // Controllers Within The "App\Http\Controllers\Admin" Namespace
+
+    Route::group(['namespace' => 'User'], function()
+    {
+        // Controllers Within The "App\Http\Controllers\Admin\User" Namespace
+    });
+});
+
+</code>
+
+==== Resource Controllers ====
+we can register a resourceful route to the controller:
+<code php>
+Route::resource('photo', 'PhotoController');
+</code>
+Read more in Laravel Controller : [[php:laravel:controller|Laravel Controller]]

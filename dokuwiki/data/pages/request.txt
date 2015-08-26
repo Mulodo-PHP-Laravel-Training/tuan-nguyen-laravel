@@ -1,0 +1,161 @@
+====== Laravel Request ======
+
+==== Accessing The Request ====
+
+There are 3 main points that we need to remember when working with request
+
+      * Type-hint the Illuminate\Http\Request in the controllers
+  *     Type Request as a parameter of function in the controllers
+  *     Create form with method is post, put, delete in the view
+  *     Create route to access this 
+In app/Http/Controllers/UserController.php
+
+<code php>
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+
+class UserController extends Controller
+{
+    /**
+     * Update the specified user.
+     *
+     * @param    Request  $request
+     * @param    int  $id
+     * @return  Response
+     */
+    public function update(Request $request, $id)
+    {
+        return "UserId {$id} is updated successfullly!";
+    }
+}
+</code>
+
+In routes :
+
+<code php>
+Route::put('user8/{id}', 'UserController@update');
+Route::post('user8/{id}', 'UserController@update');
+Route::delete('user8/{id}', 'UserController@update');
+Route::get('user8/{id}', 'UserController@update');
+</code>
+===== Basic Request Information =====
+
+==== Retrieving The Request URI ====
+The path method returns the request's URI. So, if the incoming request is targeted at http://domain.com/foo/bar, the path method will return foo/bar:
+
+<code php>
+// function in UserController.php
+public function getRequestPath(Request $request)
+{
+	$uri = $request->path();
+	return "Request path is {$uri}";
+}
+</code>
+To get the full URL, not just the path info, you may use the url method on the request instance:
+
+<code php>
+// function in UserController.php
+public function getRequestFullPath(Request $request) {
+	$uri = $request->url ();
+	return "Request full path is {$uri}";
+}
+</code>
+
+The is method allows you to verify that the incoming request URI matches a given pattern. You may use the * character as a wildcard when utilizing this method: 
+
+<code php>
+// function in UserController.php
+public function getRequestMatch(Request $request) {
+	if ($request->is ( 'user10/*' )) {
+		return "Request path match with user10";
+	} else {
+		return "Request path does not match with user10";
+	}
+}
+</code>
+
+==== Retrieving The Request Method ====
+
+The method method will return the HTTP verb for the request. You may also use the isMethod method to verify that the HTTP verb matches a given string:
+
+<code php>
+public function checkMethod(Request $request) {
+	$method = $request->method();
+	if ($request->isMethod('post')) {
+		return "This is Post method.";
+	}
+	else {
+		return "{$method} method ...";
+	}
+}
+</code>
+
+
+===== Retrieving Input =====
+
+==== Retrieving All Input Data ====
+You may also retrieve all of the input data as an array using the all method: 
+<code php>
+$input = $request->all();
+</code>
+
+
+
+
+
+==== Retrieving An Input Value ====
+Using a few simple methods, you may access all user input from your Illuminate\Http\Request instance. 
+
+<code php>
+$name = $request->input('name');
+</code>
+
+
+==== Determining If An Input Value Is Present ====
+
+To determine if a value is present on the request, you may use the has method. The has method returns true if the value is present and is not an empty string
+
+<code php>
+// In UserController.php
+public function retriveInputs(Request $request) {
+	if ($request->has('email')) {
+		echo "Name is {$request->input('email')}";
+	}
+}
+</code>
+
+
+==== Retrieving A Portion Of The Input Data ====
+If you need to retrieve a sub-set of the input data, you may use the only and except methods. Both of these methods accept a single array as their only argument:
+
+<code php>
+$input = $request->only('username', 'password');
+$input = $request->except('credit_card');
+</code>
+
+
+==== Flashing Input To The Session ====
+<code php>
+$request->flash();
+</code>
+
+
+
+==== Retrieving Old Data ====
+
+<code php>
+$username = $request->old('username');
+</code>
+
+
+==== Retrieving Cookies From The Request ====
+All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, you may use the cookie method on the Illuminate\Http\Request instance .
+
+<code php>
+$value = $request->cookie('name');
+</code>
+
+
+

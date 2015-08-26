@@ -1,0 +1,7 @@
+<span class="kw2">protected</span> <span class="re0">$routeMiddleware</span> <span class="sy0">=</span> <span class="br0">&#91;</span>
+   <span class="st_h">'auth'</span> <span class="sy0">=&gt;</span> \App\Http\Middleware\Authenticate<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+   <span class="st_h">'auth.basic'</span> <span class="sy0">=&gt;</span> \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+   <span class="st_h">'guest'</span> <span class="sy0">=&gt;</span> \App\Http\Middleware\RedirectIfAuthenticated<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+   <span class="co1">// Tien Nguyen -- adding my middlewares for specific routes</span>
+  <span class="st_h">'role'</span> <span class="sy0">=&gt;</span> \App\Http\Middleware\RoleMiddleware<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+    <span class="br0">&#93;</span><span class="sy0">;</span>

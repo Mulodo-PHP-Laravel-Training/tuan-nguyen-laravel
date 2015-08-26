@@ -1,0 +1,18 @@
+<span class="co1">// Required Parameters</span>
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user/{id}'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st_h">'UserId '</span><span class="sy0">.</span><span class="re0">$id</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'posts/{post}/comments/{comment}'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="re0">$postId</span><span class="sy0">,</span> <span class="re0">$commentId</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st_h">'Post '</span> <span class="sy0">.</span> <span class="re0">$postId</span> <span class="sy0">.</span> <span class="st_h">' for comment '</span> <span class="sy0">.</span> <span class="re0">$commentId</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">//Optional Parameters</span>
+&nbsp;
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user/{name?}'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="re0">$name</span> <span class="sy0">=</span> <span class="kw4">null</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st0">&quot;Username 1: &quot;</span> <span class="sy0">.</span> <span class="re0">$name</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user/{name?}'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="re0">$name</span> <span class="sy0">=</span> <span class="st_h">'John'</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st0">&quot;Username 2: &quot;</span> <span class="sy0">.</span> <span class="re0">$name</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>

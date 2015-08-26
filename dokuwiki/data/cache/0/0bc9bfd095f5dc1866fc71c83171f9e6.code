@@ -1,0 +1,15 @@
+<span class="sc-1">&lt;!-- Stored in resources/views/child.blade.php --&gt;</span>
+&nbsp;
+@extends('layouts.master')
+&nbsp;
+@section('title', 'Page Title')
+&nbsp;
+@section('sidebar')
+    @parent
+&nbsp;
+    <span class="sc2">&lt;<a href="http://december.com/html/4/element/p.html"><span class="kw2">p</span></a>&gt;</span>This is appended to the master sidebar.<span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/p.html"><span class="kw2">p</span></a>&gt;</span>
+@endsection
+&nbsp;
+@section('content')
+    <span class="sc2">&lt;<a href="http://december.com/html/4/element/p.html"><span class="kw2">p</span></a>&gt;</span>This is my body content.<span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/p.html"><span class="kw2">p</span></a>&gt;</span>
+@endsection

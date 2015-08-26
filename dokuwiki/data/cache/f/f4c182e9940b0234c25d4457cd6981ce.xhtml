@@ -1,0 +1,168 @@
+
+<h1 class="sectionedit1" id="laravel_response">Laravel Response</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT1 SECTION "Laravel Response" [1-32] -->
+<h2 class="sectionedit2" id="basic_responses">Basic Responses</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT2 SECTION "Basic Responses" [33-61] -->
+<h3 class="sectionedit3" id="returning_strings_from_routes">Returning Strings From Routes</h3>
+<div class="level3">
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'/'</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st_h">'Hello World'</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT3 SECTION "Returning Strings From Routes" [62-181] -->
+<h3 class="sectionedit4" id="creating_custom_responses">Creating Custom Responses</h3>
+<div class="level3">
+
+<p>
+ A Response instance inherits from the Symfony\Component\HttpFoundation\Response class, providing a variety of methods for building HTTP responses:
+</p>
+<pre class="code php"><span class="kw2">use</span> Illuminate\Http\Response<span class="sy0">;</span>
+&nbsp;
+<span class="kw1">return</span> <span class="br0">&#40;</span><span class="kw2">new</span> Response<span class="br0">&#40;</span><span class="re0">$content</span><span class="sy0">,</span> <span class="re0">$status</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+              <span class="sy0">-&gt;</span><a href="http://www.php.net/header"><span class="kw3">header</span></a><span class="br0">&#40;</span><span class="st_h">'Content-Type'</span><span class="sy0">,</span> <span class="re0">$value</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+For convenience, you may also use the response helper:
+</p>
+<pre class="code php"><span class="kw1">return</span> response<span class="br0">&#40;</span><span class="re0">$content</span><span class="sy0">,</span> <span class="re0">$status</span><span class="br0">&#41;</span>
+              <span class="sy0">-&gt;</span><a href="http://www.php.net/header"><span class="kw3">header</span></a><span class="br0">&#40;</span><span class="st_h">'Content-Type'</span><span class="sy0">,</span> <span class="re0">$value</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "Creating Custom Responses" [182-664] -->
+<h3 class="sectionedit5" id="sending_a_view_in_a_response">Sending A View In A Response</h3>
+<div class="level3">
+<pre class="code php"><span class="kw1">return</span> response<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">view</span><span class="br0">&#40;</span><span class="st_h">'hello'</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><a href="http://www.php.net/header"><span class="kw3">header</span></a><span class="br0">&#40;</span><span class="st_h">'Content-Type'</span><span class="sy0">,</span> <span class="re0">$type</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT5 SECTION "Sending A View In A Response" [665-789] -->
+<h2 class="sectionedit6" id="redirects">Redirects</h2>
+<div class="level2">
+
+<p>
+Redirect responses are typically instances of the Illuminate\Http\RedirectResponse class, and contain the proper headers needed to redirect the user to another <abbr title="Uniform Resource Locator">URL</abbr>.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Redirects" [790-978] -->
+<h3 class="sectionedit7" id="returning_a_redirect_with_flash_data">Returning A Redirect With Flash Data</h3>
+<div class="level3">
+<pre class="code php"><span class="kw1">return</span> redirect<span class="br0">&#40;</span><span class="st_h">'user/login'</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">with</span><span class="br0">&#40;</span><span class="st_h">'message'</span><span class="sy0">,</span> <span class="st_h">'Login Failed'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT7 SECTION "Returning A Redirect With Flash Data" [979-1110] -->
+<h3 class="sectionedit8" id="redirecting_to_the_previous_url">Redirecting To The Previous URL</h3>
+<div class="level3">
+<pre class="code php"><span class="kw1">return</span> redirect<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">back</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw1">return</span> redirect<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">back</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">withInput</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT8 SECTION "Redirecting To The Previous URL" [1111-1242] -->
+<h3 class="sectionedit9" id="returning_a_redirect_to_a_named_route">Returning A Redirect To A Named Route</h3>
+<div class="level3">
+<pre class="code php"><span class="kw1">return</span> redirect<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">route</span><span class="br0">&#40;</span><span class="st_h">'login'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// with parameters</span>
+<span class="co1">// For a route with the following URI: profile/{id}</span>
+<span class="kw1">return</span> redirect<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">route</span><span class="br0">&#40;</span><span class="st_h">'profile'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// For a route with the following URI: profile/{user}</span>
+<span class="kw1">return</span> redirect<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">route</span><span class="br0">&#40;</span><span class="st_h">'profile'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'user'</span> <span class="sy0">=&gt;</span> <span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT9 SECTION "Returning A Redirect To A Named Route" [1243-1567] -->
+<h3 class="sectionedit10" id="returning_a_redirect_to_a_controller_action">Returning A Redirect To A Controller Action</h3>
+<div class="level3">
+<pre class="code php"><span class="kw1">return</span> redirect<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">action</span><span class="br0">&#40;</span><span class="st_h">'App\Http\Controllers\HomeController@index'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// with parameters</span>
+<span class="kw1">return</span> redirect<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">action</span><span class="br0">&#40;</span><span class="st_h">'App\Http\Controllers\UserController@profile'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// with named parameters</span>
+<span class="kw1">return</span> redirect<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">action</span><span class="br0">&#40;</span><span class="st_h">'App\Http\Controllers\UserController@profile'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'user'</span> <span class="sy0">=&gt;</span> <span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT10 SECTION "Returning A Redirect To A Controller Action" [1568-1928] -->
+<h2 class="sectionedit11" id="other_responses">Other Responses</h2>
+<div class="level2">
+
+<p>
+The response helper may be used to conveniently generate other types of response instances. When the response helper is called without arguments, an implementation of the Illuminate\Contracts\Routing\ResponseFactory contract is returned. This contract provides several helpful methods for generating responses.
+</p>
+
+</div>
+<!-- EDIT11 SECTION "Other Responses" [1929-2268] -->
+<h3 class="sectionedit12" id="creating_a_json_response">Creating A JSON Response</h3>
+<div class="level3">
+
+<p>
+The json method will automatically set the Content-Type header to application/json:
+</p>
+<pre class="code php"><span class="kw1">return</span> response<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">json</span><span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'name'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Abigail'</span><span class="sy0">,</span> <span class="st_h">'state'</span> <span class="sy0">=&gt;</span> <span class="st_h">'CA'</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT12 SECTION "Creating A JSON Response" [2269-2472] -->
+<h3 class="sectionedit13" id="creating_a_jsonp_response">Creating A JSONP Response</h3>
+<div class="level3">
+<pre class="code php"><span class="kw1">return</span> response<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">json</span><span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'name'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Abigail'</span><span class="sy0">,</span> <span class="st_h">'state'</span> <span class="sy0">=&gt;</span> <span class="st_h">'CA'</span><span class="br0">&#93;</span><span class="br0">&#41;</span>
+                 <span class="sy0">-&gt;</span><span class="me1">setCallback</span><span class="br0">&#40;</span><span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">input</span><span class="br0">&#40;</span><span class="st_h">'callback'</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT13 SECTION "Creating A JSONP Response" [2473-2654] -->
+<h3 class="sectionedit14" id="creating_a_file_download_response">Creating A File Download Response</h3>
+<div class="level3">
+<pre class="code php"><span class="kw1">return</span> response<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">download</span><span class="br0">&#40;</span><span class="re0">$pathToFile</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw1">return</span> response<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">download</span><span class="br0">&#40;</span><span class="re0">$pathToFile</span><span class="sy0">,</span> <span class="re0">$name</span><span class="sy0">,</span> <span class="re0">$headers</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw1">return</span> response<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">download</span><span class="br0">&#40;</span><span class="re0">$pathToFile</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">deleteFileAfterSend</span><span class="br0">&#40;</span><span class="kw4">true</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT14 SECTION "Creating A File Download Response" [2655-2891] -->
+<h2 class="sectionedit15" id="response_macros">Response Macros</h2>
+<div class="level2">
+
+<p>
+If you would like to define a custom response that you can re-use in a variety of your routes and controllers, you may use the macro method on an implementation of Illuminate\Contracts\Routing\ResponseFactory.
+</p>
+
+<p>
+For example, from a service provider&#039;s boot method:
+</p>
+<pre class="code php"><span class="kw2">&lt;?php</span> <span class="kw2">namespace</span> App\Providers<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> Response<span class="sy0">;</span>
+<span class="kw2">use</span> Illuminate\Support\ServiceProvider<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> ResponseMacroServiceProvider <span class="kw2">extends</span> ServiceProvider <span class="br0">&#123;</span>
+&nbsp;
+    <span class="co4">/**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> boot<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        Response<span class="sy0">::</span><span class="me2">macro</span><span class="br0">&#40;</span><span class="st_h">'caps'</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="re0">$value</span><span class="br0">&#41;</span>
+        <span class="br0">&#123;</span>
+            <span class="kw1">return</span> Response<span class="sy0">::</span><span class="me2">make</span><span class="br0">&#40;</span><a href="http://www.php.net/strtoupper"><span class="kw3">strtoupper</span></a><span class="br0">&#40;</span><span class="re0">$value</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+        <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+<span class="br0">&#125;</span></pre>
+
+<p>
+The macro function accepts a name as its first argument, and a Closure as its second. The macro&#039;s Closure will be executed when calling the macro name from a ResponseFactory implementation or the response helper:
+</p>
+<pre class="code php"><span class="kw1">return</span> response<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">caps</span><span class="br0">&#40;</span><span class="st_h">'foo'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT15 SECTION "Response Macros" [2892-] -->
