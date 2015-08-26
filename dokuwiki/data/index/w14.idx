@@ -7,3 +7,6 @@ authentication
 httpfoundation
 homecontroller
 implementation
+getstudentname
+getstudentinfo
+setpublishdate
