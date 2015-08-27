@@ -1,0 +1,13 @@
+IoC<span class="sy0">::</span><span class="me2">register</span><span class="br0">&#40;</span><span class="st_h">'book'</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#123;</span>
+    <span class="re0">$book</span> <span class="sy0">=</span> <span class="kw2">new</span> Book<span class="sy0">;</span>
+    <span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setTitle</span><span class="br0">&#40;</span><span class="kw2">new</span> Title<span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setAuthor</span><span class="br0">&#40;</span><span class="kw2">new</span> Author<span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setGenre</span><span class="br0">&#40;</span><span class="kw2">new</span> Genre<span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setPublishDate</span><span class="br0">&#40;</span><span class="kw2">new</span> PublishDate<span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setISBN</span><span class="br0">&#40;</span><span class="kw2">new</span> ISBN<span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="kw1">return</span> <span class="re0">$book</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="sy0">...</span>
+&nbsp;
+<span class="re0">$book</span> <span class="sy0">=</span> IoC<span class="sy0">::</span><span class="me2">resolve</span><span class="br0">&#40;</span><span class="st_h">'book'</span><span class="br0">&#41;</span><span class="sy0">;</span>

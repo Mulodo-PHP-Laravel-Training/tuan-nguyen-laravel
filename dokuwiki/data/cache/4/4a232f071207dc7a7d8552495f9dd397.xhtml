@@ -1,0 +1,235 @@
+
+<h1 class="sectionedit1" id="laravel_middleware">Laravel MiddleWare</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT1 SECTION "Laravel MiddleWare" [1-34] -->
+<h3 class="sectionedit2" id="introduction">Introduction</h3>
+<div class="level3">
+
+<p>
+Middleware is a function with access to the request object (req), the response object (res), and the next middleware in the application’s request-response cycle, commonly denoted by a variable named next.
+</p>
+
+<p>
+Middleware can:
+</p>
+<ul>
+<li class="level1"><div class="li">     Execute any code.</div>
+</li>
+<li class="level1"><div class="li">     Make changes to the request and the response objects.</div>
+</li>
+<li class="level1"><div class="li">     End the request-response cycle.</div>
+</li>
+<li class="level1"><div class="li">     Call the next middleware in the stack. </div>
+</li>
+</ul>
+
+<p>
+If the current middleware does not end the request-response cycle, it must call next() to pass control to the next middleware, otherwise the request will be left hanging.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Introduction" [35-632] -->
+<h3 class="sectionedit3" id="defining_middleware">Defining Middleware</h3>
+<div class="level3">
+
+<p>
+To create a new middleware, use the make:middleware Artisan command: 
+</p>
+<pre class="code">php artisan make:middleware OldMiddleware</pre>
+
+<p>
+This command will place a new OldMiddleware class within your app/Http/Middleware directory. In this middleware, we will only allow access to the route if the supplied age is greater than 200. Otherwise, we will redirect the users back to the “home” <abbr title="Uniform Resource Identifier">URI</abbr>. 
+</p>
+<pre class="code php"><span class="kw2">namespace</span> App\Http\Middleware<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> Closure<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> OldMiddleware
+<span class="br0">&#123;</span>
+    <span class="co4">/**
+     * Run the request filter.
+     *
+     * @param    \Illuminate\Http\Request  $request
+     * @param    \Closure  $next
+     * @return  mixed
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> handle<span class="br0">&#40;</span><span class="re0">$request</span><span class="sy0">,</span> Closure <span class="re0">$next</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">if</span> <span class="br0">&#40;</span><span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">input</span><span class="br0">&#40;</span><span class="st_h">'age'</span><span class="br0">&#41;</span> <span class="sy0">&lt;=</span> <span class="nu0">200</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+            <span class="kw1">return</span> redirect<span class="br0">&#40;</span><span class="st_h">'home'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+        <span class="br0">&#125;</span>
+&nbsp;
+        <span class="kw1">return</span> <span class="re0">$next</span><span class="br0">&#40;</span><span class="re0">$request</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT3 SECTION "Defining Middleware" [633-1485] -->
+<h3 class="sectionedit4" id="beforeafter_middleware">Before / After Middleware</h3>
+<div class="level3">
+
+<p>
+Whether a middleware runs before or after a request depends on the middleware itself. For example, the following middleware would perform some task before the request is handled by the application:
+</p>
+<pre class="code php"><span class="kw2">namespace</span> App\Http\Middleware<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> Closure<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> BeforeMiddleware
+<span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> handle<span class="br0">&#40;</span><span class="re0">$request</span><span class="sy0">,</span> Closure <span class="re0">$next</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="co1">// Perform action</span>
+&nbsp;
+        <span class="kw1">return</span> <span class="re0">$next</span><span class="br0">&#40;</span><span class="re0">$request</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+However, this middleware would perform its task after the request is handled by the application: 
+</p>
+<pre class="code php"><span class="kw2">namespace</span> App\Http\Middleware<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> Closure<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> AfterMiddleware
+<span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> handle<span class="br0">&#40;</span><span class="re0">$request</span><span class="sy0">,</span> Closure <span class="re0">$next</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="re0">$response</span> <span class="sy0">=</span> <span class="re0">$next</span><span class="br0">&#40;</span><span class="re0">$request</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+        <span class="co1">// Perform action</span>
+&nbsp;
+        <span class="kw1">return</span> <span class="re0">$response</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "Before / After Middleware" [1486-2282] -->
+<h2 class="sectionedit5" id="registering_middleware">Registering Middleware</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT5 SECTION "Registering Middleware" [2283-2318] -->
+<h3 class="sectionedit6" id="global_middleware">Global Middleware</h3>
+<div class="level3">
+
+<p>
+If you want a middleware to be run during every HTTP request to your application, simply list the middleware class in the $middleware property of your app/Http/Kernel.php class. 
+</p>
+<pre class="code php"><span class="kw2">protected</span> <span class="re0">$middleware</span> <span class="sy0">=</span> <span class="br0">&#91;</span>
+        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+        \App\Http\Middleware\EncryptCookies<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+        \Illuminate\Session\Middleware\StartSession<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+        \Illuminate\View\Middleware\ShareErrorsFromSession<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+        \App\Http\Middleware\VerifyCsrfToken<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+    	<span class="co1">// Tien Nguyen -- adding my middlewares for global using</span>
+    	\App\Http\Middleware\TermMiddleware<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+    <span class="br0">&#93;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT6 SECTION "Global Middleware" [2319-3076] -->
+<h3 class="sectionedit7" id="assigning_middleware_to_routes">Assigning Middleware To Routes</h3>
+<div class="level3">
+
+<p>
+If you would like to assign middleware to specific routes, you should first assign the middleware a short-hand key in your app/Http/Kernel.php file. By default, the $routeMiddleware property of this class contains entries for the middleware included with Laravel. To add your own, simply append it to this list and assign it a key of your choosing. For example: 
+</p>
+<pre class="code php"><span class="kw2">protected</span> <span class="re0">$routeMiddleware</span> <span class="sy0">=</span> <span class="br0">&#91;</span>
+   <span class="st_h">'auth'</span> <span class="sy0">=&gt;</span> \App\Http\Middleware\Authenticate<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+   <span class="st_h">'auth.basic'</span> <span class="sy0">=&gt;</span> \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+   <span class="st_h">'guest'</span> <span class="sy0">=&gt;</span> \App\Http\Middleware\RedirectIfAuthenticated<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+   <span class="co1">// Tien Nguyen -- adding my middlewares for specific routes</span>
+  <span class="st_h">'role'</span> <span class="sy0">=&gt;</span> \App\Http\Middleware\RoleMiddleware<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>
+    <span class="br0">&#93;</span><span class="sy0">;</span></pre>
+
+<p>
+Once the middleware has been defined in the HTTP kernel, you may use the middleware key in the route options array: 
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'admin/profile'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'middleware'</span> <span class="sy0">=&gt;</span> <span class="st_h">'auth'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="co1">// </span>
+<span class="br0">&#125;</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT7 SECTION "Assigning Middleware To Routes" [3077-4079] -->
+<h3 class="sectionedit8" id="middleware_parameters">Middleware Parameters</h3>
+<div class="level3">
+
+<p>
+ Middleware can also receive additional custom parameters. For example, if your application needs to verify that the authenticated user has a given “role” before performing a given action, you could create a RoleMiddleware that receives a role name as an additional argument.
+</p>
+
+<p>
+Additional middleware parameters will be passed to the middleware after the $next argument:
+</p>
+<pre class="code php"><span class="kw2">namespace</span> App\Http\Middleware<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> Closure<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> RoleMiddleware
+<span class="br0">&#123;</span>
+    <span class="co4">/**
+     * Run the request filter.
+     *
+     * @param    \Illuminate\Http\Request  $request
+     * @param    \Closure  $next
+     * @param    string  $role
+     * @return  mixed
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> handle<span class="br0">&#40;</span><span class="re0">$request</span><span class="sy0">,</span> Closure <span class="re0">$next</span><span class="sy0">,</span> <span class="re0">$role</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">if</span> <span class="br0">&#40;</span><span class="sy0">!</span> <span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">user</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">hasRole</span><span class="br0">&#40;</span><span class="re0">$role</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+            <span class="co1">// Redirect...</span>
+        <span class="br0">&#125;</span>
+&nbsp;
+        <span class="kw1">return</span> <span class="re0">$next</span><span class="br0">&#40;</span><span class="re0">$request</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+<span class="br0">&#125;</span></pre>
+
+<p>
+Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a :. Multiple parameters should be delimited by commas:
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">put</span><span class="br0">&#40;</span><span class="st_h">'post/{id}'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'middleware'</span> <span class="sy0">=&gt;</span> <span class="st_h">'role:editor'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="co1">//</span>
+<span class="br0">&#125;</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT8 SECTION "Middleware Parameters" [4080-5235] -->
+<h3 class="sectionedit9" id="terminable_middleware">Terminable Middleware</h3>
+<div class="level3">
+
+<p>
+Sometimes a middleware may need to do some work after the HTTP response has already been sent to the browser. For example, the “session” middleware included with Laravel writes the session data to storage after the response has been sent to the browser. To accomplish this, define the middleware as “terminable” by adding a terminate method to the middleware: 
+</p>
+<pre class="code php"><span class="kw2">namespace</span> Illuminate\Session\Middleware<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> Closure<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> StartSession
+<span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> handle<span class="br0">&#40;</span><span class="re0">$request</span><span class="sy0">,</span> Closure <span class="re0">$next</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="re0">$next</span><span class="br0">&#40;</span><span class="re0">$request</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="kw2">public</span> <span class="kw2">function</span> terminate<span class="br0">&#40;</span><span class="re0">$request</span><span class="sy0">,</span> <span class="re0">$response</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="co1">// Store the session data...</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+The terminate method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of global middlewares in your HTTP kernel.
+</p>
+
+<p>
+When calling the terminate method on your middleware, Laravel will resolve a fresh instance of the middleware from the service container. If you would like to use the same middleware instance when the handle and terminate methods are called, register the middleware with the container using the container&#039;s singleton method.
+</p>
+
+</div>
+<!-- EDIT9 SECTION "Terminable Middleware" [5236-] -->

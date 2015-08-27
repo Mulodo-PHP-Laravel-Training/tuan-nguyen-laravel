@@ -1,0 +1,9 @@
+<span class="kw2">namespace</span> App\Http\Controllers<span class="sy0">;</span>
+<span class="kw2">use</span> App\Repositories\ClientRepository<span class="sy0">;</span>
+<span class="kw2">class</span> ClientsController <span class="kw2">extends</span> BaseController
+<span class="br0">&#123;</span>
+    <span class="kw2">protected</span> <span class="re0">$repository</span><span class="sy0">;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> __construct<span class="br0">&#40;</span>ClientRepository <span class="re0">$repository</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">repository</span> <span class="sy0">=</span> <span class="re0">$repository</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span>

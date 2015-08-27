@@ -1,0 +1,379 @@
+
+<h1 class="sectionedit1" id="dependencies_injection">Dependencies Injection</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT1 SECTION "Dependencies Injection" [1-38] -->
+<h2 class="sectionedit2" id="definition">1.Definition</h2>
+<div class="level2">
+<blockquote><div class="no">
+ Dependency injection is a software design pattern that implements inversion of control for resolving dependencies.</div></blockquote>
+
+<p>
+Dependency injection means giving an object its instance variables. Really. That&#039;s it.
+</p>
+
+<p>
+<em class="u">Note</em>: DI là phương pháp viết code đưa các dependency vào class thông qua constructor hoặc setter, không phải khởi tạo trực tiếp bên trong class.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "1.Definition" [39-443] -->
+<h3 class="sectionedit3" id="uu_diểm_của_dependency_injection">1.1 Ưu điểm của Dependency Injection</h3>
+<div class="level3">
+<ul>
+<li class="level1"><div class="li"> Tách ra các thành phần liên quan</div>
+</li>
+<li class="level1"><div class="li"> Giảm code trong application class, tất cả việc khởi tạo dependency được tạo ra bởi các injector</div>
+</li>
+<li class="level1"><div class="li"> Ứng dụng dễ dàng mở rộng</div>
+</li>
+<li class="level1"><div class="li"> Có thể viết Unit test cho cả ứng dụng</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT3 SECTION "1.1 Ưu điểm của Dependency Injection" [444-754] -->
+<h3 class="sectionedit4" id="nhuợc_diểm">1.2 Nhược điểm</h3>
+<div class="level3">
+<ul>
+<li class="level1"><div class="li"> Khi khởi tạo 1 đối tượng bạn phải biết các dependency nào được sử dụng.</div>
+</li>
+</ul>
+
+<p>
+  …
+</p>
+
+</div>
+<!-- EDIT4 SECTION "1.2 Nhược điểm" [755-894] -->
+<h2 class="sectionedit5" id="usage">2. Usage</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT5 SECTION "2. Usage" [895-916] -->
+<h3 class="sectionedit6" id="example">2.1 Example</h3>
+<div class="level3">
+
+<p>
+Ví dụ khi không dùng DI 
+</p>
+<pre class="code php"><span class="co1">// Example about developer does not use dependency injection</span>
+<span class="kw2">class</span> Person <span class="br0">&#123;</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> __construct<span class="br0">&#40;</span><span class="re0">$fullname</span><span class="sy0">,</span> <span class="re0">$address</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">fullname</span> <span class="sy0">=</span> <span class="re0">$fullname</span><span class="sy0">;</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">address</span> <span class="sy0">=</span> <span class="re0">$address</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> setFullName<span class="br0">&#40;</span><span class="re0">$fullname</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">fullname</span> <span class="sy0">=</span> <span class="re0">$fullname</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> setAddress<span class="br0">&#40;</span><span class="re0">$address</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">address</span> <span class="sy0">=</span> <span class="re0">$address</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> getFullName<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">fullname</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> getAddress<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">address</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw2">class</span> Student <span class="kw2">extends</span> Person <span class="br0">&#123;</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> __construct<span class="br0">&#40;</span><span class="re0">$fullname</span><span class="sy0">,</span> <span class="re0">$address</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">student</span> <span class="sy0">=</span> <span class="kw2">new</span> Person<span class="br0">&#40;</span><span class="re0">$fullname</span><span class="sy0">,</span> <span class="re0">$address</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> getStudentName<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <a href="http://www.php.net/strtoupper"><span class="kw3">strtoupper</span></a><span class="br0">&#40;</span><span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">student</span><span class="sy0">-&gt;</span><span class="me1">fullname</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> getStudentInfo<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <a href="http://www.php.net/strtoupper"><span class="kw3">strtoupper</span></a><span class="br0">&#40;</span><span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">student</span><span class="sy0">-&gt;</span><span class="me1">fullname</span><span class="sy0">.</span><span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">student</span><span class="sy0">-&gt;</span><span class="me1">address</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Vấn đề đặt ra: Khi ta muốn thêm 1 object gender trong class Person ta phải thay đổi 2 class là Person và Student → code maintain không tốt.
+</p>
+
+<p>
+Giải pháp : Sử dụng DI, ta thêm object gender trong class Person, class Student vẫn có thể sử dụng được object gender.
+</p>
+<pre class="code php"><span class="kw2">class</span> Person <span class="br0">&#123;</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> __construct<span class="br0">&#40;</span><span class="re0">$fullname</span><span class="sy0">,</span> <span class="re0">$address</span><span class="sy0">,</span> <span class="re0">$gender</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">fullname</span> <span class="sy0">=</span> <span class="re0">$fullname</span><span class="sy0">;</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">address</span> <span class="sy0">=</span> <span class="re0">$address</span><span class="sy0">;</span>
+                <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">gender</span> <span class="sy0">=</span> <span class="re0">$gender</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> setFullName<span class="br0">&#40;</span><span class="re0">$fullname</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">fullname</span> <span class="sy0">=</span> <span class="re0">$fullname</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> setAddress<span class="br0">&#40;</span><span class="re0">$address</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">address</span> <span class="sy0">=</span> <span class="re0">$address</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> getFullName<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">fullname</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> getAddress<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">address</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw2">class</span> Student <span class="kw2">extends</span> Person <span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> __construct<span class="br0">&#40;</span>Person <span class="re0">$person</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">student</span> <span class="sy0">=</span> <span class="re0">$person</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="kw2">public</span> <span class="kw2">function</span> getStudentName<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <a href="http://www.php.net/strtoupper"><span class="kw3">strtoupper</span></a><span class="br0">&#40;</span><span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">student</span><span class="sy0">-&gt;</span><span class="me1">fullname</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="kw2">public</span> <span class="kw2">function</span> getStudentInfo<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <a href="http://www.php.net/strtoupper"><span class="kw3">strtoupper</span></a><span class="br0">&#40;</span><span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">student</span><span class="sy0">-&gt;</span><span class="me1">fullname</span><span class="sy0">.</span><span class="st_h">'|'</span><span class="sy0">.</span><span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">student</span><span class="sy0">-&gt;</span><span class="me1">address</span><span class="sy0">.</span><span class="st_h">'|'</span><span class="sy0">.</span><span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">student</span><span class="sy0">-&gt;</span><span class="me1">gender</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="co1">//$person = new Person();</span>
+<span class="re0">$student</span> <span class="sy0">=</span> <span class="kw2">new</span> Student<span class="br0">&#40;</span><span class="kw2">new</span> Person<span class="br0">&#40;</span><span class="st_h">'Tuan Nguyen'</span><span class="sy0">,</span> <span class="st_h">'Tan Binh'</span><span class="sy0">,</span> <span class="st_h">'Male'</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw1">echo</span> <span class="re0">$student</span><span class="sy0">-&gt;</span><span class="me1">getStudentInfo</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT6 SECTION "2.1 Example" [917-3082] -->
+<h2 class="sectionedit7" id="three_types_of_dependency_injection">3. Three types of dependency injection</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT7 SECTION "3. Three types of dependency injection" [3083-3134] -->
+<h3 class="sectionedit8" id="constructor_injection">3.1 Constructor injection</h3>
+<div class="level3">
+<pre class="code php"><span class="kw2">class</span> Book <span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> __construct<span class="br0">&#40;</span><span class="re0">$title</span><span class="sy0">,</span> <span class="re0">$author</span><span class="sy0">,</span> <span class="re0">$genre</span><span class="sy0">,</span> <span class="re0">$publishdate</span><span class="sy0">,</span> <span class="re0">$isbn</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">title</span> <span class="sy0">=</span> <span class="re0">$title</span><span class="sy0">;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">author</span> <span class="sy0">=</span> <span class="re0">$author</span><span class="sy0">;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">genre</span> <span class="sy0">=</span> <span class="re0">$genre</span><span class="sy0">;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">publishDate</span> <span class="sy0">=</span> <span class="re0">$publishdate</span><span class="sy0">;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">ISBN</span> <span class="sy0">=</span> <span class="re0">$isbn</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span>
+<span class="re0">$book</span> <span class="sy0">=</span> <span class="kw2">new</span> Book <span class="br0">&#40;</span><span class="kw2">new</span> Title<span class="sy0">,</span> <span class="kw2">new</span> Author<span class="sy0">,</span> <span class="kw2">new</span> Genre<span class="sy0">,</span> <span class="kw2">new</span> PublishDate<span class="sy0">,</span> <span class="kw2">new</span> ISBN<span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Các dependencies trên được tiêm thẳng vào hàm constructor. 
+</p>
+
+</div>
+<!-- EDIT8 SECTION "3.1 Constructor injection" [3135-3617] -->
+<h3 class="sectionedit9" id="setter_injection">3.2 Setter injection</h3>
+<div class="level3">
+<pre class="code php"><span class="kw2">class</span> Book <span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> __construct<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="kw2">public</span> <span class="kw2">function</span> setTitle<span class="br0">&#40;</span><span class="re0">$title</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">title</span> <span class="sy0">=</span> <span class="re0">$title</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+<span class="sy0">...</span>
+<span class="co1">// Here we have 4 more methods : setAuthor ,setGenre, setPublishDate, setISBN</span>
+<span class="br0">&#125;</span>
+<span class="sy0">...</span>
+&nbsp;
+<span class="re0">$book</span> <span class="sy0">=</span> <span class="kw2">new</span> Book<span class="sy0">;</span>
+<span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setTitle</span><span class="br0">&#40;</span><span class="kw2">new</span> Title<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setAuthor</span><span class="br0">&#40;</span><span class="kw2">new</span> Author<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setGenre</span><span class="br0">&#40;</span><span class="kw2">new</span> Genre<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setPublishDate</span><span class="br0">&#40;</span><span class="kw2">new</span> PublishDate<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setISBN</span><span class="br0">&#40;</span><span class="kw2">new</span> ISBN<span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+các denpendencies được đưa vào class thôn qua các hàm setter.
+</p>
+
+<p>
+→ <em class="u">Vấn đề phát sinh</em> : trường hợp có quá nhiều injection thì ta phải viết nhiều hàm setter.
+</p>
+
+<p>
+<em class="u">Phương pháp giải quyết-</em>: chúng ta sẽ đến với design pattern tiếp theo: Inversion of Control (IoC).
+</p>
+
+</div>
+<!-- EDIT9 SECTION "3.2 Setter injection" [3618-4386] -->
+<h3 class="sectionedit10" id="inversion_of_control">3.2.1 Inversion of Control</h3>
+<div class="level3">
+<blockquote><div class="no">
+ In software engineering, inversion of control (IoC) is a programming technique, expressed here in terms of object-oriented programming, in which object coupling is bound at run time by an assembler object and is typically not known at compile time using static analysis.</div></blockquote>
+<blockquote><div class="no">
+ Trong kỹ thuật phần mềm, Inversion of Control (IoC) là kỹ thuật lập trình hướng đối tượng nơi ghép các sự phụ thuộc vào các đối tượng tương ứng, được gọi ra bởi một assembler object và thường không được biết đến tại thời điểm biên dịch.</div></blockquote>
+
+<p>
+Ta tạo 1 class IoC như sau:
+</p>
+<pre class="code php"><span class="kw2">class</span> IoC <span class="br0">&#123;</span>
+   <span class="kw2">protected</span> static <span class="re0">$registry</span> <span class="sy0">=</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+   <span class="co1">// Register</span>
+   <span class="kw2">public</span> static <span class="kw2">function</span> register<span class="br0">&#40;</span><span class="re0">$name</span><span class="sy0">,</span> Closure <span class="re0">$resolve</span><span class="br0">&#41;</span>
+   <span class="br0">&#123;</span>
+      static<span class="sy0">::</span><span class="re0">$registry</span><span class="br0">&#91;</span><span class="re0">$name</span><span class="br0">&#93;</span> <span class="sy0">=</span> <span class="re0">$resolve</span><span class="sy0">;</span>
+   <span class="br0">&#125;</span>
+&nbsp;
+   <span class="co1">// Resolve</span>
+   <span class="kw2">public</span> static <span class="kw2">function</span> resolve<span class="br0">&#40;</span><span class="re0">$name</span><span class="br0">&#41;</span>
+   <span class="br0">&#123;</span>
+      <span class="kw1">if</span> <span class="br0">&#40;</span> static<span class="sy0">::</span><span class="me2">registered</span><span class="br0">&#40;</span><span class="re0">$name</span><span class="br0">&#41;</span> <span class="br0">&#41;</span>
+      <span class="br0">&#123;</span>
+         <span class="re0">$name</span> <span class="sy0">=</span> static<span class="sy0">::</span><span class="re0">$registry</span><span class="br0">&#91;</span><span class="re0">$name</span><span class="br0">&#93;</span><span class="sy0">;</span>
+         <span class="kw1">return</span> <span class="re0">$name</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+      <span class="br0">&#125;</span>
+&nbsp;
+      <span class="kw1">throw</span> <span class="kw2">new</span> Exception<span class="br0">&#40;</span><span class="st_h">'Nothing registered with that name, fool.'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+   <span class="br0">&#125;</span>
+&nbsp;
+   <span class="co1">// Check resigtered or not</span>
+   <span class="kw2">public</span> static <span class="kw2">function</span> registered<span class="br0">&#40;</span><span class="re0">$name</span><span class="br0">&#41;</span>
+   <span class="br0">&#123;</span>
+      <span class="kw1">return</span> <a href="http://www.php.net/array_key_exists"><span class="kw3">array_key_exists</span></a><span class="br0">&#40;</span><span class="re0">$name</span><span class="sy0">,</span> static<span class="sy0">::</span><span class="re0">$registry</span><span class="br0">&#41;</span><span class="sy0">;</span>
+   <span class="br0">&#125;</span>
+&nbsp;
+<span class="br0">&#125;</span></pre>
+
+<p>
+<em class="u">Note</em> : Class Closure là một anonymous function. Bạn có thể xem thêm <a href="http://php.net/manual/en/class.closure.php" class="urlextern" title="http://php.net/manual/en/class.closure.php"  rel="nofollow">ở đây</a>
+</p>
+
+<p>
+Bây giờ ta có thể khởi tạo class Book như sau :
+</p>
+<pre class="code php">IoC<span class="sy0">::</span><span class="me2">register</span><span class="br0">&#40;</span><span class="st_h">'book'</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#123;</span>
+    <span class="re0">$book</span> <span class="sy0">=</span> <span class="kw2">new</span> Book<span class="sy0">;</span>
+    <span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setTitle</span><span class="br0">&#40;</span><span class="kw2">new</span> Title<span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setAuthor</span><span class="br0">&#40;</span><span class="kw2">new</span> Author<span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setGenre</span><span class="br0">&#40;</span><span class="kw2">new</span> Genre<span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setPublishDate</span><span class="br0">&#40;</span><span class="kw2">new</span> PublishDate<span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setISBN</span><span class="br0">&#40;</span><span class="kw2">new</span> ISBN<span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="kw1">return</span> <span class="re0">$book</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="sy0">...</span>
+&nbsp;
+<span class="re0">$book</span> <span class="sy0">=</span> IoC<span class="sy0">::</span><span class="me2">resolve</span><span class="br0">&#40;</span><span class="st_h">'book'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT10 SECTION "3.2.1 Inversion of Control" [4387-6161] -->
+<h3 class="sectionedit11" id="interface_injection">3.3 Interface Injection</h3>
+<div class="level3">
+
+<p>
+Ta dùng interface để set các service được sử dụng trong interface đó.
+</p>
+<pre class="code php"><span class="kw2">interface</span> ServiceSetter <span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> setService<span class="br0">&#40;</span>Service <span class="re0">$service</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw2">class</span> Client implements ServiceSetter <span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> setService<span class="br0">&#40;</span>Service <span class="re0">$service</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">service</span> <span class="sy0">=</span> <span class="re0">$service</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="re0">$client</span> <span class="sy0">=</span> <span class="kw2">new</span> Client<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$client</span><span class="sy0">-&gt;</span><span class="me1">setService</span><span class="br0">&#40;</span><span class="kw2">new</span> Service<span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT11 SECTION "3.3 Interface Injection" [6162-6572] -->
+<h2 class="sectionedit12" id="laravel_dependencies_injection">4. Laravel Dependencies Injection</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT12 SECTION "4. Laravel Dependencies Injection" [6573-6618] -->
+<h3 class="sectionedit13" id="constructor_injection1">4.1 Constructor injection:</h3>
+<div class="level3">
+
+<p>
+Đưa các dependencies vào trong class thông qua hàm construct. 
+</p>
+
+<p>
+Ví dụ: Ta tạo client controller có repository là ClientRepository qua hàm construct. (Một repository là một giao diện tương tác đơn giản giữa 2 đối tượng bất kì).
+</p>
+<pre class="code php"><span class="kw2">namespace</span> App\Http\Controllers<span class="sy0">;</span>
+<span class="kw2">use</span> App\Repositories\ClientRepository<span class="sy0">;</span>
+<span class="kw2">class</span> ClientsController <span class="kw2">extends</span> BaseController
+<span class="br0">&#123;</span>
+    <span class="kw2">protected</span> <span class="re0">$repository</span><span class="sy0">;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> __construct<span class="br0">&#40;</span>ClientRepository <span class="re0">$repository</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">repository</span> <span class="sy0">=</span> <span class="re0">$repository</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT13 SECTION "4.1 Constructor injection:" [6619-7201] -->
+<h3 class="sectionedit14" id="interface_injection1">4.2 Interface injection</h3>
+<div class="level3">
+
+<p>
+Chúng ta có thể tạo 1 interface để mô tả các phương thức mà chúng ta mong đợi có trong interface đó.
+</p>
+<pre class="code php"><span class="kw2">namespace</span> App\Contracts\Repositories<span class="sy0">;</span>
+<span class="kw2">interface</span> ClientRepositoryInterface
+<span class="br0">&#123;</span>
+    <span class="co4">/**
+     * @return \App\Contracts\DataProviders\BaseDataProviderInterface
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> getDataProvider<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="sy0">...</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Ta viết lại class Client Controller sử dụng interface injection:
+</p>
+<pre class="code php"><span class="kw2">namespace</span> App\Http\Controllers<span class="sy0">;</span>
+<span class="kw2">use</span> App\Contracts\Repositories\ClientRepositoryInterface<span class="sy0">;</span>
+<span class="kw2">class</span> ClientsController <span class="kw2">extends</span> BaseController
+<span class="br0">&#123;</span>
+    <span class="kw2">protected</span> <span class="re0">$repository</span><span class="sy0">;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> __construct<span class="br0">&#40;</span>ClientRepositoryInterface <span class="re0">$repository</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">repository</span> <span class="sy0">=</span> <span class="re0">$repository</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Để tránh việc mập mờ khi sử dụng Interface, ta có thể đưa ra các chỉ dẫn thông qua các service providers. Ta tạo class ClientServiceProvider như sau:
+</p>
+<pre class="code php"><span class="kw2">namespace</span> App\ServiceProviders\Resources<span class="sy0">;</span>
+<span class="kw2">use</span> Illuminate\Support\ServiceProvider <span class="kw1">as</span> LaravelServiceProvider<span class="sy0">;</span>
+<span class="kw2">class</span> ClientServiceProvider <span class="kw2">extends</span> LaravelServiceProvider
+<span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> register<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">app</span><span class="sy0">-&gt;</span><span class="me1">bind</span><span class="br0">&#40;</span>
+            <span class="st_h">'App\Contracts\Repositories\ClientRepositoryInterface'</span><span class="sy0">,</span>
+            <span class="st_h">'App\Repositories\ClientRepository'</span>
+        <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Điều này có nghĩa là bất cứ khi nào tôi muốn dùng ClientRepositoryInterface, Laravel sẽ tự động biết rằng tôi muốn dùng ClientRepository.
+</p>
+
+<p>
+Để dùng ClientServiceProvider ta sửa lại ClientsController như sau:
+</p>
+<pre class="code php"><span class="kw2">namespace</span> App\Http\Controllers<span class="sy0">;</span>
+<span class="kw2">use</span> App\ServiceProviders\Resources\ClientServiceProvider<span class="sy0">;</span>
+<span class="kw2">class</span> ClientsController <span class="kw2">extends</span> BaseController
+<span class="br0">&#123;</span>
+    <span class="kw2">protected</span> <span class="re0">$repository</span><span class="sy0">;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> __construct<span class="br0">&#40;</span>ClientServiceProvider <span class="re0">$repository</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">repository</span> <span class="sy0">=</span> <span class="re0">$repository</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT14 SECTION "4.2 Interface injection" [7202-] -->

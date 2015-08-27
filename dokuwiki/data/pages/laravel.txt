@@ -1,1 +1,3 @@
 ====== Laravel 5 Documentation ======
+
+{{indexmenu>..|navbar js}}

@@ -1,0 +1,130 @@
+
+<h1 class="sectionedit1" id="laravel_views">Laravel Views</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT1 SECTION "Laravel Views" [1-29] -->
+<h2 class="sectionedit2" id="basic_usage">Basic Usage</h2>
+<div class="level2">
+
+<p>
+Views contain the <abbr title="HyperText Markup Language">HTML</abbr> served by your application, and serve as a convenient method of separating your controller and domain logic from your presentation logic. Views are stored in the resources/views directory.
+</p>
+
+<p>
+A simple view looks like this:
+</p>
+<pre class="code html4strict"><span class="sc-1">&lt;!-- View stored in resources/views/greeting.php --&gt;</span>
+<span class="sc2">&lt;<a href="http://december.com/html/4/element/html.html"><span class="kw2">html</span></a>&gt;</span>
+    <span class="sc2">&lt;<a href="http://december.com/html/4/element/body.html"><span class="kw2">body</span></a>&gt;</span>
+        <span class="sc2">&lt;<a href="http://december.com/html/4/element/h1.html"><span class="kw2">h1</span></a>&gt;</span>Hello, <span class="sc2">&lt;?php echo $name; ?&gt;&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/h1.html"><span class="kw2">h1</span></a>&gt;</span>
+    <span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/body.html"><span class="kw2">body</span></a>&gt;</span>
+<span class="sc2">&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/html.html"><span class="kw2">html</span></a>&gt;</span></pre>
+
+<p>
+The view may be returned to the browser like so:
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'/'</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="kw1">return</span> view<span class="br0">&#40;</span><span class="st_h">'greeting'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'name'</span> <span class="sy0">=&gt;</span> <span class="st_h">'James'</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Of course, views may also be nested within sub-directories of the resources/views directory. For example, if your view is stored at resources/views/admin/profile.php, it should be returned like so:
+</p>
+<pre class="code php"><span class="kw1">return</span> view<span class="br0">&#40;</span><span class="st_h">'admin.profile'</span><span class="sy0">,</span> <span class="re0">$data</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT2 SECTION "Basic Usage" [30-862] -->
+<h3 class="sectionedit3" id="passing_data_to_views">Passing Data To Views</h3>
+<div class="level3">
+<pre class="code php"><span class="co1">// Using conventional approach</span>
+<span class="re0">$view</span> <span class="sy0">=</span> view<span class="br0">&#40;</span><span class="st_h">'greeting'</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">with</span><span class="br0">&#40;</span><span class="st_h">'name'</span><span class="sy0">,</span> <span class="st_h">'Victoria'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Using Magic Methods</span>
+<span class="re0">$view</span> <span class="sy0">=</span> view<span class="br0">&#40;</span><span class="st_h">'greeting'</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">withName</span><span class="br0">&#40;</span><span class="st_h">'Victoria'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT3 SECTION "Passing Data To Views" [863-1070] -->
+<h3 class="sectionedit4" id="sharing_data_with_all_views">Sharing Data With All Views</h3>
+<div class="level3">
+
+<p>
+Occasionally, you may need to share a piece of data with all views that are rendered by your application. You have several options: the view helper, the Illuminate\Contracts\View\Factory contract, or a wildcard view composer.
+</p>
+<pre class="code php"><span class="co1">// helper</span>
+view<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">share</span><span class="br0">&#40;</span><span class="st_h">'data'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="nu0">1</span><span class="sy0">,</span> <span class="nu0">2</span><span class="sy0">,</span> <span class="nu0">3</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// facade</span>
+View<span class="sy0">::</span><span class="me2">share</span><span class="br0">&#40;</span><span class="st_h">'data'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="nu0">1</span><span class="sy0">,</span> <span class="nu0">2</span><span class="sy0">,</span> <span class="nu0">3</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "Sharing Data With All Views" [1071-1441] -->
+<h3 class="sectionedit5" id="determining_if_a_view_exists">Determining If A View Exists</h3>
+<div class="level3">
+<pre class="code php"><span class="kw1">if</span> <span class="br0">&#40;</span>view<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">exists</span><span class="br0">&#40;</span><span class="st_h">'emails.customer'</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="co1">//</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT5 SECTION "Determining If A View Exists" [1442-1552] -->
+<h3 class="sectionedit6" id="returning_a_view_from_a_file_path">Returning A View From A File Path</h3>
+<div class="level3">
+<pre class="code php"><span class="kw1">return</span> view<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><a href="http://www.php.net/file"><span class="kw3">file</span></a><span class="br0">&#40;</span><span class="re0">$pathToFile</span><span class="sy0">,</span> <span class="re0">$data</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT6 SECTION "Returning A View From A File Path" [1553-1658] -->
+<h2 class="sectionedit7" id="view_composers">View Composers</h2>
+<div class="level2">
+
+<p>
+View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want to be bound to a view each time that view is rendered, a view composer organizes that logic into a single location.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "View Composers" [1659-1920] -->
+<h3 class="sectionedit8" id="defining_a_view_composer">Defining A View Composer</h3>
+<div class="level3">
+
+<p>
+Let&#039;s organize our view composers within a service provider. We&#039;ll use the View facade to access the underlying Illuminate\Contracts\View\Factory contract implementation:
+</p>
+<pre class="code php"><span class="kw2">&lt;?php</span> <span class="kw2">namespace</span> App\Providers<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> View<span class="sy0">;</span>
+<span class="kw2">use</span> Illuminate\Support\ServiceProvider<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> ComposerServiceProvider <span class="kw2">extends</span> ServiceProvider <span class="br0">&#123;</span>
+&nbsp;
+    <span class="co4">/**
+     * Register bindings in the container.
+     *
+     * @return void
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> boot<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="co1">// Using class based composers...</span>
+        View<span class="sy0">::</span><span class="me2">composer</span><span class="br0">&#40;</span><span class="st_h">'profile'</span><span class="sy0">,</span> <span class="st_h">'App\Http\ViewComposers\ProfileComposer'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+        <span class="co1">// Using Closure based composers...</span>
+        View<span class="sy0">::</span><span class="me2">composer</span><span class="br0">&#40;</span><span class="st_h">'dashboard'</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="re0">$view</span><span class="br0">&#41;</span>
+        <span class="br0">&#123;</span>
+&nbsp;
+        <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+     * Register the service provider.
+     *
+     * @return void
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> register<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="co1">//</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT8 SECTION "Defining A View Composer" [1921-] -->

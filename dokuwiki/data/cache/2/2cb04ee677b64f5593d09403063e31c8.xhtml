@@ -1,0 +1,254 @@
+
+<h1 class="sectionedit1" id="laravel_controller">Laravel Controller</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT1 SECTION "Laravel Controller" [1-34] -->
+<h3 class="sectionedit2" id="basic_controllers">Basic Controllers</h3>
+<div class="level3">
+
+<p>
+To create a new controller, use the make:controller Artisan command: 
+</p>
+<pre class="code">php artisan make:controller UserController</pre>
+
+<p>
+Here is an example of a basic controller class. All Laravel controllers should extend the base controller class included with the default Laravel installation:
+</p>
+<pre class="code php"><span class="kw2">namespace</span> App\Http\Controllers<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> Illuminate\Http\Request<span class="sy0">;</span>
+<span class="kw2">use</span> App\Http\Requests<span class="sy0">;</span>
+<span class="kw2">use</span> App\Http\Controllers\Controller<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> UserController <span class="kw2">extends</span> Controller <span class="br0">&#123;</span>
+	<span class="co4">/**
+	 * Show the profile for the given user.
+	 *
+	 * @param  int $id        	
+	 * @return  Response
+	 */</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> showProfile<span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> view<span class="br0">&#40;</span><span class="st_h">'user.profile'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'userid'</span> <span class="sy0">=&gt;</span> <span class="re0">$id</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Define a route to access this controller 
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">get</span> <span class="br0">&#40;</span> <span class="st_h">'user-profile/{id}'</span><span class="sy0">,</span> <span class="br0">&#91;</span> 
+		<span class="st_h">'uses'</span> <span class="sy0">=&gt;</span> <span class="st_h">'UserController@showProfile'</span><span class="sy0">,</span>
+		<span class="st_h">'as'</span> <span class="sy0">=&gt;</span> <span class="st_h">'user-profile-2'</span> 
+<span class="br0">&#93;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT2 SECTION "Basic Controllers" [35-909] -->
+<h3 class="sectionedit3" id="controller_middleware">Controller Middleware</h3>
+<div class="level3">
+
+<p>
+Middleware may be assigned to the controller&#039;s routes like so: 
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'profile'</span><span class="sy0">,</span> <span class="br0">&#91;</span>
+    <span class="st_h">'middleware'</span> <span class="sy0">=&gt;</span> <span class="st_h">'auth'</span><span class="sy0">,</span>
+    <span class="st_h">'uses'</span> <span class="sy0">=&gt;</span> <span class="st_h">'UserController@showProfile'</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+However, it is more convenient to specify middleware within your controller&#039;s constructor. Using the middleware method from your controller&#039;s constructor, you may easily assign middleware to the controller. You may even restrict the middleware to only certain methods on the controller class:
+</p>
+<pre class="code php"><span class="kw2">class</span> UserController <span class="kw2">extends</span> Controller
+<span class="br0">&#123;</span>
+    <span class="co4">/**
+     * Instantiate a new UserController instance.
+     *
+     * @return  void
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> __construct<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">middleware</span><span class="br0">&#40;</span><span class="st_h">'auth'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">middleware</span><span class="br0">&#40;</span><span class="st_h">'log'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'only'</span> <span class="sy0">=&gt;</span> <span class="br0">&#91;</span><span class="st_h">'fooAction'</span><span class="sy0">,</span> <span class="st_h">'barAction'</span><span class="br0">&#93;</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">middleware</span><span class="br0">&#40;</span><span class="st_h">'subscribed'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'except'</span> <span class="sy0">=&gt;</span> <span class="br0">&#91;</span><span class="st_h">'fooAction'</span><span class="sy0">,</span> <span class="st_h">'barAction'</span><span class="br0">&#93;</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT3 SECTION "Controller Middleware" [910-1818] -->
+<h3 class="sectionedit4" id="restful_resource_controllers">RESTful Resource Controllers</h3>
+<div class="level3">
+
+<p>
+Ex : Create a Photo RESTful Resource Controller 
+</p>
+
+<p>
+Add photo route :
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">resource</span><span class="br0">&#40;</span><span class="st_h">'photo'</span><span class="sy0">,</span> <span class="st_h">'PhotoController'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Basic functions in PhotoController file
+</p>
+<pre class="code php"><span class="kw2">namespace</span> App\Http\Controllers<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> Illuminate\Http\Request<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> App\Http\Requests<span class="sy0">;</span>
+<span class="kw2">use</span> App\Http\Controllers\Controller<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> PhotoController <span class="kw2">extends</span> Controller
+<span class="br0">&#123;</span>
+    <span class="co4">/**
+     * Display a listing of the resource.
+     *
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> index<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Photo index function&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+     * Show the form for creating a new resource.
+     *
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> create<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Photo create function&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+     * Store a newly created resource in storage.
+     *
+     * @param    Request  $request
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> store<span class="br0">&#40;</span>Request <span class="re0">$request</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Photo store function&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+     * Display the specified resource.
+     *
+     * @param    int  $id
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> show<span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Photo show function&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+     * Show the form for editing the specified resource.
+     *
+     * @param    int  $id
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> edit<span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Photo edit function&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+     * Update the specified resource in storage.
+     *
+     * @param    Request  $request
+     * @param    int  $id
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> update<span class="br0">&#40;</span>Request <span class="re0">$request</span><span class="sy0">,</span> <span class="re0">$id</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Photo update function&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+     * Remove the specified resource from storage.
+     *
+     * @param    int  $id
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> destroy<span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;Photo destroy function&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "RESTful Resource Controllers" [1819-3679] -->
+<h3 class="sectionedit5" id="implicit_controllers">Implicit Controllers</h3>
+<div class="level3">
+
+<p>
+ Laravel allows you to easily define a single route to handle every action in a controller class. First, define the route using the Route::controller method . The controller method accepts two arguments. The first is the base <abbr title="Uniform Resource Identifier">URI</abbr> the controller handles, while the second is the class name of the controller:
+</p>
+
+<p>
+In routes.php
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">controller</span><span class="br0">&#40;</span><span class="st_h">'users'</span><span class="sy0">,</span> <span class="st_h">'UserController'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+In app/Http/Controllers/UserController.php
+</p>
+<pre class="code php"><span class="kw2">namespace</span> App\Http\Controllers<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> Illuminate\Http\Request<span class="sy0">;</span>
+<span class="kw2">use</span> App\Http\Requests<span class="sy0">;</span>
+<span class="kw2">use</span> App\Http\Controllers\Controller<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> UserController <span class="kw2">extends</span> Controller <span class="br0">&#123;</span>
+	<span class="co4">/**
+	 * Responds to requests to GET /users
+	 */</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> getIndex<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="st0">&quot;getIndex function&quot;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+&nbsp;
+	<span class="co4">/**
+	 * Responds to requests to GET /users/show/1
+	 */</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> getShow<span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="st0">&quot;getShow function&quot;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+&nbsp;
+	<span class="co4">/**
+	 * Responds to requests to Post /users/show/1
+	 */</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> postShow<span class="br0">&#40;</span><span class="re0">$id</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="st0">&quot;getShow function&quot;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+&nbsp;
+	<span class="co4">/**
+	 * Responds to requests to GET /users/admin-profile
+	 */</span>
+	<span class="kw2">public</span> <span class="kw2">function</span> getAdminProfile<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="st0">&quot;getAdminProfile function&quot;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT5 SECTION "Implicit Controllers" [3680-4830] -->
+<h3 class="sectionedit6" id="nested_resources">Nested Resources</h3>
+<div class="level3">
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">resource</span><span class="br0">&#40;</span><span class="st_h">'photos.comments'</span><span class="sy0">,</span> <span class="st_h">'PhotoCommentController'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+This route will register a “nested” resource that may be accessed with URLs like the following: photos/{photos}/comments/{comments}. 
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Nested Resources" [4831-5072] -->
+<h3 class="sectionedit7" id="section">...</h3>
+<div class="level3">
+
+</div>
+<!-- EDIT7 SECTION "..." [5073-5087] -->
+<h3 class="sectionedit8" id="section1">...</h3>
+<div class="level3">
+
+</div>
+<!-- EDIT8 SECTION "..." [5088-] -->

@@ -1,0 +1,12 @@
+<span class="kw2">interface</span> ServiceSetter <span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> setService<span class="br0">&#40;</span>Service <span class="re0">$service</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw2">class</span> Client implements ServiceSetter <span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> setService<span class="br0">&#40;</span>Service <span class="re0">$service</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">service</span> <span class="sy0">=</span> <span class="re0">$service</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="re0">$client</span> <span class="sy0">=</span> <span class="kw2">new</span> Client<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$client</span><span class="sy0">-&gt;</span><span class="me1">setService</span><span class="br0">&#40;</span><span class="kw2">new</span> Service<span class="br0">&#41;</span><span class="sy0">;</span>

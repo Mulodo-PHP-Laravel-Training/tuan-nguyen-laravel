@@ -1,0 +1,28 @@
+<span class="kw2">class</span> IoC <span class="br0">&#123;</span>
+   <span class="kw2">protected</span> static <span class="re0">$registry</span> <span class="sy0">=</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+   <span class="co1">// Register</span>
+   <span class="kw2">public</span> static <span class="kw2">function</span> register<span class="br0">&#40;</span><span class="re0">$name</span><span class="sy0">,</span> Closure <span class="re0">$resolve</span><span class="br0">&#41;</span>
+   <span class="br0">&#123;</span>
+      static<span class="sy0">::</span><span class="re0">$registry</span><span class="br0">&#91;</span><span class="re0">$name</span><span class="br0">&#93;</span> <span class="sy0">=</span> <span class="re0">$resolve</span><span class="sy0">;</span>
+   <span class="br0">&#125;</span>
+&nbsp;
+   <span class="co1">// Resolve</span>
+   <span class="kw2">public</span> static <span class="kw2">function</span> resolve<span class="br0">&#40;</span><span class="re0">$name</span><span class="br0">&#41;</span>
+   <span class="br0">&#123;</span>
+      <span class="kw1">if</span> <span class="br0">&#40;</span> static<span class="sy0">::</span><span class="me2">registered</span><span class="br0">&#40;</span><span class="re0">$name</span><span class="br0">&#41;</span> <span class="br0">&#41;</span>
+      <span class="br0">&#123;</span>
+         <span class="re0">$name</span> <span class="sy0">=</span> static<span class="sy0">::</span><span class="re0">$registry</span><span class="br0">&#91;</span><span class="re0">$name</span><span class="br0">&#93;</span><span class="sy0">;</span>
+         <span class="kw1">return</span> <span class="re0">$name</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+      <span class="br0">&#125;</span>
+&nbsp;
+      <span class="kw1">throw</span> <span class="kw2">new</span> Exception<span class="br0">&#40;</span><span class="st_h">'Nothing registered with that name, fool.'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+   <span class="br0">&#125;</span>
+&nbsp;
+   <span class="co1">// Check resigtered or not</span>
+   <span class="kw2">public</span> static <span class="kw2">function</span> registered<span class="br0">&#40;</span><span class="re0">$name</span><span class="br0">&#41;</span>
+   <span class="br0">&#123;</span>
+      <span class="kw1">return</span> <a href="http://www.php.net/array_key_exists"><span class="kw3">array_key_exists</span></a><span class="br0">&#40;</span><span class="re0">$name</span><span class="sy0">,</span> static<span class="sy0">::</span><span class="re0">$registry</span><span class="br0">&#41;</span><span class="sy0">;</span>
+   <span class="br0">&#125;</span>
+&nbsp;
+<span class="br0">&#125;</span>

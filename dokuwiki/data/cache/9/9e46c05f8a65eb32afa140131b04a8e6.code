@@ -1,0 +1,12 @@
+<span class="kw2">namespace</span> App\ServiceProviders\Resources<span class="sy0">;</span>
+<span class="kw2">use</span> Illuminate\Support\ServiceProvider <span class="kw1">as</span> LaravelServiceProvider<span class="sy0">;</span>
+<span class="kw2">class</span> ClientServiceProvider <span class="kw2">extends</span> LaravelServiceProvider
+<span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> register<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">app</span><span class="sy0">-&gt;</span><span class="me1">bind</span><span class="br0">&#40;</span>
+            <span class="st_h">'App\Contracts\Repositories\ClientRepositoryInterface'</span><span class="sy0">,</span>
+            <span class="st_h">'App\Repositories\ClientRepository'</span>
+        <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span>

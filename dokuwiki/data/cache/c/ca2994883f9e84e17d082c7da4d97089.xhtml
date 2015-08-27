@@ -1,0 +1,188 @@
+
+<h1 class="sectionedit1" id="laravel_request">Laravel Request</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT1 SECTION "Laravel Request" [1-31] -->
+<h3 class="sectionedit2" id="accessing_the_request">Accessing The Request</h3>
+<div class="level3">
+
+<p>
+There are 3 main points that we need to remember when working with request
+</p>
+<ul>
+<li class="level1"><div class="li"> Type-hint the Illuminate\Http\Request in the controllers</div>
+</li>
+<li class="level3"><div class="li">     Type Request as a parameter of function in the controllers</div>
+</li>
+<li class="level3"><div class="li">     Create form with method is post, put, delete in the view</div>
+</li>
+<li class="level3"><div class="li">     Create route to access this </div>
+</li>
+</ul>
+
+<p>
+In app/Http/Controllers/UserController.php
+</p>
+<pre class="code php"><span class="kw2">namespace</span> App\Http\Controllers<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> Illuminate\Http\Request<span class="sy0">;</span>
+<span class="kw2">use</span> Illuminate\Routing\Controller<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> UserController <span class="kw2">extends</span> Controller
+<span class="br0">&#123;</span>
+    <span class="co4">/**
+     * Update the specified user.
+     *
+     * @param    Request  $request
+     * @param    int  $id
+     * @return  Response
+     */</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> update<span class="br0">&#40;</span>Request <span class="re0">$request</span><span class="sy0">,</span> <span class="re0">$id</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st0">&quot;UserId <span class="es4">{$id}</span> is updated successfullly!&quot;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+In routes :
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">put</span><span class="br0">&#40;</span><span class="st_h">'user8/{id}'</span><span class="sy0">,</span> <span class="st_h">'UserController@update'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+Route<span class="sy0">::</span><span class="me2">post</span><span class="br0">&#40;</span><span class="st_h">'user8/{id}'</span><span class="sy0">,</span> <span class="st_h">'UserController@update'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+Route<span class="sy0">::</span><span class="me2">delete</span><span class="br0">&#40;</span><span class="st_h">'user8/{id}'</span><span class="sy0">,</span> <span class="st_h">'UserController@update'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'user8/{id}'</span><span class="sy0">,</span> <span class="st_h">'UserController@update'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT2 SECTION "Accessing The Request" [32-1082] -->
+<h2 class="sectionedit3" id="basic_request_information">Basic Request Information</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT3 SECTION "Basic Request Information" [1083-1121] -->
+<h3 class="sectionedit4" id="retrieving_the_request_uri">Retrieving The Request URI</h3>
+<div class="level3">
+
+<p>
+The path method returns the request&#039;s <abbr title="Uniform Resource Identifier">URI</abbr>. So, if the incoming request is targeted at <a href="http://domain.com/foo/bar" class="urlextern" title="http://domain.com/foo/bar"  rel="nofollow">http://domain.com/foo/bar</a>, the path method will return foo/bar:
+</p>
+<pre class="code php"><span class="co1">// function in UserController.php</span>
+<span class="kw2">public</span> <span class="kw2">function</span> getRequestPath<span class="br0">&#40;</span>Request <span class="re0">$request</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+	<span class="re0">$uri</span> <span class="sy0">=</span> <span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">path</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="kw1">return</span> <span class="st0">&quot;Request path is <span class="es4">{$uri}</span>&quot;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+To get the full <abbr title="Uniform Resource Locator">URL</abbr>, not just the path info, you may use the url method on the request instance:
+</p>
+<pre class="code php"><span class="co1">// function in UserController.php</span>
+<span class="kw2">public</span> <span class="kw2">function</span> getRequestFullPath<span class="br0">&#40;</span>Request <span class="re0">$request</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+	<span class="re0">$uri</span> <span class="sy0">=</span> <span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">url</span> <span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="kw1">return</span> <span class="st0">&quot;Request full path is <span class="es4">{$uri}</span>&quot;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+The is method allows you to verify that the incoming request <abbr title="Uniform Resource Identifier">URI</abbr> matches a given pattern. You may use the * character as a wildcard when utilizing this method: 
+</p>
+<pre class="code php"><span class="co1">// function in UserController.php</span>
+<span class="kw2">public</span> <span class="kw2">function</span> getRequestMatch<span class="br0">&#40;</span>Request <span class="re0">$request</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+	<span class="kw1">if</span> <span class="br0">&#40;</span><span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">is</span> <span class="br0">&#40;</span> <span class="st_h">'user10/*'</span> <span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="st0">&quot;Request path match with user10&quot;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span> <span class="kw1">else</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="st0">&quot;Request path does not match with user10&quot;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "Retrieving The Request URI" [1122-2163] -->
+<h3 class="sectionedit5" id="retrieving_the_request_method">Retrieving The Request Method</h3>
+<div class="level3">
+
+<p>
+The method method will return the HTTP verb for the request. You may also use the isMethod method to verify that the HTTP verb matches a given string:
+</p>
+<pre class="code php"><span class="kw2">public</span> <span class="kw2">function</span> checkMethod<span class="br0">&#40;</span>Request <span class="re0">$request</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+	<span class="re0">$method</span> <span class="sy0">=</span> <span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">method</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="kw1">if</span> <span class="br0">&#40;</span><span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">isMethod</span><span class="br0">&#40;</span><span class="st_h">'post'</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="st0">&quot;This is Post method.&quot;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">else</span> <span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="st0">&quot;<span class="es4">{$method}</span> method ...&quot;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT5 SECTION "Retrieving The Request Method" [2164-2573] -->
+<h2 class="sectionedit6" id="retrieving_input">Retrieving Input</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT6 SECTION "Retrieving Input" [2574-2603] -->
+<h3 class="sectionedit7" id="retrieving_all_input_data">Retrieving All Input Data</h3>
+<div class="level3">
+
+<p>
+You may also retrieve all of the input data as an array using the all method: 
+</p>
+<pre class="code php"><span class="re0">$input</span> <span class="sy0">=</span> <span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">all</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT7 SECTION "Retrieving All Input Data" [2604-2768] -->
+<h3 class="sectionedit8" id="retrieving_an_input_value">Retrieving An Input Value</h3>
+<div class="level3">
+
+<p>
+Using a few simple methods, you may access all user input from your Illuminate\Http\Request instance. 
+</p>
+<pre class="code php"><span class="re0">$name</span> <span class="sy0">=</span> <span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">input</span><span class="br0">&#40;</span><span class="st_h">'name'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT8 SECTION "Retrieving An Input Value" [2769-2962] -->
+<h3 class="sectionedit9" id="determining_if_an_input_value_is_present">Determining If An Input Value Is Present</h3>
+<div class="level3">
+
+<p>
+To determine if a value is present on the request, you may use the has method. The has method returns true if the value is present and is not an empty string
+</p>
+<pre class="code php"><span class="co1">// In UserController.php</span>
+<span class="kw2">public</span> <span class="kw2">function</span> retriveInputs<span class="br0">&#40;</span>Request <span class="re0">$request</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+	<span class="kw1">if</span> <span class="br0">&#40;</span><span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">has</span><span class="br0">&#40;</span><span class="st_h">'email'</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+		<span class="kw1">echo</span> <span class="st0">&quot;Name is {<span class="es4">$request-&gt;input</span>('email')}&quot;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT9 SECTION "Determining If An Input Value Is Present" [2963-3350] -->
+<h3 class="sectionedit10" id="retrieving_a_portion_of_the_input_data">Retrieving A Portion Of The Input Data</h3>
+<div class="level3">
+
+<p>
+If you need to retrieve a sub-set of the input data, you may use the only and except methods. Both of these methods accept a single array as their only argument:
+</p>
+<pre class="code php"><span class="re0">$input</span> <span class="sy0">=</span> <span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">only</span><span class="br0">&#40;</span><span class="st_h">'username'</span><span class="sy0">,</span> <span class="st_h">'password'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$input</span> <span class="sy0">=</span> <span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">except</span><span class="br0">&#40;</span><span class="st_h">'credit_card'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT10 SECTION "Retrieving A Portion Of The Input Data" [3351-3674] -->
+<h3 class="sectionedit11" id="flashing_input_to_the_session">Flashing Input To The Session</h3>
+<div class="level3">
+<pre class="code php"><span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">flash</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT11 SECTION "Flashing Input To The Session" [3675-3755] -->
+<h3 class="sectionedit12" id="retrieving_old_data">Retrieving Old Data</h3>
+<div class="level3">
+<pre class="code php"><span class="re0">$username</span> <span class="sy0">=</span> <span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">old</span><span class="br0">&#40;</span><span class="st_h">'username'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT12 SECTION "Retrieving Old Data" [3756-3846] -->
+<h3 class="sectionedit13" id="retrieving_cookies_from_the_request">Retrieving Cookies From The Request</h3>
+<div class="level3">
+
+<p>
+All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, you may use the cookie method on the Illuminate\Http\Request instance .
+</p>
+<pre class="code php"><span class="re0">$value</span> <span class="sy0">=</span> <span class="re0">$request</span><span class="sy0">-&gt;</span><span class="me1">cookie</span><span class="br0">&#40;</span><span class="st_h">'name'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT13 SECTION "Retrieving Cookies From The Request" [3847-] -->

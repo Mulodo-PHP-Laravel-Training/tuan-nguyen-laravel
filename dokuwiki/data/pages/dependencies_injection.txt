@@ -1,0 +1,303 @@
+====== Dependencies Injection ======
+
+===== 1.Definition =====
+> Dependency injection is a software design pattern that implements inversion of control for resolving dependencies.
+Dependency injection means giving an object its instance variables. Really. That's it.
+
+__Note__: DI là phương pháp viết code đưa các dependency vào class thông qua constructor hoặc setter, không phải khởi tạo trực tiếp bên trong class.
+
+==== 1.1 Ưu điểm của Dependency Injection ====
+  * Tách ra các thành phần liên quan
+  * Giảm code trong application class, tất cả việc khởi tạo dependency được tạo ra bởi các injector
+  * Ứng dụng dễ dàng mở rộng
+  * Có thể viết Unit test cho cả ứng dụng
+
+==== 1.2 Nhược điểm ====
+  * Khi khởi tạo 1 đối tượng bạn phải biết các dependency nào được sử dụng.
+  ...
+
+===== 2. Usage =====
+
+==== 2.1 Example ====
+
+Ví dụ khi không dùng DI 
+<code php>
+// Example about developer does not use dependency injection
+class Person {
+	public function __construct($fullname, $address) {
+		$this->fullname = $fullname;
+		$this->address = $address;
+	}
+	public function setFullName($fullname) {
+		$this->fullname = $fullname;
+	}
+	public function setAddress($address) {
+		$this->address = $address;
+	}
+	public function getFullName() {
+		return $this->fullname;
+	}
+	public function getAddress() {
+		return $this->address;
+	}
+}
+
+class Student extends Person {
+	public function __construct($fullname, $address) {
+		$this->student = new Person($fullname, $address);
+	}
+	public function getStudentName() {
+		return strtoupper($this->student->fullname);
+	}
+	public function getStudentInfo() {
+		return strtoupper($this->student->fullname.$this->student->address);
+	}
+}
+</code>
+
+Vấn đề đặt ra: Khi ta muốn thêm 1 object gender trong class Person ta phải thay đổi 2 class là Person và Student -> code maintain không tốt.
+
+Giải pháp : Sử dụng DI, ta thêm object gender trong class Person, class Student vẫn có thể sử dụng được object gender.
+
+<code php>
+class Person {
+	public function __construct($fullname, $address, $gender) {
+		$this->fullname = $fullname;
+		$this->address = $address;
+                $this->gender = $gender;
+	}
+	public function setFullName($fullname) {
+		$this->fullname = $fullname;
+	}
+	public function setAddress($address) {
+		$this->address = $address;
+	}
+	public function getFullName() {
+		return $this->fullname;
+	}
+	public function getAddress() {
+		return $this->address;
+	}
+}
+
+class Student extends Person {
+    public function __construct(Person $person) {
+        $this->student = $person;
+    }
+    
+    public function getStudentName() {
+        return strtoupper($this->student->fullname);
+    }
+    
+    public function getStudentInfo() {
+        return strtoupper($this->student->fullname.'|'.$this->student->address.'|'.$this->student->gender);
+    }
+}
+
+//$person = new Person();
+$student = new Student(new Person('Tuan Nguyen', 'Tan Binh', 'Male'));
+
+echo $student->getStudentInfo();
+</code>
+
+===== 3. Three types of dependency injection =====
+
+==== 3.1 Constructor injection ====
+<code php>
+class Book ()
+{
+    public function __construct($title, $author, $genre, $publishdate, $isbn)
+    {
+        $this->title = $title;
+        $this->author = $author;
+        $this->genre = $genre;
+        $this->publishDate = $publishdate;
+        $this->ISBN = $isbn;
+    }
+}
+$book = new Book (new Title, new Author, new Genre, new PublishDate, new ISBN);
+</code>
+
+Các dependencies trên được tiêm thẳng vào hàm constructor. 
+
+==== 3.2 Setter injection ====
+
+<code php>
+class Book ()
+{
+    public function __construct()
+    {
+    }
+
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+...
+// Here we have 4 more methods : setAuthor ,setGenre, setPublishDate, setISBN
+}
+...
+
+$book = new Book;
+$book->setTitle(new Title);
+$book->setAuthor(new Author);
+$book->setGenre(new Genre);
+$book->setPublishDate(new PublishDate);
+$book->setISBN(new ISBN);
+</code>
+
+các denpendencies được đưa vào class thôn qua các hàm setter.
+
+-> __Vấn đề phát sinh__ : trường hợp có quá nhiều injection thì ta phải viết nhiều hàm setter.
+
+__Phương pháp giải quyết-__: chúng ta sẽ đến với design pattern tiếp theo: Inversion of Control (IoC).
+
+==== 3.2.1 Inversion of Control ====
+
+> In software engineering, inversion of control (IoC) is a programming technique, expressed here in terms of object-oriented programming, in which object coupling is bound at run time by an assembler object and is typically not known at compile time using static analysis.
+
+> Trong kỹ thuật phần mềm, Inversion of Control (IoC) là kỹ thuật lập trình hướng đối tượng nơi ghép các sự phụ thuộc vào các đối tượng tương ứng, được gọi ra bởi một assembler object và thường không được biết đến tại thời điểm biên dịch.
+
+Ta tạo 1 class IoC như sau:
+<code php>
+class IoC {
+   protected static $registry = array();
+
+   // Register
+   public static function register($name, Closure $resolve)
+   {
+      static::$registry[$name] = $resolve;
+   }
+
+   // Resolve
+   public static function resolve($name)
+   {
+      if ( static::registered($name) )
+      {
+         $name = static::$registry[$name];
+         return $name();
+      }
+
+      throw new Exception('Nothing registered with that name, fool.');
+   }
+
+   // Check resigtered or not
+   public static function registered($name)
+   {
+      return array_key_exists($name, static::$registry);
+   }
+
+}
+</code>
+__Note__ : Class Closure là một anonymous function. Bạn có thể xem thêm [[http://php.net/manual/en/class.closure.php|ở đây]]
+
+Bây giờ ta có thể khởi tạo class Book như sau :
+
+<code php>
+IoC::register('book', function(){
+    $book = new Book;
+    $book->setTitle(new Title);
+    $book->setAuthor(new Author);
+    $book->setGenre(new Genre);
+    $book->setPublishDate(new PublishDate);
+    $book->setISBN(new ISBN);
+
+    return $book;
+});
+...
+
+$book = IoC::resolve('book');
+</code>
+
+==== 3.3 Interface Injection ====
+Ta dùng interface để set các service được sử dụng trong interface đó.
+<code php>
+interface ServiceSetter {
+    public function setService(Service $service);
+}
+
+class Client implements ServiceSetter {
+    public function setService(Service $service) {
+        $this->service = $service;
+    }
+}
+
+$client = new Client();
+$client->setService(new Service);
+</code>
+
+===== 4. Laravel Dependencies Injection =====
+==== 4.1 Constructor injection: ====
+Đưa các dependencies vào trong class thông qua hàm construct. 
+
+Ví dụ: Ta tạo client controller có repository là ClientRepository qua hàm construct. (Một repository là một giao diện tương tác đơn giản giữa 2 đối tượng bất kì).
+<code php>
+namespace App\Http\Controllers;
+use App\Repositories\ClientRepository;
+class ClientsController extends BaseController
+{
+    protected $repository;
+    public function __construct(ClientRepository $repository) {
+        $this->repository = $repository;
+    }
+}
+</code>
+
+==== 4.2 Interface injection ====
+Chúng ta có thể tạo 1 interface để mô tả các phương thức mà chúng ta mong đợi có trong interface đó.
+<code php>
+namespace App\Contracts\Repositories;
+interface ClientRepositoryInterface
+{
+    /**
+     * @return \App\Contracts\DataProviders\BaseDataProviderInterface
+     */
+    public function getDataProvider();
+    ...
+}
+</code>
+
+Ta viết lại class Client Controller sử dụng interface injection:
+<code php>
+namespace App\Http\Controllers;
+use App\Contracts\Repositories\ClientRepositoryInterface;
+class ClientsController extends BaseController
+{
+    protected $repository;
+    public function __construct(ClientRepositoryInterface $repository) {
+        $this->repository = $repository;
+    }
+}
+</code>
+
+Để tránh việc mập mờ khi sử dụng Interface, ta có thể đưa ra các chỉ dẫn thông qua các service providers. Ta tạo class ClientServiceProvider như sau:
+<code php>
+namespace App\ServiceProviders\Resources;
+use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
+class ClientServiceProvider extends LaravelServiceProvider
+{
+    public function register()
+    {
+        $this->app->bind(
+            'App\Contracts\Repositories\ClientRepositoryInterface',
+            'App\Repositories\ClientRepository'
+        );
+    }
+}
+</code>
+
+Điều này có nghĩa là bất cứ khi nào tôi muốn dùng ClientRepositoryInterface, Laravel sẽ tự động biết rằng tôi muốn dùng ClientRepository.
+
+Để dùng ClientServiceProvider ta sửa lại ClientsController như sau:
+<code php>
+namespace App\Http\Controllers;
+use App\ServiceProviders\Resources\ClientServiceProvider;
+class ClientsController extends BaseController
+{
+    protected $repository;
+    public function __construct(ClientServiceProvider $repository) {
+        $this->repository = $repository;
+    }
+}
+</code>

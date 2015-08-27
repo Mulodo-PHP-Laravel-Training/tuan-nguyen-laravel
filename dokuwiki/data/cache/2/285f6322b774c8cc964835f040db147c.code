@@ -1,0 +1,22 @@
+<span class="kw2">class</span> Book <span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> __construct<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="kw2">public</span> <span class="kw2">function</span> setTitle<span class="br0">&#40;</span><span class="re0">$title</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">title</span> <span class="sy0">=</span> <span class="re0">$title</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+<span class="sy0">...</span>
+<span class="co1">// Here we have 4 more methods : setAuthor ,setGenre, setPublishDate, setISBN</span>
+<span class="br0">&#125;</span>
+<span class="sy0">...</span>
+&nbsp;
+<span class="re0">$book</span> <span class="sy0">=</span> <span class="kw2">new</span> Book<span class="sy0">;</span>
+<span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setTitle</span><span class="br0">&#40;</span><span class="kw2">new</span> Title<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setAuthor</span><span class="br0">&#40;</span><span class="kw2">new</span> Author<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setGenre</span><span class="br0">&#40;</span><span class="kw2">new</span> Genre<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setPublishDate</span><span class="br0">&#40;</span><span class="kw2">new</span> PublishDate<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$book</span><span class="sy0">-&gt;</span><span class="me1">setISBN</span><span class="br0">&#40;</span><span class="kw2">new</span> ISBN<span class="br0">&#41;</span><span class="sy0">;</span>
