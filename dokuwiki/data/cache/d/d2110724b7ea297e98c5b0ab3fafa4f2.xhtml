@@ -1,0 +1,812 @@
+
+<h1 class="sectionedit1" id="laravel_testing">Laravel Testing</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT1 SECTION "Laravel Testing" [1-31] -->
+<h1 class="sectionedit2" id="unit_test">1. Unit Test</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT2 SECTION "1. Unit Test" [32-59] -->
+<h2 class="sectionedit3" id="giới_thiệu">1.1 Giới thiệu</h2>
+<div class="level2">
+
+<p>
+Laravel được tích hợp sẵn PHPUnit. Sau khi cài xong Laravel bạn có thể chạy câu lệnh sau để test.
+</p>
+<pre class="code">$ phpunit</pre>
+
+<p>
+<a href="/lib/exe/detail.php?id=testing&amp;media=php:laravel:capture_2015_08_27_13_38_38_794.png" class="media wikilink2" title="php:laravel:capture_2015_08_27_13_38_38_794.png"><img src="/lib/exe/fetch.php?media=php:laravel:capture_2015_08_27_13_38_38_794.png" class="media" alt="" /></a>
+</p>
+
+</div>
+<!-- EDIT3 SECTION "1.1 Giới thiệu" [60-293] -->
+<h2 class="sectionedit4" id="dịnh_nghia_chạy_test">1.2 Định nghĩa &amp; chạy Test</h2>
+<div class="level2">
+
+<p>
+Các file test được đặt trong thư mục /tests, và thường được extend từ class TestCase. Ví dụ:
+</p>
+<pre class="code php"><span class="kw2">class</span> FooTest <span class="kw2">extends</span> TestCase <span class="br0">&#123;</span>
+&nbsp;
+    <span class="kw2">public</span> <span class="kw2">function</span> testSomethingIsTrue<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertTrue</span><span class="br0">&#40;</span><span class="kw4">true</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "1.2 Định nghĩa & chạy Test" [294-601] -->
+<h2 class="sectionedit5" id="moi_truờng_test">1.3 Môi trường test</h2>
+<div class="level2">
+
+<p>
+Khi chạy Unit Test, Laravel sẽ tự động cấu hình môi trường là testing.
+Cấu hình môi trường test được đặt trong file phpunit.xml
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=testing&amp;codeblock=2" title="Download Snippet" class="mediafile mf_xml">phpunit.xml</a></dt>
+<dd><pre class="code file xml"><span class="sc3"><span class="re1">&lt;?xml</span> <span class="re0">version</span>=<span class="st0">&quot;1.0&quot;</span> <span class="re0">encoding</span>=<span class="st0">&quot;UTF-8&quot;</span><span class="re2">?&gt;</span></span>
+<span class="sc3"><span class="re1">&lt;phpunit</span> <span class="re0">backupGlobals</span>=<span class="st0">&quot;false&quot;</span></span>
+<span class="sc3">         <span class="re0">backupStaticAttributes</span>=<span class="st0">&quot;false&quot;</span></span>
+<span class="sc3">         <span class="re0">bootstrap</span>=<span class="st0">&quot;bootstrap/autoload.php&quot;</span></span>
+<span class="sc3">         <span class="re0">colors</span>=<span class="st0">&quot;true&quot;</span></span>
+<span class="sc3">         <span class="re0">convertErrorsToExceptions</span>=<span class="st0">&quot;true&quot;</span></span>
+<span class="sc3">         <span class="re0">convertNoticesToExceptions</span>=<span class="st0">&quot;true&quot;</span></span>
+<span class="sc3">         <span class="re0">convertWarningsToExceptions</span>=<span class="st0">&quot;true&quot;</span></span>
+<span class="sc3">         <span class="re0">processIsolation</span>=<span class="st0">&quot;false&quot;</span></span>
+<span class="sc3">         <span class="re0">stopOnFailure</span>=<span class="st0">&quot;false&quot;</span></span>
+<span class="sc3">         <span class="re0">syntaxCheck</span>=<span class="st0">&quot;false&quot;</span><span class="re2">&gt;</span></span>
+    <span class="sc3"><span class="re1">&lt;testsuites<span class="re2">&gt;</span></span></span>
+        <span class="sc3"><span class="re1">&lt;testsuite</span> <span class="re0">name</span>=<span class="st0">&quot;Application Test Suite&quot;</span><span class="re2">&gt;</span></span>
+            <span class="sc3"><span class="re1">&lt;directory<span class="re2">&gt;</span></span></span>./tests/<span class="sc3"><span class="re1">&lt;/directory<span class="re2">&gt;</span></span></span>
+        <span class="sc3"><span class="re1">&lt;/testsuite<span class="re2">&gt;</span></span></span>
+    <span class="sc3"><span class="re1">&lt;/testsuites<span class="re2">&gt;</span></span></span>
+    <span class="sc3"><span class="re1">&lt;filter<span class="re2">&gt;</span></span></span>
+        <span class="sc3"><span class="re1">&lt;whitelist<span class="re2">&gt;</span></span></span>
+            <span class="sc3"><span class="re1">&lt;directory</span> <span class="re0">suffix</span>=<span class="st0">&quot;.php&quot;</span><span class="re2">&gt;</span></span>app/<span class="sc3"><span class="re1">&lt;/directory<span class="re2">&gt;</span></span></span>
+        <span class="sc3"><span class="re1">&lt;/whitelist<span class="re2">&gt;</span></span></span>
+    <span class="sc3"><span class="re1">&lt;/filter<span class="re2">&gt;</span></span></span>
+    <span class="sc3"><span class="re1">&lt;php<span class="re2">&gt;</span></span></span>
+        <span class="sc3"><span class="re1">&lt;env</span> <span class="re0">name</span>=<span class="st0">&quot;APP_ENV&quot;</span> <span class="re0">value</span>=<span class="st0">&quot;testing&quot;</span><span class="re2">/&gt;</span></span>
+        <span class="sc3"><span class="re1">&lt;env</span> <span class="re0">name</span>=<span class="st0">&quot;CACHE_DRIVER&quot;</span> <span class="re0">value</span>=<span class="st0">&quot;array&quot;</span><span class="re2">/&gt;</span></span>
+        <span class="sc3"><span class="re1">&lt;env</span> <span class="re0">name</span>=<span class="st0">&quot;SESSION_DRIVER&quot;</span> <span class="re0">value</span>=<span class="st0">&quot;array&quot;</span><span class="re2">/&gt;</span></span>
+        <span class="sc3"><span class="re1">&lt;env</span> <span class="re0">name</span>=<span class="st0">&quot;QUEUE_DRIVER&quot;</span> <span class="re0">value</span>=<span class="st0">&quot;sync&quot;</span><span class="re2">/&gt;</span></span>
+    <span class="sc3"><span class="re1">&lt;/php<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;/phpunit<span class="re2">&gt;</span></span></span></pre>
+</dd></dl>
+
+</div>
+<!-- EDIT5 SECTION "1.3 Môi trường test" [602-1728] -->
+<h2 class="sectionedit6" id="gọi_cac_thanh_phần_trong_test_class">1.4 Gọi các thành phần trong test class</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT6 SECTION "1.4 Gọi các thành phần trong test class" [1729-1786] -->
+<h3 class="sectionedit7" id="gọi_route">1.4.1 Gọi route</h3>
+<div class="level3">
+
+<p>
+Ta có thể gọi 1 route từ class Test bằng phương thức call.
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=testing&amp;codeblock=3" title="Download Snippet" class="mediafile mf_php">ExampleTest.php</a></dt>
+<dd><pre class="code file php"><span class="co1">// Full feature</span>
+<span class="re0">$response1</span> <span class="sy0">=</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">call</span><span class="br0">&#40;</span><span class="re0">$method</span><span class="sy0">,</span> <span class="re0">$uri</span><span class="sy0">,</span> <span class="re0">$parameters</span><span class="sy0">,</span> <span class="re0">$cookies</span><span class="sy0">,</span> <span class="re0">$files</span><span class="sy0">,</span> <span class="re0">$server</span><span class="sy0">,</span> <span class="re0">$content</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Gọi https</span>
+<span class="re0">$response2</span> <span class="sy0">=</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">callSecure</span><span class="br0">&#40;</span><span class="st_h">'GET'</span><span class="sy0">,</span> <span class="st_h">'foo/bar'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Gọi phương thức GET với địa chỉ là testRouting</span>
+<span class="re0">$response</span> <span class="sy0">=</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">call</span><span class="br0">&#40;</span><span class="st_h">'GET'</span><span class="sy0">,</span> <span class="st_h">'testRouting'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+&nbsp;
+&nbsp;
+<span class="co1">// VD: Kiểm tra link testRouting có nội dung Hello World hay không ?</span>
+<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertEquals</span><span class="br0">&#40;</span><span class="st_h">'Hello World'</span><span class="sy0">,</span> <span class="re0">$response</span><span class="sy0">-&gt;</span><span class="me1">getContent</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+</dd></dl>
+
+<p>
+Trong file routes.php thêm 1 routing testRouting:
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=testing&amp;codeblock=4" title="Download Snippet" class="mediafile mf_php">routes.php</a></dt>
+<dd><pre class="code file php">Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'testRouting'</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="st_h">'Hello World'</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+</dd></dl>
+
+</div>
+<!-- EDIT7 SECTION "1.4.1 Gọi route" [1787-2499] -->
+<h3 class="sectionedit8" id="gọi_controller">1.4.2 Gọi Controller</h3>
+<div class="level3">
+
+<p>
+Ta có thể gọi 1 action trong controller với phương thức và các tham số.
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=testing&amp;codeblock=5" title="Download Snippet" class="mediafile mf_php">ExampleTest.php</a></dt>
+<dd><pre class="code file php"><span class="kw2">public</span> <span class="kw2">function</span> testController<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="re0">$response1</span> <span class="sy0">=</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">action</span><span class="br0">&#40;</span><span class="st_h">'GET'</span><span class="sy0">,</span> <span class="st_h">'HomeController@index'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$response2</span> <span class="sy0">=</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">action</span><span class="br0">&#40;</span><span class="st_h">'GET'</span><span class="sy0">,</span> <span class="st_h">'UserController@profile'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'user'</span> <span class="sy0">=&gt;</span> <span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="co1">// Kiểm tra giá trị View trả về</span>
+    <span class="co1">// $view = $response-&gt;original;</span>
+    <span class="co1">// $this-&gt;assertEquals('John', $view['name']);</span>
+&nbsp;
+&nbsp;
+    <span class="co1">// VD: kiểm tra action test trong controller test có trả về giá trị OK hay ko ?</span>
+    <span class="re0">$response</span> <span class="sy0">=</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">action</span><span class="br0">&#40;</span><span class="st_h">'GET'</span><span class="sy0">,</span> <span class="st_h">'TestController@index'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertEquals</span><span class="br0">&#40;</span><span class="st_h">'index'</span><span class="sy0">,</span> <span class="re0">$response</span><span class="sy0">-&gt;</span><span class="me1">getContent</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span>    </pre>
+</dd></dl>
+
+<p>
+Để kết quả test trả về đúng ta sửa action index trong file TestController.php như sau:
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=testing&amp;codeblock=6" title="Download Snippet" class="mediafile mf_php">TestController.php</a></dt>
+<dd><pre class="code file php"><span class="kw2">public</span> <span class="kw2">function</span> index<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> <span class="st_h">'index'</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span></pre>
+</dd></dl>
+
+</div>
+<!-- EDIT8 SECTION "1.4.2 Gọi Controller" [2500-3397] -->
+<h3 class="sectionedit9" id="mocking_facades">1.4.3 Mocking Facades</h3>
+<div class="level3">
+
+</div>
+<!-- EDIT9 SECTION "1.4.3 Mocking Facades" [3398-3434] -->
+<h3 class="sectionedit10" id="framework_assertions">1.4.4 Framework Assertions</h3>
+<div class="level3">
+
+</div>
+<!-- EDIT10 SECTION "1.4.4 Framework Assertions" [3435-3472] -->
+<h3 class="sectionedit11" id="assertresponseok">assertResponseOk</h3>
+<div class="level3">
+
+<p>
+Asserting Responses Are OK
+</p>
+<pre class="code php"><span class="kw2">public</span> <span class="kw2">function</span> testMethod<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">call</span><span class="br0">&#40;</span><span class="st_h">'GET'</span><span class="sy0">,</span> <span class="st_h">'/'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertResponseOk</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT11 SECTION "assertResponseOk" [3473-3640] -->
+<h3 class="sectionedit12" id="assertresponsestatus">assertResponseStatus</h3>
+<div class="level3">
+
+<p>
+Asserting Response Statuses
+</p>
+<pre class="code php"><span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertResponseStatus</span><span class="br0">&#40;</span><span class="nu0">403</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT12 SECTION "assertResponseStatus" [3641-3752] -->
+<h3 class="sectionedit13" id="assertredirectedto">assertRedirectedTo</h3>
+<div class="level3">
+
+<p>
+Asserting Responses Are Redirects
+</p>
+<pre class="code php"><span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertRedirectedTo</span><span class="br0">&#40;</span><span class="st_h">'foo'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertRedirectedToRoute</span><span class="br0">&#40;</span><span class="st_h">'route.name'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertRedirectedToAction</span><span class="br0">&#40;</span><span class="st_h">'Controller@method'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT13 SECTION "assertRedirectedTo" [3753-3971] -->
+<h3 class="sectionedit14" id="assertviewhas">assertViewHas</h3>
+<div class="level3">
+
+<p>
+Asserting A View Has Some Data
+</p>
+<pre class="code php"><span class="kw2">public</span> <span class="kw2">function</span> testMethod<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">call</span><span class="br0">&#40;</span><span class="st_h">'GET'</span><span class="sy0">,</span> <span class="st_h">'/'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertViewHas</span><span class="br0">&#40;</span><span class="st_h">'name'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertViewHas</span><span class="br0">&#40;</span><span class="st_h">'age'</span><span class="sy0">,</span> <span class="re0">$value</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT14 SECTION "assertViewHas" [3972-4184] -->
+<h3 class="sectionedit15" id="assertsessionhas">assertSessionHas</h3>
+<div class="level3">
+
+<p>
+Asserting The Session Has Some Data
+</p>
+<pre class="code php"><span class="kw2">public</span> <span class="kw2">function</span> testMethod<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">call</span><span class="br0">&#40;</span><span class="st_h">'GET'</span><span class="sy0">,</span> <span class="st_h">'/'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertSessionHas</span><span class="br0">&#40;</span><span class="st_h">'name'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertSessionHas</span><span class="br0">&#40;</span><span class="st_h">'age'</span><span class="sy0">,</span> <span class="re0">$value</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT15 SECTION "assertSessionHas" [4185-4411] -->
+<h3 class="sectionedit16" id="assertsessionhaserrors">assertSessionHasErrors</h3>
+<div class="level3">
+
+<p>
+Asserting The Session Has Errors
+</p>
+<pre class="code php"><span class="kw2">public</span> <span class="kw2">function</span> testMethod<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">call</span><span class="br0">&#40;</span><span class="st_h">'GET'</span><span class="sy0">,</span> <span class="st_h">'/'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertSessionHasErrors</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="co1">// Asserting the session has errors for a given key...</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertSessionHasErrors</span><span class="br0">&#40;</span><span class="st_h">'name'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="co1">// Asserting the session has errors for several keys...</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertSessionHasErrors</span><span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'name'</span><span class="sy0">,</span> <span class="st_h">'age'</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT16 SECTION "assertSessionHasErrors" [4412-4814] -->
+<h3 class="sectionedit17" id="asserthasoldinput">assertHasOldInput</h3>
+<div class="level3">
+
+<p>
+Asserting Old Input Has Some Data
+</p>
+<pre class="code php"><span class="kw2">public</span> <span class="kw2">function</span> testMethod<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">call</span><span class="br0">&#40;</span><span class="st_h">'GET'</span><span class="sy0">,</span> <span class="st_h">'/'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertHasOldInput</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT17 SECTION "assertHasOldInput" [4815-4992] -->
+<h3 class="sectionedit18" id="helper_methods">1.4.5 Helper Methods</h3>
+<div class="level3">
+
+<p>
+Class TestCase có nhiều các helper giúp cho việc testing dễ dàng hơn
+</p>
+
+</div>
+<!-- EDIT18 SECTION "1.4.5 Helper Methods" [4993-5105] -->
+<h3 class="sectionedit19" id="them_gỡ_session">Thêm &amp; gỡ Session</h3>
+<div class="level3">
+<pre class="code php"><span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">session</span><span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'foo'</span> <span class="sy0">=&gt;</span> <span class="st_h">'bar'</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">flushSession</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT19 SECTION "Thêm & gỡ Session" [5106-5214] -->
+<h3 class="sectionedit20" id="thiết_lập_cấp_quyền_thanh_vien">Thiết lập cấp quyền thành viên</h3>
+<div class="level3">
+<pre class="code php"><span class="re0">$user</span> <span class="sy0">=</span> <span class="kw2">new</span> User<span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'name'</span> <span class="sy0">=&gt;</span> <span class="st_h">'John'</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">be</span><span class="br0">&#40;</span><span class="re0">$user</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT20 SECTION "Thiết lập cấp quyền thành viên" [5215-5342] -->
+<h3 class="sectionedit21" id="cai_lại_database">Cài lại database</h3>
+<div class="level3">
+<pre class="code php"><span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">seed</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">seed</span><span class="br0">&#40;</span><span class="st_h">'DatabaseSeeder'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT21 SECTION "Cài lại database" [5343-5440] -->
+<h3 class="sectionedit22" id="refreshing_the_application">1.4.6 Refreshing The Application</h3>
+<div class="level3">
+
+<p>
+Nếu ta muốn refresh lại Application khi testing 1 method, ta có thể dùng:
+</p>
+<pre class="code php"><span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">refreshApplication</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Phương thức trên sẽ reset lại các bindings, mock , IoC container. 
+</p>
+
+</div>
+<!-- EDIT22 SECTION "1.4.6 Refreshing The Application" [5441-5693] -->
+<h3 class="sectionedit23" id="table_of_assert_method">1.4.7 Table of Assert Method</h3>
+<div class="level3">
+<div class="table sectionedit24"><table class="inline">
+	<thead>
+	<tr class="row0">
+		<th class="col0"> </th><th class="col1"> </th>
+	</tr>
+	</thead>
+	<tr class="row1">
+		<td class="col0 leftalign">AssertTrue/AssertFalse	</td><td class="col1"> Check the input to verify it equals true/false </td>
+	</tr>
+	<tr class="row2">
+		<td class="col0">AssertEquals </td><td class="col1 rightalign">	Check the result against another input for a match </td>
+	</tr>
+	<tr class="row3">
+		<td class="col0">AssertGreaterThan </td><td class="col1"> Check the result to see if it’s larger than a value (there’s also LessThan, GreaterThanOrEqual, and LessThanOrEqual) </td>
+	</tr>
+	<tr class="row4">
+		<td class="col0">AssertContains </td><td class="col1"> Check that the input contains a certain value </td>
+	</tr>
+	<tr class="row5">
+		<td class="col0">AssertType </td><td class="col1"> Check that a variable is of a certain type </td>
+	</tr>
+	<tr class="row6">
+		<td class="col0">AssertNull </td><td class="col1"> Check that a variable is null </td>
+	</tr>
+	<tr class="row7">
+		<td class="col0">AssertFileExists </td><td class="col1"> Verify that a file exists </td>
+	</tr>
+	<tr class="row8">
+		<td class="col0">AssertRegExp </td><td class="col1">Check the input against a regular expression</td>
+	</tr>
+</table></div>
+<!-- EDIT24 TABLE [5734-6307] -->
+</div>
+<!-- EDIT23 SECTION "1.4.7 Table of Assert Method" [5694-6308] -->
+<h2 class="sectionedit25" id="phpunit_methods_and_properties">1.5 PHPUnit methods and properties</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT25 SECTION "1.5 PHPUnit methods and properties" [6309-6356] -->
+<h3 class="sectionedit26" id="app">$app</h3>
+<div class="level3">
+
+<p>
+The instance of the Laravel 5.1 application.
+</p>
+
+</div>
+<!-- EDIT26 SECTION "$app" [6357-6418] -->
+<h3 class="sectionedit27" id="code">$code</h3>
+<div class="level3">
+
+<p>
+The latest code returned by artisan.
+</p>
+
+</div>
+<!-- EDIT27 SECTION "$code" [6419-6473] -->
+<h3 class="sectionedit28" id="call">call</h3>
+<div class="level3">
+
+<p>
+Calls the given <abbr title="Uniform Resource Identifier">URI</abbr> and returns the response.
+</p>
+<pre class="code php"><span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">call</span><span class="br0">&#40;</span><span class="re0">$method</span><span class="sy0">,</span> <span class="re0">$uri</span><span class="sy0">,</span> <span class="re0">$parameters</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$cookies</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$files</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$server</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$content</span> <span class="sy0">=</span> <span class="kw4">null</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT28 SECTION "call" [6474-6659] -->
+<h3 class="sectionedit29" id="callsecure">callSecure</h3>
+<div class="level3">
+
+<p>
+Calls the given HTTPS <abbr title="Uniform Resource Identifier">URI</abbr> and returns the response.
+</p>
+<pre class="code php">callSecure<span class="br0">&#40;</span><span class="re0">$method</span><span class="sy0">,</span> <span class="re0">$uri</span><span class="sy0">,</span> <span class="re0">$parameters</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$cookies</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$files</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$server</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$content</span> <span class="sy0">=</span> <span class="kw4">null</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT29 SECTION "callSecure" [6660-6856] -->
+<h3 class="sectionedit30" id="action">action</h3>
+<div class="level3">
+
+<p>
+Calls a controller action and returns the response.
+</p>
+<pre class="code php">action<span class="br0">&#40;</span><span class="re0">$method</span><span class="sy0">,</span> <span class="re0">$action</span><span class="sy0">,</span> <span class="re0">$wildcards</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$parameters</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$cookies</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$files</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$server</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$content</span> <span class="sy0">=</span> <span class="kw4">null</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT30 SECTION "action" [6857-7064] -->
+<h3 class="sectionedit31" id="route">route</h3>
+<div class="level3">
+
+<p>
+Calls a named route and returns the response.
+</p>
+<pre class="code php">route<span class="br0">&#40;</span><span class="re0">$method</span><span class="sy0">,</span> <span class="re0">$name</span><span class="sy0">,</span> <span class="re0">$routeParameters</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$parameters</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$cookies</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$files</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$server</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="re0">$content</span> <span class="sy0">=</span> <span class="kw4">null</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT31 SECTION "route" [7065-7268] -->
+<h3 class="sectionedit32" id="instance">instance</h3>
+<div class="level3">
+
+<p>
+Register an instance of an object in the container.
+</p>
+<pre class="code php">instance<span class="br0">&#40;</span><span class="re0">$abstract</span><span class="sy0">,</span> <span class="re0">$object</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT32 SECTION "instance" [7269-7388] -->
+<h3 class="sectionedit33" id="expectsevents">expectsEvents</h3>
+<div class="level3">
+
+<p>
+Specify a list of events that should be fired for the given operation.
+</p>
+<pre class="code php">expectsEvents<span class="br0">&#40;</span><span class="re0">$events</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT33 SECTION "expectsEvents" [7389-7526] -->
+<h3 class="sectionedit34" id="withoutevents">withoutEvents</h3>
+<div class="level3">
+
+<p>
+Mock the event dispatcher so all events are silenced.
+</p>
+<pre class="code php">withoutEvents<span class="br0">&#40;</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT34 SECTION "withoutEvents" [7527-7640] -->
+<h3 class="sectionedit35" id="expectsjobs">expectsJobs</h3>
+<div class="level3">
+
+<p>
+Specify a list of jobs that should be dispatched for the given operation.
+</p>
+<pre class="code php">expectsJobs<span class="br0">&#40;</span><span class="re0">$jobs</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT35 SECTION "expectsJobs" [7641-7775] -->
+<h3 class="sectionedit36" id="withsession">withSession</h3>
+<div class="level3">
+
+<p>
+Set the session to the given array.
+</p>
+<pre class="code php">withSession<span class="br0">&#40;</span><a href="http://www.php.net/array"><span class="kw3">array</span></a> <span class="re0">$data</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT36 SECTION "withSession" [7776-7878] -->
+<h3 class="sectionedit37" id="session">session</h3>
+<div class="level3">
+
+<p>
+Starts session and sets the session values from the array.
+</p>
+<pre class="code php">session<span class="br0">&#40;</span><a href="http://www.php.net/array"><span class="kw3">array</span></a> <span class="re0">$data</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT37 SECTION "session" [7879-7996] -->
+<h3 class="sectionedit38" id="flushsession">flushSession</h3>
+<div class="level3">
+
+<p>
+Flushes the contents of the current session.
+</p>
+<pre class="code php">flushSession<span class="br0">&#40;</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT38 SECTION "flushSession" [7997-8099] -->
+<h3 class="sectionedit39" id="startsession">startSession</h3>
+<div class="level3">
+
+<p>
+Starts the application’s session.
+</p>
+<pre class="code php">startSession<span class="br0">&#40;</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT39 SECTION "startSession" [8100-8193] -->
+<h3 class="sectionedit40" id="actingas">actingAs</h3>
+<div class="level3">
+
+<p>
+(Fluent) Sets the currently logged in user for the application.
+</p>
+<pre class="code php">actingAs<span class="br0">&#40;</span><span class="re0">$user</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT40 SECTION "actingAs" [8194-8312] -->
+<h3 class="sectionedit41" id="be">be</h3>
+<div class="level3">
+
+<p>
+Sets the currently logged in user for the application.
+</p>
+<pre class="code php">be<span class="br0">&#40;</span><span class="re0">$user</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT41 SECTION "be" [8313-8410] -->
+<h3 class="sectionedit42" id="seeindatabase">seeInDatabase</h3>
+<div class="level3">
+
+<p>
+(Fluent) Asserts a given where condition exists in the database.
+</p>
+<pre class="code php">seeInDatabase<span class="br0">&#40;</span><span class="re0">$table</span><span class="sy0">,</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a> <span class="re0">$data</span><span class="sy0">,</span> <span class="re0">$connection</span> <span class="sy0">=</span> <span class="kw4">null</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT42 SECTION "seeInDatabase" [8411-8574] -->
+<h3 class="sectionedit43" id="notseeindatabase">notSeeInDatabase</h3>
+<div class="level3">
+
+<p>
+(Fluent) Asserts a given where condition does not exist in the database.
+</p>
+<pre class="code php">notSeeInDatabase<span class="br0">&#40;</span><span class="re0">$table</span><span class="sy0">,</span> <span class="re0">$array</span> <span class="re0">$data</span><span class="sy0">,</span> <span class="re0">$connection</span> <span class="sy0">=</span> <span class="kw4">null</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT43 SECTION "notSeeInDatabase" [8575-8755] -->
+<h3 class="sectionedit44" id="missingfromdatabase">missingFromDatabase</h3>
+<div class="level3">
+
+<p>
+(Fluent) Alias to notSeeInDatabase().
+</p>
+<pre class="code php">missingFromDatabase<span class="br0">&#40;</span><span class="re0">$table</span><span class="sy0">,</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a> <span class="re0">$data</span><span class="sy0">,</span> <span class="re0">$connection</span> <span class="sy0">=</span> <span class="kw4">null</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT44 SECTION "missingFromDatabase" [8756-8904] -->
+<h3 class="sectionedit45" id="seed">seed</h3>
+<div class="level3">
+
+<p>
+Seeds the database.
+</p>
+<pre class="code php">seed<span class="br0">&#40;</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT45 SECTION "seed" [8905-8966] -->
+<h3 class="sectionedit46" id="artisan">artisan</h3>
+<div class="level3">
+
+<p>
+Executes the artisan command and returns the code.
+</p>
+<pre class="code php">artisan<span class="br0">&#40;</span><span class="re0">$command</span><span class="sy0">,</span> <span class="re0">$parameters</span> <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="br0">&#41;</span></pre>
+
+</div>
+<!-- EDIT46 SECTION "artisan" [8967-9091] -->
+<h2 class="sectionedit47" id="using_gulp_for_tdd">1.6 Using Gulp for TDD</h2>
+<div class="level2">
+<blockquote><div class="no">
+<a href="http://gulpjs.com/" class="urlextern" title="http://gulpjs.com/"  rel="nofollow">Gulp</a>: là hệ thống tự chạy viết bằng Javascript.</div></blockquote>
+<blockquote><div class="no">
+TDD : Test Driven Development.</div></blockquote>
+<blockquote><div class="no">
+Laravel Exlixir: là 1 api dùng để định nghĩa các tác vụ của Gulp.</div></blockquote>
+
+<p>
+Ta có thể dùng Gulp để app tự chạy UnitTest khi nội dung file thay đổi.
+</p>
+
+</div>
+<!-- EDIT47 SECTION "1.6 Using Gulp for TDD" [9092-9417] -->
+<h3 class="sectionedit48" id="install_gulp">1.6.1 Install Gulp</h3>
+<div class="level3">
+
+<p>
+<strong>Install Gulp globally</strong>
+</p>
+<pre class="code">$ npm install --global gulp</pre>
+
+<p>
+<strong> Install gulp in your project devDependencies:</strong>
+</p>
+<pre class="code">$ npm install --save-dev gulp</pre>
+
+<p>
+<strong>Create a gulpfile.js at the root of your project:</strong>
+</p>
+<pre class="code">var gulp = require(&#039;gulp&#039;);
+
+gulp.task(&#039;default&#039;, function() {
+  // place code for your default task here
+});</pre>
+
+<p>
+<strong>Run gulp:</strong>
+</p>
+<pre class="code">$ gulp</pre>
+
+<p>
+<strong>Install laravel-elixir</strong>
+</p>
+
+<p>
+Cập nhật file package.json
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=testing&amp;codeblock=41" title="Download Snippet" class="mediafile mf_json">package.json</a></dt>
+<dd><pre class="code file js">{
+  &quot;private&quot;: true,
+  &quot;devDependencies&quot;: {
+    &quot;gulp&quot;: &quot;^3.8.8&quot;
+  },
+  &quot;dependencies&quot;: {
+    &quot;laravel-elixir&quot;: &quot;^3.0.0&quot;,
+    &quot;bootstrap-sass&quot;: &quot;^3.0.0&quot;
+  }
+}</pre>
+</dd></dl>
+
+<p>
+Cài đặt laravel-elixir
+</p>
+<pre class="code">$ npm install</pre>
+
+</div>
+<!-- EDIT48 SECTION "1.6.1 Install Gulp" [9418-10133] -->
+<h3 class="sectionedit49" id="run_gulp">1.6.2 Run Gulp</h3>
+<div class="level3">
+
+<p>
+Cập nhật file gulpfile.js
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=testing&amp;codeblock=43" title="Download Snippet" class="mediafile mf_js">gulpfile.js</a></dt>
+<dd><pre class="code file js">var elixir = require('laravel-elixir');
+&nbsp;
+elixir(function(mix) {
+    mix.phpUnit();
+});</pre>
+</dd></dl>
+
+<p>
+Chạy gulp tự động :
+</p>
+<pre class="code">$ gulp tdd</pre>
+
+</div>
+<!-- EDIT49 SECTION "1.6.2 Run Gulp" [10134-10360] -->
+<h1 class="sectionedit50" id="codeception">2. Codeception</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT50 SECTION "2. Codeception" [10361-10389] -->
+<h2 class="sectionedit51" id="giới_thiệu1">2.1 Giới thiệu</h2>
+<div class="level2">
+
+<p>
+<a href="http://codeception.com/" class="urlextern" title="http://codeception.com/"  rel="nofollow">Codeception</a> là 1 một BBD PHP test framework.
+Codeception bao gồm các loại như :
+</p>
+<ul>
+<li class="level1"><div class="li"> PHPUnit test</div>
+</li>
+<li class="level1"><div class="li"> Acceptance Testing : test giao diện bằng Selenium WebDriver, PhpBrowser.</div>
+</li>
+<li class="level1"><div class="li"> Functional Testing : có thể test nhiều framwork như: ymfony2, Laravel, Yii, Phalcon, Zend Framework, Kohana, Databases, REST, SOAP, CodeCoverage.</div>
+</li>
+<li class="level1"><div class="li"> <abbr title="Application Programming Interface">API</abbr> Testing : REST, SOAP, XML-RPC via PHPBrowser or PHP Frameworks.</div>
+</li>
+</ul>
+<blockquote><div class="no">
+<strong>BBD</strong>: Behavior Driven Development</div></blockquote>
+
+</div>
+<!-- EDIT51 SECTION "2.1 Giới thiệu" [10390-10903] -->
+<h2 class="sectionedit52" id="cai_dặt">2.2 Cài đặt</h2>
+<div class="level2">
+
+<p>
+Cài bằng composer
+</p>
+<pre class="code">$ php composer.phar require &quot;codeception/codeception:*&quot;</pre>
+
+<p>
+Download source code về thư mục gốc của ứng dụng
+</p>
+<pre class="code">$ wget http://codeception.com/codecept.phar</pre>
+
+<p>
+Khởi tạo codeception:
+</p>
+<pre class="code">$ php codecept.phar bootstrap</pre>
+
+<p>
+Tạo 1 acceptance test;
+</p>
+<pre class="code">$ php codecept.phar generate:cept acceptance Welcome</pre>
+
+</div>
+<!-- EDIT52 SECTION "2.2 Cài đặt" [10904-11309] -->
+<h1 class="sectionedit53" id="acceptance_testing_functional_testing">3. Acceptance Testing &amp; Functional Testing</h1>
+<div class="level1">
+<blockquote><div class="no">
+<strong>Acceptance testing</strong> can be performed by a non-technical person. That person can be your tester, manager or even client. If you are developing a web-application (and probably you are) the tester needs nothing more than a web browser to check that your site works correctly</div></blockquote>
+<blockquote><div class="no">
+<strong>Functional testing</strong>: Now that we&#039;ve written some acceptance tests, functional tests are almost the same, with just one major difference: functional tests don&#039;t require a web server to run tests. In simple terms we set $_REQUEST, $_GET and $_POST variables and then we execute application from a test. This may be valuable as functional tests are faster and provide detailed stack traces on failures.</div></blockquote>
+
+</div>
+<!-- EDIT53 SECTION "3. Acceptance Testing & Functional Testing" [11310-12048] -->
+<h2 class="sectionedit54" id="functional_testing">3.1 Functional Testing</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT54 SECTION "3.1 Functional Testing" [12049-12083] -->
+<h3 class="sectionedit55" id="cấu_hinh_functional_testing">3.1.1 Cấu hình Functional Testing</h3>
+<div class="level3">
+
+<p>
+Để tạo 1 functional Contact Testing , ta chạy command sau:
+</p>
+<pre class="code">$ php codecept.phar generate:cept functional Contact  </pre>
+
+<p>
+Thêm module laravel5 vào function test: cập nhật nội dung file functional.suite.yml
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=testing&amp;codeblock=50" title="Download Snippet" class="mediafile mf_yml">function.suite.yml</a></dt>
+<dd><pre class="code file yml">class_name: FunctionalTester  
+modules:  
+    enabled: 
+        - Laravel5
+        - \Helper\Functional</pre>
+</dd></dl>
+
+<p>
+Build lại codeception
+</p>
+<pre class="code">$ php codecept.phar build  </pre>
+
+</div>
+<!-- EDIT55 SECTION "3.1.1 Cấu hình Functional Testing" [12084-12568] -->
+<h3 class="sectionedit56" id="functional_testing_mẫu">3.1.2 Functional Testing mẫu</h3>
+<div class="level3">
+
+<p>
+Nội dung cần test có kịch bản như sau:
+</p>
+<ul>
+<li class="level1"><div class="li"> Tôi đang ở trang contact</div>
+</li>
+<li class="level1"><div class="li"> Tôi điền đúng thông tin vào form contact :name, email and comment.</div>
+</li>
+<li class="level1"><div class="li"> Tôi nhấn nút submit</div>
+</li>
+<li class="level1"><div class="li"> Tôi vẫn ở trang contact và tôi thấy message “Message sent!”</div>
+</li>
+</ul>
+
+<p>
+Functional Testing được viết như sau:
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=testing&amp;codeblock=52" title="Download Snippet" class="mediafile mf_php">ContactCept.php</a></dt>
+<dd><pre class="code file php"><span class="kw2">&lt;?php</span>
+&nbsp;
+<span class="re0">$I</span> <span class="sy0">=</span> <span class="kw2">new</span> FunctionalTester<span class="br0">&#40;</span><span class="re0">$scenario</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">am</span><span class="br0">&#40;</span><span class="st_h">'guest'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">wantTo</span><span class="br0">&#40;</span><span class="st_h">'send email using contact form'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">amOnPage</span><span class="br0">&#40;</span><span class="st_h">'/'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">submitForm</span><span class="br0">&#40;</span><span class="st_h">'.contact-form'</span><span class="sy0">,</span> <span class="br0">&#91;</span>
+    <span class="st_h">'name'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Mario Basic'</span><span class="sy0">,</span>
+    <span class="st_h">'email'</span> <span class="sy0">=&gt;</span> <span class="st_h">'test@test.com'</span><span class="sy0">,</span>
+    <span class="st_h">'comment'</span> <span class="sy0">=&gt;</span> <span class="st_h">'This is a codeception test email.'</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">seeCurrentUrlEquals</span><span class="br0">&#40;</span><span class="st_h">'/contact'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">see</span><span class="br0">&#40;</span><span class="st_h">'Message sent!'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">amOnPage</span><span class="br0">&#40;</span><span class="st_h">'/'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">submitForm</span><span class="br0">&#40;</span><span class="st_h">'.contact-form'</span><span class="sy0">,</span> <span class="br0">&#91;</span>
+    <span class="st_h">'name'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Mario Basic'</span><span class="sy0">,</span>
+    <span class="st_h">'email'</span> <span class="sy0">=&gt;</span> <span class="st_h">'testtest.com'</span><span class="sy0">,</span>
+    <span class="st_h">'comment'</span> <span class="sy0">=&gt;</span> <span class="st_h">'This is a codeception test email.'</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">seeCurrentUrlEquals</span><span class="br0">&#40;</span><span class="st_h">'/contact'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">see</span><span class="br0">&#40;</span><span class="st_h">'Error sending your message.'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+</dd></dl>
+
+<p>
+Chạy Functional Testing 
+</p>
+<pre class="code">// Chạy tất cả các file Functional Testing
+$ php codecept.phar run functional 
+// Chạy 1 Functional Testing
+$ php codecept.phar run functional ContactCept</pre>
+
+</div>
+<!-- EDIT56 SECTION "3.1.2 Functional Testing mẫu" [12569-] -->

@@ -1,0 +1,13 @@
+<span class="co1">// Full feature</span>
+<span class="re0">$response1</span> <span class="sy0">=</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">call</span><span class="br0">&#40;</span><span class="re0">$method</span><span class="sy0">,</span> <span class="re0">$uri</span><span class="sy0">,</span> <span class="re0">$parameters</span><span class="sy0">,</span> <span class="re0">$cookies</span><span class="sy0">,</span> <span class="re0">$files</span><span class="sy0">,</span> <span class="re0">$server</span><span class="sy0">,</span> <span class="re0">$content</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Gọi https</span>
+<span class="re0">$response2</span> <span class="sy0">=</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">callSecure</span><span class="br0">&#40;</span><span class="st_h">'GET'</span><span class="sy0">,</span> <span class="st_h">'foo/bar'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Gọi phương thức GET với địa chỉ là testRouting</span>
+<span class="re0">$response</span> <span class="sy0">=</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">call</span><span class="br0">&#40;</span><span class="st_h">'GET'</span><span class="sy0">,</span> <span class="st_h">'testRouting'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+&nbsp;
+&nbsp;
+<span class="co1">// VD: Kiểm tra link testRouting có nội dung Hello World hay không ?</span>
+<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertEquals</span><span class="br0">&#40;</span><span class="st_h">'Hello World'</span><span class="sy0">,</span> <span class="re0">$response</span><span class="sy0">-&gt;</span><span class="me1">getContent</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>

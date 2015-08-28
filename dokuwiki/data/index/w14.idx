@@ -11,3 +11,6 @@ getstudentname
 getstudentinfo
 setpublishdate
 basecontroller
+testcontroller
+databaseseeder
+assertcontains

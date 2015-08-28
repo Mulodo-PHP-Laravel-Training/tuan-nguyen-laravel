@@ -1,0 +1,3 @@
+<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">seed</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">seed</span><span class="br0">&#40;</span><span class="st_h">'DatabaseSeeder'</span><span class="br0">&#41;</span><span class="sy0">;</span>

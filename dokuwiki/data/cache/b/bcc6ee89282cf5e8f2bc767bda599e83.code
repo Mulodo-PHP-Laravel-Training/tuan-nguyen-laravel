@@ -1,0 +1,5 @@
+var elixir = require('laravel-elixir');
+&nbsp;
+elixir(function(mix) {
+    mix.phpUnit();
+});

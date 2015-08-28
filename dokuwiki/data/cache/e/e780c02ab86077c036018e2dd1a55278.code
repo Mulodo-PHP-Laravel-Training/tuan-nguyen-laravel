@@ -1,0 +1,5 @@
+<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertRedirectedTo</span><span class="br0">&#40;</span><span class="st_h">'foo'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertRedirectedToRoute</span><span class="br0">&#40;</span><span class="st_h">'route.name'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertRedirectedToAction</span><span class="br0">&#40;</span><span class="st_h">'Controller@method'</span><span class="br0">&#41;</span><span class="sy0">;</span>

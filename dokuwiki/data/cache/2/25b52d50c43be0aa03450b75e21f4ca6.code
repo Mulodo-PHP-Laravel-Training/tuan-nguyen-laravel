@@ -1,0 +1,28 @@
+<span class="sc3"><span class="re1">&lt;?xml</span> <span class="re0">version</span>=<span class="st0">&quot;1.0&quot;</span> <span class="re0">encoding</span>=<span class="st0">&quot;UTF-8&quot;</span><span class="re2">?&gt;</span></span>
+<span class="sc3"><span class="re1">&lt;phpunit</span> <span class="re0">backupGlobals</span>=<span class="st0">&quot;false&quot;</span></span>
+<span class="sc3">         <span class="re0">backupStaticAttributes</span>=<span class="st0">&quot;false&quot;</span></span>
+<span class="sc3">         <span class="re0">bootstrap</span>=<span class="st0">&quot;bootstrap/autoload.php&quot;</span></span>
+<span class="sc3">         <span class="re0">colors</span>=<span class="st0">&quot;true&quot;</span></span>
+<span class="sc3">         <span class="re0">convertErrorsToExceptions</span>=<span class="st0">&quot;true&quot;</span></span>
+<span class="sc3">         <span class="re0">convertNoticesToExceptions</span>=<span class="st0">&quot;true&quot;</span></span>
+<span class="sc3">         <span class="re0">convertWarningsToExceptions</span>=<span class="st0">&quot;true&quot;</span></span>
+<span class="sc3">         <span class="re0">processIsolation</span>=<span class="st0">&quot;false&quot;</span></span>
+<span class="sc3">         <span class="re0">stopOnFailure</span>=<span class="st0">&quot;false&quot;</span></span>
+<span class="sc3">         <span class="re0">syntaxCheck</span>=<span class="st0">&quot;false&quot;</span><span class="re2">&gt;</span></span>
+    <span class="sc3"><span class="re1">&lt;testsuites<span class="re2">&gt;</span></span></span>
+        <span class="sc3"><span class="re1">&lt;testsuite</span> <span class="re0">name</span>=<span class="st0">&quot;Application Test Suite&quot;</span><span class="re2">&gt;</span></span>
+            <span class="sc3"><span class="re1">&lt;directory<span class="re2">&gt;</span></span></span>./tests/<span class="sc3"><span class="re1">&lt;/directory<span class="re2">&gt;</span></span></span>
+        <span class="sc3"><span class="re1">&lt;/testsuite<span class="re2">&gt;</span></span></span>
+    <span class="sc3"><span class="re1">&lt;/testsuites<span class="re2">&gt;</span></span></span>
+    <span class="sc3"><span class="re1">&lt;filter<span class="re2">&gt;</span></span></span>
+        <span class="sc3"><span class="re1">&lt;whitelist<span class="re2">&gt;</span></span></span>
+            <span class="sc3"><span class="re1">&lt;directory</span> <span class="re0">suffix</span>=<span class="st0">&quot;.php&quot;</span><span class="re2">&gt;</span></span>app/<span class="sc3"><span class="re1">&lt;/directory<span class="re2">&gt;</span></span></span>
+        <span class="sc3"><span class="re1">&lt;/whitelist<span class="re2">&gt;</span></span></span>
+    <span class="sc3"><span class="re1">&lt;/filter<span class="re2">&gt;</span></span></span>
+    <span class="sc3"><span class="re1">&lt;php<span class="re2">&gt;</span></span></span>
+        <span class="sc3"><span class="re1">&lt;env</span> <span class="re0">name</span>=<span class="st0">&quot;APP_ENV&quot;</span> <span class="re0">value</span>=<span class="st0">&quot;testing&quot;</span><span class="re2">/&gt;</span></span>
+        <span class="sc3"><span class="re1">&lt;env</span> <span class="re0">name</span>=<span class="st0">&quot;CACHE_DRIVER&quot;</span> <span class="re0">value</span>=<span class="st0">&quot;array&quot;</span><span class="re2">/&gt;</span></span>
+        <span class="sc3"><span class="re1">&lt;env</span> <span class="re0">name</span>=<span class="st0">&quot;SESSION_DRIVER&quot;</span> <span class="re0">value</span>=<span class="st0">&quot;array&quot;</span><span class="re2">/&gt;</span></span>
+        <span class="sc3"><span class="re1">&lt;env</span> <span class="re0">name</span>=<span class="st0">&quot;QUEUE_DRIVER&quot;</span> <span class="re0">value</span>=<span class="st0">&quot;sync&quot;</span><span class="re2">/&gt;</span></span>
+    <span class="sc3"><span class="re1">&lt;/php<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;/phpunit<span class="re2">&gt;</span></span></span>

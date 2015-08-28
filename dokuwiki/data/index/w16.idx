@@ -2,3 +2,9 @@ beforemiddleware
 redirectresponse
 clientrepository
 serviceproviders
+processisolation
+assertresponseok
+assertsessionhas
+assertfileexists
+notseeindatabase
+functionaltester

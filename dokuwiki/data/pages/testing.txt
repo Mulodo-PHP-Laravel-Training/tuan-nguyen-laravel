@@ -1,0 +1,535 @@
+====== Laravel Testing ======
+
+====== 1. Unit Test ======
+
+===== 1.1 Giới thiệu =====
+
+Laravel được tích hợp sẵn PHPUnit. Sau khi cài xong Laravel bạn có thể chạy câu lệnh sau để test.
+<code>
+$ phpunit
+</code>
+
+{{:php:laravel:capture_2015_08_27_13_38_38_794.png|}}
+
+===== 1.2 Định nghĩa & chạy Test =====
+
+Các file test được đặt trong thư mục /tests, và thường được extend từ class TestCase. Ví dụ:
+
+<code php>
+class FooTest extends TestCase {
+
+    public function testSomethingIsTrue()
+    {
+        $this->assertTrue(true);
+    }
+
+}
+</code>
+
+===== 1.3 Môi trường test =====
+
+Khi chạy Unit Test, Laravel sẽ tự động cấu hình môi trường là testing.
+Cấu hình môi trường test được đặt trong file phpunit.xml
+<file xml phpunit.xml>
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="bootstrap/autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false">
+    <testsuites>
+        <testsuite name="Application Test Suite">
+            <directory>./tests/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">app/</directory>
+        </whitelist>
+    </filter>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="QUEUE_DRIVER" value="sync"/>
+    </php>
+</phpunit>
+</file>
+
+===== 1.4 Gọi các thành phần trong test class =====
+==== 1.4.1 Gọi route ====
+Ta có thể gọi 1 route từ class Test bằng phương thức call.
+
+<file php ExampleTest.php>
+// Full feature
+$response1 = $this->call($method, $uri, $parameters, $cookies, $files, $server, $content);
+
+// Gọi https
+$response2 = $this->callSecure('GET', 'foo/bar');
+
+// Gọi phương thức GET với địa chỉ là testRouting
+$response = $this->call('GET', 'testRouting');
+
+
+
+// VD: Kiểm tra link testRouting có nội dung Hello World hay không ?
+$this->assertEquals('Hello World', $response->getContent());
+</file>
+
+Trong file routes.php thêm 1 routing testRouting:
+<file php routes.php>
+Route::get('testRouting', function(){
+    return 'Hello World';
+});
+</file>
+
+
+
+==== 1.4.2 Gọi Controller ====
+Ta có thể gọi 1 action trong controller với phương thức và các tham số.
+
+<file php ExampleTest.php>
+public function testController() {
+    $response1 = $this->action('GET', 'HomeController@index');
+    $response2 = $this->action('GET', 'UserController@profile', ['user' => 1]);
+    // Kiểm tra giá trị View trả về
+    // $view = $response->original;
+    // $this->assertEquals('John', $view['name']);
+    
+    
+    // VD: kiểm tra action test trong controller test có trả về giá trị OK hay ko ?
+    $response = $this->action('GET', 'TestController@index');
+    $this->assertEquals('index', $response->getContent());
+}    
+</file>
+Để kết quả test trả về đúng ta sửa action index trong file TestController.php như sau:
+<file php TestController.php>
+public function index()
+    {
+        return 'index';
+    }
+</file>
+==== 1.4.3 Mocking Facades ====
+
+
+
+
+
+==== 1.4.4 Framework Assertions ====
+
+==== assertResponseOk ====
+Asserting Responses Are OK
+<code php>
+public function testMethod()
+{
+    $this->call('GET', '/');
+
+    $this->assertResponseOk();
+}
+</code>
+
+==== assertResponseStatus ====
+Asserting Response Statuses
+<code php>
+$this->assertResponseStatus(403);
+</code>
+==== assertRedirectedTo ====
+Asserting Responses Are Redirects
+<code php>
+$this->assertRedirectedTo('foo');
+
+$this->assertRedirectedToRoute('route.name');
+
+$this->assertRedirectedToAction('Controller@method');
+</code>
+
+==== assertViewHas ====
+Asserting A View Has Some Data
+<code php>
+public function testMethod()
+{
+    $this->call('GET', '/');
+
+    $this->assertViewHas('name');
+    $this->assertViewHas('age', $value);
+}
+</code>
+
+==== assertSessionHas ====
+Asserting The Session Has Some Data
+<code php>
+public function testMethod()
+{
+    $this->call('GET', '/');
+
+    $this->assertSessionHas('name');
+    $this->assertSessionHas('age', $value);
+}
+</code>
+
+==== assertSessionHasErrors ====
+Asserting The Session Has Errors
+
+<code php>
+public function testMethod()
+{
+    $this->call('GET', '/');
+
+    $this->assertSessionHasErrors();
+
+    // Asserting the session has errors for a given key...
+    $this->assertSessionHasErrors('name');
+
+    // Asserting the session has errors for several keys...
+    $this->assertSessionHasErrors(['name', 'age']);
+}
+</code>
+
+==== assertHasOldInput ====
+Asserting Old Input Has Some Data
+
+<code php>
+public function testMethod()
+{
+    $this->call('GET', '/');
+
+    $this->assertHasOldInput();
+}
+</code>
+
+==== 1.4.5 Helper Methods ====
+
+Class TestCase có nhiều các helper giúp cho việc testing dễ dàng hơn
+
+==== Thêm & gỡ Session ====
+
+<code php>
+$this->session(['foo' => 'bar']);
+$this->flushSession();
+</code>
+
+==== Thiết lập cấp quyền thành viên ====
+
+<code php>
+$user = new User(['name' => 'John']);
+$this->be($user);
+</code>
+
+==== Cài lại database ====
+
+<code php>
+$this->seed();
+
+$this->seed('DatabaseSeeder');
+</code>
+
+==== 1.4.6 Refreshing The Application ====
+Nếu ta muốn refresh lại Application khi testing 1 method, ta có thể dùng:
+<code php>
+$this->refreshApplication();
+</code>
+Phương thức trên sẽ reset lại các bindings, mock , IoC container. 
+
+==== 1.4.7 Table of Assert Method ====
+
+^ ^ ^
+|AssertTrue/AssertFalse	| Check the input to verify it equals true/false |
+|AssertEquals |	Check the result against another input for a match |
+|AssertGreaterThan | Check the result to see if it’s larger than a value (there’s also LessThan, GreaterThanOrEqual, and LessThanOrEqual) |
+|AssertContains | Check that the input contains a certain value |
+|AssertType | Check that a variable is of a certain type |
+|AssertNull | Check that a variable is null |
+|AssertFileExists | Verify that a file exists |
+|AssertRegExp |Check the input against a regular expression|
+
+===== 1.5 PHPUnit methods and properties =====
+
+==== $app ====
+
+The instance of the Laravel 5.1 application.
+
+==== $code ====
+
+The latest code returned by artisan.
+
+==== call ====
+Calls the given URI and returns the response.
+<code php>
+$this->call($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null);
+</code>
+
+==== callSecure  ====
+Calls the given HTTPS URI and returns the response.
+<code php>
+callSecure($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
+</code>
+
+==== action ====
+Calls a controller action and returns the response.
+<code php>
+action($method, $action, $wildcards = [], $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
+</code>
+
+==== route ====
+Calls a named route and returns the response.
+<code php>
+route($method, $name, $routeParameters = [], $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
+</code>
+
+==== instance ====
+Register an instance of an object in the container.
+<code php>
+instance($abstract, $object)
+</code>
+
+==== expectsEvents ====
+Specify a list of events that should be fired for the given operation.
+<code php>
+expectsEvents($events)
+</code>
+
+==== withoutEvents ====
+Mock the event dispatcher so all events are silenced.
+<code php>
+withoutEvents()
+</code>
+
+==== expectsJobs ====
+Specify a list of jobs that should be dispatched for the given operation.
+<code php>
+expectsJobs($jobs)
+</code>
+
+==== withSession ====
+Set the session to the given array.
+<code php>
+withSession(array $data)
+</code>
+
+==== session ====
+Starts session and sets the session values from the array.
+<code php>
+session(array $data)
+</code>
+
+==== flushSession ====
+Flushes the contents of the current session.
+<code php>
+flushSession()
+</code>
+
+==== startSession ====
+Starts the application’s session.
+<code php>
+startSession()
+</code>
+
+==== actingAs ====
+(Fluent) Sets the currently logged in user for the application.
+<code php>
+actingAs($user)
+</code>
+
+==== be ====
+Sets the currently logged in user for the application.
+<code php>
+be($user)
+</code>
+
+==== seeInDatabase ====
+(Fluent) Asserts a given where condition exists in the database.
+<code php>
+seeInDatabase($table, array $data, $connection = null)
+</code>
+
+==== notSeeInDatabase ====
+
+(Fluent) Asserts a given where condition does not exist in the database.
+
+<code php>
+notSeeInDatabase($table, $array $data, $connection = null)
+</code>
+
+==== missingFromDatabase ====
+(Fluent) Alias to notSeeInDatabase().
+<code php>
+missingFromDatabase($table, array $data, $connection = null)
+</code>
+
+==== seed ====
+Seeds the database.
+<code php>
+seed()
+</code>
+
+==== artisan ====
+Executes the artisan command and returns the code.
+<code php>
+artisan($command, $parameters = [])
+</code>
+
+===== 1.6 Using Gulp for TDD =====
+>[[http://gulpjs.com/|Gulp]]: là hệ thống tự chạy viết bằng Javascript.
+
+>TDD : Test Driven Development.
+
+>Laravel Exlixir: là 1 api dùng để định nghĩa các tác vụ của Gulp.
+
+Ta có thể dùng Gulp để app tự chạy UnitTest khi nội dung file thay đổi.
+
+==== 1.6.1 Install Gulp ====
+**Install Gulp globally**
+<code>
+$ npm install --global gulp
+</code>
+** Install gulp in your project devDependencies:**
+<code>
+$ npm install --save-dev gulp
+</code>
+**Create a gulpfile.js at the root of your project:**
+<code>
+var gulp = require('gulp');
+
+gulp.task('default', function() {
+  // place code for your default task here
+});
+</code>
+
+**Run gulp:**
+<code>
+$ gulp
+</code>
+
+**Install laravel-elixir**
+
+Cập nhật file package.json
+<file js package.json>
+{
+  "private": true,
+  "devDependencies": {
+    "gulp": "^3.8.8"
+  },
+  "dependencies": {
+    "laravel-elixir": "^3.0.0",
+    "bootstrap-sass": "^3.0.0"
+  }
+}
+</file>
+Cài đặt laravel-elixir
+<code>
+$ npm install
+</code>
+==== 1.6.2 Run Gulp ====
+Cập nhật file gulpfile.js
+<file js gulpfile.js>
+var elixir = require('laravel-elixir');
+
+elixir(function(mix) {
+    mix.phpUnit();
+});
+</file>
+
+Chạy gulp tự động :
+<code>
+$ gulp tdd
+</code>
+
+====== 2. Codeception ======
+===== 2.1 Giới thiệu =====
+[[http://codeception.com/|Codeception]] là 1 một BBD PHP test framework.
+Codeception bao gồm các loại như :
+  * PHPUnit test
+  * Acceptance Testing : test giao diện bằng Selenium WebDriver, PhpBrowser.
+  * Functional Testing : có thể test nhiều framwork như: ymfony2, Laravel, Yii, Phalcon, Zend Framework, Kohana, Databases, REST, SOAP, CodeCoverage.
+  * API Testing : REST, SOAP, XML-RPC via PHPBrowser or PHP Frameworks.
+
+>**BBD**: Behavior Driven Development
+
+===== 2.2 Cài đặt =====
+Cài bằng composer
+<code>
+$ php composer.phar require "codeception/codeception:*"
+</code>
+Download source code về thư mục gốc của ứng dụng
+<code>
+$ wget http://codeception.com/codecept.phar
+</code>
+Khởi tạo codeception:
+<code>
+$ php codecept.phar bootstrap
+</code>
+Tạo 1 acceptance test;
+<code>
+$ php codecept.phar generate:cept acceptance Welcome
+</code>
+
+====== 3. Acceptance Testing & Functional Testing ======
+
+>**Acceptance testing** can be performed by a non-technical person. That person can be your tester, manager or even client. If you are developing a web-application (and probably you are) the tester needs nothing more than a web browser to check that your site works correctly
+
+>**Functional testing**: Now that we've written some acceptance tests, functional tests are almost the same, with just one major difference: functional tests don't require a web server to run tests. In simple terms we set $_REQUEST, $_GET and $_POST variables and then we execute application from a test. This may be valuable as functional tests are faster and provide detailed stack traces on failures.
+===== 3.1 Functional Testing =====
+==== 3.1.1 Cấu hình Functional Testing ====
+Để tạo 1 functional Contact Testing , ta chạy command sau:
+<code>
+$ php codecept.phar generate:cept functional Contact  
+</code>
+Thêm module laravel5 vào function test: cập nhật nội dung file functional.suite.yml
+<file yml function.suite.yml>
+class_name: FunctionalTester  
+modules:  
+    enabled: 
+        - Laravel5
+        - \Helper\Functional
+</file>
+
+Build lại codeception
+<code>
+$ php codecept.phar build  
+</code>
+==== 3.1.2 Functional Testing mẫu ====
+Nội dung cần test có kịch bản như sau:
+  * Tôi đang ở trang contact
+  * Tôi điền đúng thông tin vào form contact :name, email and comment.
+  * Tôi nhấn nút submit
+  * Tôi vẫn ở trang contact và tôi thấy message "Message sent!"
+Functional Testing được viết như sau:
+<file php ContactCept.php>
+<?php
+
+$I = new FunctionalTester($scenario);
+
+$I->am('guest');
+$I->wantTo('send email using contact form');
+
+$I->amOnPage('/');
+$I->submitForm('.contact-form', [
+    'name' => 'Mario Basic',
+    'email' => 'test@test.com',
+    'comment' => 'This is a codeception test email.'
+]);
+$I->seeCurrentUrlEquals('/contact');
+$I->see('Message sent!');
+
+$I->amOnPage('/');
+$I->submitForm('.contact-form', [
+    'name' => 'Mario Basic',
+    'email' => 'testtest.com',
+    'comment' => 'This is a codeception test email.'
+]);
+$I->seeCurrentUrlEquals('/contact');
+$I->see('Error sending your message.');
+</file>
+
+Chạy Functional Testing 
+<code>
+// Chạy tất cả các file Functional Testing
+$ php codecept.phar run functional 
+// Chạy 1 Functional Testing
+$ php codecept.phar run functional ContactCept
+</code>

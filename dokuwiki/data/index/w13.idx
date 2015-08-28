@@ -12,3 +12,9 @@ viewcomposers
 denpendencies
 servicesetter
 dataproviders
+backupglobals
+stoponfailure
+assertviewhas
+expectsevents
+withoutevents
+seeindatabase

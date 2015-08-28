@@ -1,3 +1,4 @@
 authenticatewithbasicauth
 clientrepositoryinterface
 basedataproviderinterface
+converterrorstoexceptions

@@ -1,0 +1,1 @@
+seeInDatabase<span class="br0">&#40;</span><span class="re0">$table</span><span class="sy0">,</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a> <span class="re0">$data</span><span class="sy0">,</span> <span class="re0">$connection</span> <span class="sy0">=</span> <span class="kw4">null</span><span class="br0">&#41;</span>

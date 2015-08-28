@@ -1,0 +1,7 @@
+<span class="kw2">public</span> <span class="kw2">function</span> testMethod<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">call</span><span class="br0">&#40;</span><span class="st_h">'GET'</span><span class="sy0">,</span> <span class="st_h">'/'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertViewHas</span><span class="br0">&#40;</span><span class="st_h">'name'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">assertViewHas</span><span class="br0">&#40;</span><span class="st_h">'age'</span><span class="sy0">,</span> <span class="re0">$value</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span>

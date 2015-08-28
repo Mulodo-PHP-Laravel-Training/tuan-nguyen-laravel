@@ -1,3 +1,4 @@
 checkformaintenancemode
 redirectifauthenticated
 composerserviceprovider
+assertredirectedtoroute

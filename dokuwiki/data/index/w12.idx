@@ -11,3 +11,7 @@ conventional
 occasionally
 dependencies
 repositories
+assertequals
+flushsession
+assertregexp
+codecoverage
