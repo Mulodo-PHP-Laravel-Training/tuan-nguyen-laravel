@@ -1,0 +1,14 @@
+<span class="sy0">&lt;!</span>DOCTYPE<span class="sy0">&gt;</span>
+<span class="sy0">&lt;</span>html<span class="sy0">&gt;</span>
+<span class="sy0">&lt;</span>title<span class="sy0">&gt;</span>Demo Functional Testing<span class="sy0">&lt;/</span>title<span class="sy0">&gt;</span>
+<span class="sy0">&lt;</span>body<span class="sy0">&gt;</span>
+    <span class="sy0">&lt;</span>form action<span class="sy0">=</span><span class="st0">&quot;&quot;</span> method<span class="sy0">=</span><span class="st0">&quot;post&quot;</span> accept<span class="sy0">-</span>charset<span class="sy0">=</span><span class="st0">&quot;utf-8&quot;</span> <span class="kw2">class</span><span class="sy0">=</span><span class="st0">&quot;contact-form&quot;</span><span class="sy0">&gt;</span>
+        <span class="sy0">&lt;</span>input type<span class="sy0">=</span><span class="st0">&quot;hidden&quot;</span> name<span class="sy0">=</span><span class="st0">&quot;_token&quot;</span> value<span class="sy0">=</span><span class="st0">&quot;{{ csrf_token() }}&quot;</span><span class="sy0">&gt;</span>
+        <span class="sy0">&lt;</span>input type<span class="sy0">=</span><span class="st0">&quot;text&quot;</span> name<span class="sy0">=</span><span class="st0">&quot;name&quot;</span> value<span class="sy0">=</span><span class="st0">&quot;&quot;</span> placeholder<span class="sy0">=</span><span class="st0">&quot;&quot;</span><span class="sy0">&gt;</span>
+        <span class="sy0">&lt;</span>input type<span class="sy0">=</span><span class="st0">&quot;email&quot;</span> name<span class="sy0">=</span><span class="st0">&quot;email&quot;</span> value<span class="sy0">=</span><span class="st0">&quot;&quot;</span><span class="sy0">&gt;</span>
+        <span class="sy0">&lt;</span>input type<span class="sy0">=</span><span class="st0">&quot;text&quot;</span> name<span class="sy0">=</span><span class="st0">&quot;comment&quot;</span> value<span class="sy0">=</span><span class="st0">&quot;&quot;</span><span class="sy0">&gt;</span>
+        <span class="sy0">&lt;</span>input type<span class="sy0">=</span><span class="st0">&quot;submit&quot;</span> name<span class="sy0">=</span><span class="st0">&quot;submit&quot;</span> value<span class="sy0">=</span><span class="st0">&quot;OK&quot;</span><span class="sy0">&gt;</span>
+    <span class="sy0">&lt;/</span>form<span class="sy0">&gt;</span>
+    <span class="br0">&#123;</span><span class="br0">&#123;</span> <span class="re0">$msg</span> <span class="br0">&#125;</span><span class="br0">&#125;</span>
+<span class="sy0">&lt;/</span>body<span class="sy0">&gt;</span>
+<span class="sy0">&lt;/</span>html<span class="sy0">&gt;</span>

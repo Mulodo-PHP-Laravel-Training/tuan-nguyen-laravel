@@ -1,0 +1,11 @@
+<span class="re0">$I</span> <span class="sy0">=</span> <span class="kw2">new</span> AcceptanceTester<span class="br0">&#40;</span><span class="re0">$scenario</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">amOnPage</span><span class="br0">&#40;</span><span class="st_h">'/contact'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">submitForm</span><span class="br0">&#40;</span><span class="st_h">'.contact-form'</span><span class="sy0">,</span> <span class="br0">&#91;</span>
+    <span class="st_h">'name'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Mario Basic'</span><span class="sy0">,</span>
+    <span class="st_h">'email'</span> <span class="sy0">=&gt;</span> <span class="st_h">'test@test.com'</span><span class="sy0">,</span>
+    <span class="st_h">'comment'</span> <span class="sy0">=&gt;</span> <span class="st_h">'This is a codeception test email.'</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">seeCurrentUrlEquals</span><span class="br0">&#40;</span><span class="st_h">'/contact'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">see</span><span class="br0">&#40;</span><span class="st_h">'Message sent!'</span><span class="br0">&#41;</span><span class="sy0">;</span>

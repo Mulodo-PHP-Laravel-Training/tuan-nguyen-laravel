@@ -45,22 +45,32 @@ $ vagrant up
 Install HomeStead on Windows 8.1
 
 Install Virtual Box : https://www.virtualbox.org/wiki/Downloads
+
 Install Vagrant : http://www.vagrantup.com/downloads.html
+
 Install Git-Scm : http://git-scm.com/
 
 On desktop , create folder name Code , open this folder with Git Bash
 Cloning Homestead respository :
-	$ git clone https://github.com/Mulodo-PHP-Laravel-Training/laravel-homestead.git
-        $ git clone https://github.com/laravel/homestead.git Homestead 
+<code>
+$ git clone https://github.com/Mulodo-PHP-Laravel-Training/laravel-homestead.git
+$ git clone https://github.com/laravel/homestead.git Homestead 
+</code>
 
 Edit file init.sh : Change homesteadRoot
-	homesteadRoot=C:/Users/mulodo/Desktop/Code/laravel-homestead
+<code>
+homesteadRoot=C:/Users/mulodo/Desktop/Code/laravel-homestead
+</code>
 
 Run init.sh in laravel-homestead directory
-	$ bash init.sh
+<code>
+$ bash init.sh
+</code>
 bash commnad will create file Homstead.yaml  ( if you don’t see this file, that means you entered wrong path )	
 Back to root folder & set SSH Key :
-	$ ssh-keygen -t rsa -C "you@homestead"
+<code>
+$ ssh-keygen -t rsa -C "you@homestead"
+</code>
 
 Find and edit file Homestead.yaml
 <code>
@@ -101,16 +111,16 @@ user : vagrant		pass : empty or vagrant
 </code>
 Go to laravel folder :
 <code>
-	$ cd /vagrant/laravel/
+$ cd /vagrant/laravel/
 </code>
 
 Install composer : 
 <code>
-	$ curl -sS https://getcomposer.org/installer | php
+$ curl -sS https://getcomposer.org/installer | php
 </code>
 Install Laravel library :
 <code>
-	$ php composer.phar install
+$ php composer.phar install
 </code>
 Create app key :
 <code>
@@ -120,8 +130,4 @@ Note : Create app key after install libraries , if not will occurs error like th
 <code>
 PHP Warning:  require(/vagrant/laravel/bootstrap/../vendor/autoload.php): failed to open stream: No such file or directory in /vagrant/laravel/bootstrap/autoload.php on line 17.
 </code>
-Attention : when running vagrant up , mount share folder maybe isn’t correct with config in file Homestead.yaml. 
-
-
-In the picture , link E:/Code/laravel-homestead isn’t in file Homestead.yaml
-⇒ Logging ssh and check folder /home/vagrant/Code or /vagrant , find the correct path.
+Attention : when running vagrant up , mount share folder maybe isn’t correct with config in file Homestead.yaml -> check file Homestead.yaml in this folder ~/.homestead

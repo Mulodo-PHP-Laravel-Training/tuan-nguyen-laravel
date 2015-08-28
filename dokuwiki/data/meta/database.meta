@@ -1,12 +1,12 @@
-a:2:{s:7:"current";a:8:{s:4:"date";a:2:{s:7:"created";i:1440575590;s:8:"modified";i:1440575590;}s:7:"creator";s:11:"Tuan Nguyen";s:4:"user";s:5:"admin";s:11:"last_change";a:7:{s:4:"date";i:1440575590;s:2:"ip";s:12:"192.168.10.1";s:4:"type";s:1:"C";s:2:"id";s:8:"database";s:4:"user";s:5:"admin";s:3:"sum";s:7:"created";s:5:"extra";s:0:"";}s:5:"title";s:16:"Laravel Database";s:11:"description";a:2:{s:15:"tableofcontents";a:5:{i:0;a:4:{s:3:"hid";s:16:"laravel_database";s:5:"title";s:16:"Laravel Database";s:4:"type";s:2:"ul";s:5:"level";i:1;}i:1;a:4:{s:3:"hid";s:13:"configuration";s:5:"title";s:13:"Configuration";s:4:"type";s:2:"ul";s:5:"level";i:3;}i:2;a:4:{s:3:"hid";s:21:"readwrite_connections";s:5:"title";s:24:"Read / Write Connections";s:4:"type";s:2:"ul";s:5:"level";i:3;}i:3;a:4:{s:3:"hid";s:15:"running_queries";s:5:"title";s:15:"Running Queries";s:4:"type";s:2:"ul";s:5:"level";i:2;}i:4;a:4:{s:3:"hid";s:22:"running_a_select_query";s:5:"title";s:22:"Running A Select Query";s:4:"type";s:2:"ul";s:5:"level";i:3;}}s:8:"abstract";s:503:"Laravel Database
+a:2:{s:7:"current";a:9:{s:4:"date";a:2:{s:7:"created";i:1440575590;s:8:"modified";i:1440737128;}s:7:"creator";s:11:"Tuan Nguyen";s:4:"user";s:5:"admin";s:11:"last_change";a:7:{s:4:"date";i:1440737128;s:2:"ip";s:12:"192.168.10.1";s:4:"type";s:1:"E";s:2:"id";s:8:"database";s:4:"user";s:5:"admin";s:3:"sum";s:0:"";s:5:"extra";s:0:"";}s:11:"contributor";a:1:{s:5:"admin";s:11:"Tuan Nguyen";}s:5:"title";s:16:"Laravel Database";s:11:"description";a:2:{s:15:"tableofcontents";a:6:{i:0;a:4:{s:3:"hid";s:16:"laravel_database";s:5:"title";s:16:"Laravel Database";s:4:"type";s:2:"ul";s:5:"level";i:1;}i:1;a:4:{s:3:"hid";s:13:"configuration";s:5:"title";s:15:"1.Configuration";s:4:"type";s:2:"ul";s:5:"level";i:2;}i:2;a:4:{s:3:"hid";s:22:"read_write_connections";s:5:"title";s:28:"1.1 Read / Write Connections";s:4:"type";s:2:"ul";s:5:"level";i:3;}i:3;a:4:{s:3:"hid";s:15:"running_queries";s:5:"title";s:19:"1.2 Running Queries";s:4:"type";s:2:"ul";s:5:"level";i:2;}i:4;a:4:{s:3:"hid";s:22:"running_a_select_query";s:5:"title";s:26:"1.3 Running A Select Query";s:4:"type";s:2:"ul";s:5:"level";i:3;}i:5;a:4:{s:3:"hid";s:9:"migration";s:5:"title";s:12:"2. Migration";s:4:"type";s:2:"ul";s:5:"level";i:2;}}s:8:"abstract";s:503:"Laravel Database
 
-Configuration
+1.Configuration
 
 The database configuration file is config/database.php
 
 Currently Laravel supports four database systems: MySQL, Postgres, SQLite, and SQL Server.
 
-Read / Write Connections
+1.1 Read / Write Connections
 
 
 'mysql' => [
@@ -21,4 +21,4 @@ Read / Write Connections
     'username'  => 'root',
     'password'  => '',
     'charset'   => 'utf8',
-    'collation' => 'utf8_unicod…";}s:8:"internal";a:2:{s:5:"cache";b:1;s:3:"toc";b:1;}s:8:"relation";a:1:{s:10:"firstimage";s:0:"";}}s:10:"persistent";a:4:{s:4:"date";a:1:{s:7:"created";i:1440575590;}s:7:"creator";s:11:"Tuan Nguyen";s:4:"user";s:5:"admin";s:11:"last_change";a:7:{s:4:"date";i:1440575590;s:2:"ip";s:12:"192.168.10.1";s:4:"type";s:1:"C";s:2:"id";s:8:"database";s:4:"user";s:5:"admin";s:3:"sum";s:7:"created";s:5:"extra";s:0:"";}}}
+    'collation' => 'utf8_…";}s:8:"internal";a:2:{s:5:"cache";b:1;s:3:"toc";b:1;}s:8:"relation";a:1:{s:10:"firstimage";s:0:"";}}s:10:"persistent";a:5:{s:4:"date";a:2:{s:7:"created";i:1440575590;s:8:"modified";i:1440737128;}s:7:"creator";s:11:"Tuan Nguyen";s:4:"user";s:5:"admin";s:11:"last_change";a:7:{s:4:"date";i:1440737128;s:2:"ip";s:12:"192.168.10.1";s:4:"type";s:1:"E";s:2:"id";s:8:"database";s:4:"user";s:5:"admin";s:3:"sum";s:0:"";s:5:"extra";s:0:"";}s:11:"contributor";a:1:{s:5:"admin";s:11:"Tuan Nguyen";}}}

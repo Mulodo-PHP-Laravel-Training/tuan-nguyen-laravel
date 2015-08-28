@@ -1,0 +1,9 @@
+<span class="kw2">&lt;?php</span>
+<span class="re0">$I</span> <span class="sy0">=</span> <span class="kw2">new</span> AcceptanceTester<span class="br0">&#40;</span><span class="re0">$scenario</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">wantTo</span><span class="br0">&#40;</span><span class="st_h">'sign in'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">amOnPage</span><span class="br0">&#40;</span><span class="st_h">'/login'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">fillField</span><span class="br0">&#40;</span><span class="st_h">'username'</span><span class="sy0">,</span> <span class="st_h">'davert'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">fillField</span><span class="br0">&#40;</span><span class="st_h">'password'</span><span class="sy0">,</span> <span class="st_h">'qwerty'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">click</span><span class="br0">&#40;</span><span class="st_h">'LOGIN'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">see</span><span class="br0">&#40;</span><span class="st_h">'Welcome, Davert!'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="sy1">?&gt;</span>

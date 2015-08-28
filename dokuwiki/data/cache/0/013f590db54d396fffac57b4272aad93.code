@@ -1,0 +1,6 @@
+class_name<span class="sy0">:</span> AcceptanceTester
+modules<span class="sy0">:</span>
+    enabled<span class="sy0">:</span>
+        <span class="sy0">-</span> PhpBrowser<span class="sy0">:</span>
+            url<span class="sy0">:</span> http<span class="sy0">:</span><span class="co1">//demo.app</span>
+        <span class="sy0">-</span> \Helper\Acceptance

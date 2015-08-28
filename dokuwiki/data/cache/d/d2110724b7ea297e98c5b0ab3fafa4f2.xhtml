@@ -734,7 +734,7 @@ Tạo 1 acceptance test;
 <pre class="code">$ php codecept.phar generate:cept functional Contact  </pre>
 
 <p>
-Thêm module laravel5 vào function test: cập nhật nội dung file functional.suite.yml
+Cập nhật nội dung file functional.suite.yml: thêm module laravel5 vào function test
 </p>
 <dl class="file">
 <dt><a href="/doku.php?do=export_code&amp;id=testing&amp;codeblock=50" title="Download Snippet" class="mediafile mf_yml">function.suite.yml</a></dt>
@@ -775,38 +775,225 @@ Functional Testing được viết như sau:
 <dl class="file">
 <dt><a href="/doku.php?do=export_code&amp;id=testing&amp;codeblock=52" title="Download Snippet" class="mediafile mf_php">ContactCept.php</a></dt>
 <dd><pre class="code file php"><span class="kw2">&lt;?php</span>
-&nbsp;
-<span class="re0">$I</span> <span class="sy0">=</span> <span class="kw2">new</span> FunctionalTester<span class="br0">&#40;</span><span class="re0">$scenario</span><span class="br0">&#41;</span><span class="sy0">;</span>
+ <span class="re0">$I</span> <span class="sy0">=</span> <span class="kw2">new</span> FunctionalTester<span class="br0">&#40;</span><span class="re0">$scenario</span><span class="br0">&#41;</span><span class="sy0">;</span>
 &nbsp;
 <span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">am</span><span class="br0">&#40;</span><span class="st_h">'guest'</span><span class="br0">&#41;</span><span class="sy0">;</span>
-<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">wantTo</span><span class="br0">&#40;</span><span class="st_h">'send email using contact form'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">wantTo</span><span class="br0">&#40;</span><span class="st_h">'send email using contact form.'</span><span class="br0">&#41;</span><span class="sy0">;</span>
 &nbsp;
-<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">amOnPage</span><span class="br0">&#40;</span><span class="st_h">'/'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">amOnPage</span><span class="br0">&#40;</span><span class="st_h">'/contact'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
 <span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">submitForm</span><span class="br0">&#40;</span><span class="st_h">'.contact-form'</span><span class="sy0">,</span> <span class="br0">&#91;</span>
     <span class="st_h">'name'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Mario Basic'</span><span class="sy0">,</span>
     <span class="st_h">'email'</span> <span class="sy0">=&gt;</span> <span class="st_h">'test@test.com'</span><span class="sy0">,</span>
     <span class="st_h">'comment'</span> <span class="sy0">=&gt;</span> <span class="st_h">'This is a codeception test email.'</span>
 <span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
 <span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">seeCurrentUrlEquals</span><span class="br0">&#40;</span><span class="st_h">'/contact'</span><span class="br0">&#41;</span><span class="sy0">;</span>
-<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">see</span><span class="br0">&#40;</span><span class="st_h">'Message sent!'</span><span class="br0">&#41;</span><span class="sy0">;</span>
-&nbsp;
-<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">amOnPage</span><span class="br0">&#40;</span><span class="st_h">'/'</span><span class="br0">&#41;</span><span class="sy0">;</span>
-<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">submitForm</span><span class="br0">&#40;</span><span class="st_h">'.contact-form'</span><span class="sy0">,</span> <span class="br0">&#91;</span>
-    <span class="st_h">'name'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Mario Basic'</span><span class="sy0">,</span>
-    <span class="st_h">'email'</span> <span class="sy0">=&gt;</span> <span class="st_h">'testtest.com'</span><span class="sy0">,</span>
-    <span class="st_h">'comment'</span> <span class="sy0">=&gt;</span> <span class="st_h">'This is a codeception test email.'</span>
-<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
-<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">seeCurrentUrlEquals</span><span class="br0">&#40;</span><span class="st_h">'/contact'</span><span class="br0">&#41;</span><span class="sy0">;</span>
-<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">see</span><span class="br0">&#40;</span><span class="st_h">'Error sending your message.'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">see</span><span class="br0">&#40;</span><span class="st_h">'Message sent!'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
 </dd></dl>
 
 <p>
-Chạy Functional Testing 
+Ta chuẩn 2 file source code như sau:
+1. File Contact Controller:
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=testing&amp;codeblock=53" title="Download Snippet" class="mediafile mf_php">ContactController.php</a></dt>
+<dd><pre class="code file php"><span class="kw2">namespace</span> App\Http\Controllers<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> Illuminate\Http\Request<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">use</span> App\Http\Requests<span class="sy0">;</span>
+<span class="kw2">use</span> App\Http\Controllers\Controller<span class="sy0">;</span>
+&nbsp;
+<span class="kw2">class</span> ContactController <span class="kw2">extends</span> Controller
+<span class="br0">&#123;</span>
+    <span class="kw2">public</span> <span class="kw2">function</span> getIndex<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">return</span> view<span class="br0">&#40;</span><span class="st_h">'contact.index'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'msg'</span> <span class="sy0">=&gt;</span> <span class="st_h">''</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="kw2">public</span> <span class="kw2">function</span> postIndex<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="kw1">return</span> view<span class="br0">&#40;</span><span class="st_h">'contact.index'</span><span class="sy0">,</span> <span class="br0">&#91;</span><span class="st_h">'msg'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Message sent!'</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span></pre>
+</dd></dl>
+
+<p>
+2. File contact view :
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=testing&amp;codeblock=54" title="Download Snippet" class="mediafile mf_php">index.blade.php</a></dt>
+<dd><pre class="code file php"><span class="sy0">&lt;!</span>DOCTYPE<span class="sy0">&gt;</span>
+<span class="sy0">&lt;</span>html<span class="sy0">&gt;</span>
+<span class="sy0">&lt;</span>title<span class="sy0">&gt;</span>Demo Functional Testing<span class="sy0">&lt;/</span>title<span class="sy0">&gt;</span>
+<span class="sy0">&lt;</span>body<span class="sy0">&gt;</span>
+    <span class="sy0">&lt;</span>form action<span class="sy0">=</span><span class="st0">&quot;&quot;</span> method<span class="sy0">=</span><span class="st0">&quot;post&quot;</span> accept<span class="sy0">-</span>charset<span class="sy0">=</span><span class="st0">&quot;utf-8&quot;</span> <span class="kw2">class</span><span class="sy0">=</span><span class="st0">&quot;contact-form&quot;</span><span class="sy0">&gt;</span>
+        <span class="sy0">&lt;</span>input type<span class="sy0">=</span><span class="st0">&quot;hidden&quot;</span> name<span class="sy0">=</span><span class="st0">&quot;_token&quot;</span> value<span class="sy0">=</span><span class="st0">&quot;{{ csrf_token() }}&quot;</span><span class="sy0">&gt;</span>
+        <span class="sy0">&lt;</span>input type<span class="sy0">=</span><span class="st0">&quot;text&quot;</span> name<span class="sy0">=</span><span class="st0">&quot;name&quot;</span> value<span class="sy0">=</span><span class="st0">&quot;&quot;</span> placeholder<span class="sy0">=</span><span class="st0">&quot;&quot;</span><span class="sy0">&gt;</span>
+        <span class="sy0">&lt;</span>input type<span class="sy0">=</span><span class="st0">&quot;email&quot;</span> name<span class="sy0">=</span><span class="st0">&quot;email&quot;</span> value<span class="sy0">=</span><span class="st0">&quot;&quot;</span><span class="sy0">&gt;</span>
+        <span class="sy0">&lt;</span>input type<span class="sy0">=</span><span class="st0">&quot;text&quot;</span> name<span class="sy0">=</span><span class="st0">&quot;comment&quot;</span> value<span class="sy0">=</span><span class="st0">&quot;&quot;</span><span class="sy0">&gt;</span>
+        <span class="sy0">&lt;</span>input type<span class="sy0">=</span><span class="st0">&quot;submit&quot;</span> name<span class="sy0">=</span><span class="st0">&quot;submit&quot;</span> value<span class="sy0">=</span><span class="st0">&quot;OK&quot;</span><span class="sy0">&gt;</span>
+    <span class="sy0">&lt;/</span>form<span class="sy0">&gt;</span>
+    <span class="br0">&#123;</span><span class="br0">&#123;</span> <span class="re0">$msg</span> <span class="br0">&#125;</span><span class="br0">&#125;</span>
+<span class="sy0">&lt;/</span>body<span class="sy0">&gt;</span>
+<span class="sy0">&lt;/</span>html<span class="sy0">&gt;</span></pre>
+</dd></dl>
+
+<p>
+Và giờ ta chạy Functional Testing để kiểm tra kịch bản chạy có pass được hết hay không.
 </p>
 <pre class="code">// Chạy tất cả các file Functional Testing
 $ php codecept.phar run functional 
+
 // Chạy 1 Functional Testing
-$ php codecept.phar run functional ContactCept</pre>
+$ php codecept.phar run functional ContactCept
+
+// Chạy 1 Functional Testing theo từng bước trong kịch bản
+$ php codecept.phar run functional ContactCept --steps
+</pre>
+
+<p>
+<a href="/lib/exe/detail.php?id=testing&amp;media=capture_2015_08_28_09_08_29_282.png" class="media" title="capture_2015_08_28_09_08_29_282.png"><img src="/lib/exe/fetch.php?media=capture_2015_08_28_09_08_29_282.png" class="media" title="Fail Functional Testing" alt="Fail Functional Testing" /></a>
+Demo chạy functional test bị lỗi. Khi pass test sẽ có dạng như sau :
+</p>
+
+<p>
+<a href="/lib/exe/detail.php?id=testing&amp;media=capture_2015_08_28_09_23_37_673.png" class="media" title="capture_2015_08_28_09_23_37_673.png"><img src="/lib/exe/fetch.php?media=capture_2015_08_28_09_23_37_673.png" class="media" title="Success Functional Testing" alt="Success Functional Testing" /></a>
+</p>
 
 </div>
-<!-- EDIT56 SECTION "3.1.2 Functional Testing mẫu" [12569-] -->
+<!-- EDIT56 SECTION "3.1.2 Functional Testing mẫu" [12569-14963] -->
+<h3 class="sectionedit57" id="demo_project">3.1.4 Demo project</h3>
+<div class="level3">
+
+<p>
+Link: <a href="https://github.com/janhenkgerritsen/codeception-laravel5-sample" class="urlextern" title="https://github.com/janhenkgerritsen/codeception-laravel5-sample"  rel="nofollow">Codeception Laravel 5 Sample</a>
+</p>
+
+<p>
+Clone repo
+</p>
+<pre class="code">$ git clone https://github.com/janhenkgerritsen/codeception-laravel5-sample.git testing</pre>
+
+<p>
+Create your .env file from the example file: 
+</p>
+<pre class="code">$ cp .env.testing .env</pre>
+
+<p>
+Install composer dependencies: 
+</p>
+<pre class="code">$ composer install</pre>
+
+<p>
+Create databases by creating the following files:
+</p>
+<pre class="code">$ touch storage/database.sqlite
+$ touch storage/testing.sqlite</pre>
+
+<p>
+Run the following commands:
+</p>
+<pre class="code">$ php artisan migrate
+$ php artisan migrate --database=sqlite_testing</pre>
+
+</div>
+<!-- EDIT57 SECTION "3.1.4 Demo project" [14964-15603] -->
+<h2 class="sectionedit58" id="acceptance_test">3.2 Acceptance Test</h2>
+<div class="level2">
+
+<p>
+Acceptance Test: dùng để test giao diện , dành cho những người không biết về kỹ thuật. Công việc của Tester chỉ là viết kịch bản và theo dõi test trực tiếp trên trình duyệt. 1 Kịch bản mẫu về acceptance test:
+</p>
+<pre class="code">I WANT TO SIGN IN
+I am on page &#039;/login&#039;
+I fill field &#039;username&#039;, &#039;davert&#039;
+I fill field &#039;password&#039;, &#039;qwerty&#039;
+I click &#039;LOGIN&#039;
+I see &#039;Welcome, Davert!&#039;</pre>
+
+<p>
+Chuyển qua php như sau :
+</p>
+<pre class="code php"><span class="kw2">&lt;?php</span>
+<span class="re0">$I</span> <span class="sy0">=</span> <span class="kw2">new</span> AcceptanceTester<span class="br0">&#40;</span><span class="re0">$scenario</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">wantTo</span><span class="br0">&#40;</span><span class="st_h">'sign in'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">amOnPage</span><span class="br0">&#40;</span><span class="st_h">'/login'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">fillField</span><span class="br0">&#40;</span><span class="st_h">'username'</span><span class="sy0">,</span> <span class="st_h">'davert'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">fillField</span><span class="br0">&#40;</span><span class="st_h">'password'</span><span class="sy0">,</span> <span class="st_h">'qwerty'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">click</span><span class="br0">&#40;</span><span class="st_h">'LOGIN'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">see</span><span class="br0">&#40;</span><span class="st_h">'Welcome, Davert!'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="sy1">?&gt;</span></pre>
+
+</div>
+<!-- EDIT58 SECTION "3.2 Acceptance Test" [15604-16328] -->
+<h3 class="sectionedit59" id="php_browser">3.2.1 PHP Browser</h3>
+<div class="level3">
+
+<p>
+Nếu ta không muốn chạy trực tiếp trên trình duyệt ta có thể dùng PHP Browser chạy ngầm. Để cấu hình PHP Browser ta sửa file acceptance.suite.yml như sau:
+</p>
+<pre class="code java">class_name<span class="sy0">:</span> AcceptanceTester
+modules<span class="sy0">:</span>
+    enabled<span class="sy0">:</span>
+        <span class="sy0">-</span> PhpBrowser<span class="sy0">:</span>
+            url<span class="sy0">:</span> http<span class="sy0">:</span><span class="co1">//demo.app</span>
+        <span class="sy0">-</span> \Helper\Acceptance</pre>
+
+<p>
+Chạy lệnh build để load cấu hình
+</p>
+<pre class="code">$ php codecept.phar build</pre>
+
+<p>
+Ta tạo 1 file kịch bản giống như trên ( functional Test) /tests/acceptance/ContactCept.php
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=testing&amp;codeblock=65" title="Download Snippet" class="mediafile mf_php">ContactCept.php</a></dt>
+<dd><pre class="code file php"><span class="re0">$I</span> <span class="sy0">=</span> <span class="kw2">new</span> AcceptanceTester<span class="br0">&#40;</span><span class="re0">$scenario</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">amOnPage</span><span class="br0">&#40;</span><span class="st_h">'/contact'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">submitForm</span><span class="br0">&#40;</span><span class="st_h">'.contact-form'</span><span class="sy0">,</span> <span class="br0">&#91;</span>
+    <span class="st_h">'name'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Mario Basic'</span><span class="sy0">,</span>
+    <span class="st_h">'email'</span> <span class="sy0">=&gt;</span> <span class="st_h">'test@test.com'</span><span class="sy0">,</span>
+    <span class="st_h">'comment'</span> <span class="sy0">=&gt;</span> <span class="st_h">'This is a codeception test email.'</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">seeCurrentUrlEquals</span><span class="br0">&#40;</span><span class="st_h">'/contact'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$I</span><span class="sy0">-&gt;</span><span class="me1">see</span><span class="br0">&#40;</span><span class="st_h">'Message sent!'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+</dd></dl>
+
+<p>
+Bắt đầu test:
+</p>
+<pre class="code">$ php codecept.phar run acceptance ContactCept</pre>
+
+</div>
+<!-- EDIT59 SECTION "3.2.1 PHP Browser" [16329-17284] -->
+<h3 class="sectionedit60" id="selenium_server_phantom_js">3.2.2 Selenium Server &amp; Phantom JS</h3>
+<div class="level3">
+
+<p>
+Để chạy testing trên trình duyệt ta phải cài đặt 1 server selenium, 1 webdriver PhantomJS.
+</p>
+<blockquote><div class="no">
+Selenium automates browsers. That&#039;s it! What you do with that power is entirely up to you. Primarily, it is for automating web applications for testing purposes, but is certainly not limited to just that. Boring web-based administration tasks can (and should!) also be automated as well.</div></blockquote>
+
+<p>
+Download Selenium Server vào trong thư mục root của app:
+</p>
+
+<p>
+<a href="http://goo.gl/yLJLZg" class="urlextern" title="http://goo.gl/yLJLZg"  rel="nofollow">Selenium Server</a>
+</p>
+<blockquote><div class="no">
+PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol. It allows you to run Selenium tests on a server without a <abbr title="Graphical User Interface">GUI</abbr> installed.</div></blockquote>
+
+<p>
+Download &amp; Install PhantomJS :
+</p>
+
+<p>
+<a href="http://phantomjs.org/download.html" class="urlextern" title="http://phantomjs.org/download.html"  rel="nofollow">PhantomJS</a>
+</p>
+
+</div>
+<!-- EDIT60 SECTION "3.2.2 Selenium Server & Phantom JS" [17285-] -->

@@ -479,7 +479,7 @@ $ php codecept.phar generate:cept acceptance Welcome
 <code>
 $ php codecept.phar generate:cept functional Contact  
 </code>
-Thêm module laravel5 vào function test: cập nhật nội dung file functional.suite.yml
+Cập nhật nội dung file functional.suite.yml: thêm module laravel5 vào function test
 <file yml function.suite.yml>
 class_name: FunctionalTester  
 modules:  
@@ -501,13 +501,13 @@ Nội dung cần test có kịch bản như sau:
 Functional Testing được viết như sau:
 <file php ContactCept.php>
 <?php
-
-$I = new FunctionalTester($scenario);
-
+ $I = new FunctionalTester($scenario);
+ 
 $I->am('guest');
-$I->wantTo('send email using contact form');
+$I->wantTo('send email using contact form.');
 
-$I->amOnPage('/');
+$I->amOnPage('/contact');
+
 $I->submitForm('.contact-form', [
     'name' => 'Mario Basic',
     'email' => 'test@test.com',
@@ -515,21 +515,168 @@ $I->submitForm('.contact-form', [
 ]);
 $I->seeCurrentUrlEquals('/contact');
 $I->see('Message sent!');
-
-$I->amOnPage('/');
-$I->submitForm('.contact-form', [
-    'name' => 'Mario Basic',
-    'email' => 'testtest.com',
-    'comment' => 'This is a codeception test email.'
-]);
-$I->seeCurrentUrlEquals('/contact');
-$I->see('Error sending your message.');
 </file>
 
-Chạy Functional Testing 
+Ta chuẩn 2 file source code như sau:
+1. File Contact Controller:
+<file php ContactController.php>
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+class ContactController extends Controller
+{
+    public function getIndex()
+    {
+        return view('contact.index', ['msg' => '']);
+    }
+
+    public function postIndex() {
+        return view('contact.index', ['msg' => 'Message sent!']);
+    }
+</file>
+
+2. File contact view :
+<file php index.blade.php>
+<!DOCTYPE>
+<html>
+<title>Demo Functional Testing</title>
+<body>
+    <form action="" method="post" accept-charset="utf-8" class="contact-form">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <input type="text" name="name" value="" placeholder="">
+        <input type="email" name="email" value="">
+        <input type="text" name="comment" value="">
+        <input type="submit" name="submit" value="OK">
+    </form>
+    {{ $msg }}
+</body>
+</html>
+</file>
+
+
+Và giờ ta chạy Functional Testing để kiểm tra kịch bản chạy có pass được hết hay không.
 <code>
 // Chạy tất cả các file Functional Testing
 $ php codecept.phar run functional 
+
 // Chạy 1 Functional Testing
 $ php codecept.phar run functional ContactCept
+
+// Chạy 1 Functional Testing theo từng bước trong kịch bản
+$ php codecept.phar run functional ContactCept --steps
+
 </code>
+
+{{::capture_2015_08_28_09_08_29_282.png|Fail Functional Testing}}
+Demo chạy functional test bị lỗi. Khi pass test sẽ có dạng như sau :
+
+{{:capture_2015_08_28_09_23_37_673.png|Success Functional Testing}}
+
+==== 3.1.4 Demo project ====
+
+Link: [[https://github.com/janhenkgerritsen/codeception-laravel5-sample|Codeception Laravel 5 Sample]]
+
+Clone repo
+<code>
+$ git clone https://github.com/janhenkgerritsen/codeception-laravel5-sample.git testing
+</code>
+Create your .env file from the example file: 
+<code>
+$ cp .env.testing .env
+</code>
+Install composer dependencies: 
+<code>
+$ composer install
+</code>
+Create databases by creating the following files:
+<code>
+$ touch storage/database.sqlite
+$ touch storage/testing.sqlite
+</code>
+Run the following commands:
+<code>
+$ php artisan migrate
+$ php artisan migrate --database=sqlite_testing
+</code>
+
+===== 3.2 Acceptance Test =====
+
+Acceptance Test: dùng để test giao diện , dành cho những người không biết về kỹ thuật. Công việc của Tester chỉ là viết kịch bản và theo dõi test trực tiếp trên trình duyệt. 1 Kịch bản mẫu về acceptance test:
+<code>
+I WANT TO SIGN IN
+I am on page '/login'
+I fill field 'username', 'davert'
+I fill field 'password', 'qwerty'
+I click 'LOGIN'
+I see 'Welcome, Davert!'
+</code>
+
+Chuyển qua php như sau :
+<code php>
+<?php
+$I = new AcceptanceTester($scenario);
+$I->wantTo('sign in');
+$I->amOnPage('/login');
+$I->fillField('username', 'davert');
+$I->fillField('password', 'qwerty');
+$I->click('LOGIN');
+$I->see('Welcome, Davert!');
+?>
+</code>
+
+==== 3.2.1 PHP Browser ====
+Nếu ta không muốn chạy trực tiếp trên trình duyệt ta có thể dùng PHP Browser chạy ngầm. Để cấu hình PHP Browser ta sửa file acceptance.suite.yml như sau:
+<code java>
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - PhpBrowser:
+            url: http://demo.app
+        - \Helper\Acceptance
+</code>
+
+Chạy lệnh build để load cấu hình
+<code>
+$ php codecept.phar build
+</code>
+
+Ta tạo 1 file kịch bản giống như trên ( functional Test) /tests/acceptance/ContactCept.php
+<file php ContactCept.php>
+$I = new AcceptanceTester($scenario);
+
+$I->amOnPage('/contact');
+
+$I->submitForm('.contact-form', [
+    'name' => 'Mario Basic',
+    'email' => 'test@test.com',
+    'comment' => 'This is a codeception test email.'
+]);
+$I->seeCurrentUrlEquals('/contact');
+$I->see('Message sent!');
+</file>
+
+Bắt đầu test:
+<code>
+$ php codecept.phar run acceptance ContactCept
+</code>
+
+
+==== 3.2.2 Selenium Server & Phantom JS ====
+
+Để chạy testing trên trình duyệt ta phải cài đặt 1 server selenium, 1 webdriver PhantomJS.
+
+>Selenium automates browsers. That's it! What you do with that power is entirely up to you. Primarily, it is for automating web applications for testing purposes, but is certainly not limited to just that. Boring web-based administration tasks can (and should!) also be automated as well.
+
+Download Selenium Server vào trong thư mục root của app:
+
+[[http://goo.gl/yLJLZg|Selenium Server]]
+
+>PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol. It allows you to run Selenium tests on a server without a GUI installed.
+
+Download & Install PhantomJS :
+
+[[http://phantomjs.org/download.html|PhantomJS]]

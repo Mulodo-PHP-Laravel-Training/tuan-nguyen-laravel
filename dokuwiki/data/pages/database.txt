@@ -1,11 +1,11 @@
 ====== Laravel Database ======
 
-==== Configuration ====
+===== 1.Configuration =====
 The database configuration file is config/database.php
 
 Currently Laravel supports four database systems: MySQL, Postgres, SQLite, and SQL Server.
 
-==== Read / Write Connections ====
+==== 1.1 Read / Write Connections ====
 
 <code java>
 'mysql' => [
@@ -24,9 +24,12 @@ Currently Laravel supports four database systems: MySQL, Postgres, SQLite, and S
     'prefix'    => '',
 ],
 </code>
-===== Running Queries =====
+===== 1.2 Running Queries =====
 
-==== Running A Select Query =====
+==== 1.3 Running A Select Query =====
 <code php>
 $results = DB::select('select * from users where id = ?', [1]);
 </code>
+
+===== 2. Migration =====
+

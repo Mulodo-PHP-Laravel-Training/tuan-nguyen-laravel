@@ -1,4 +1,4 @@
-a:573:{i:0;a:3:{i:0;s:14:"document_start";i:1;a:0:{}i:2;i:0;}i:1;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:15:"Laravel Testing";i:1;i:1;i:2;i:1;}i:2;i:1;}i:2;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:1;}i:2;i:1;}i:3;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:32;}i:4;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:12:"1. Unit Test";i:1;i:1;i:2;i:32;}i:2;i:32;}i:5;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:1;}i:2;i:32;}i:6;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:60;}i:7;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:18:"1.1 Giới thiệu";i:1;i:2;i:2;i:60;}i:2;i:60;}i:8;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:2;}i:2;i:60;}i:9;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:60;}i:10;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:120:"Laravel được tích hợp sẵn PHPUnit. Sau khi cài xong Laravel bạn có thể chạy câu lệnh sau để test.";}i:2;i:92;}i:11;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:218;}i:12;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:11:"
+a:673:{i:0;a:3:{i:0;s:14:"document_start";i:1;a:0:{}i:2;i:0;}i:1;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:15:"Laravel Testing";i:1;i:1;i:2;i:1;}i:2;i:1;}i:2;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:1;}i:2;i:1;}i:3;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:32;}i:4;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:12:"1. Unit Test";i:1;i:1;i:2;i:32;}i:2;i:32;}i:5;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:1;}i:2;i:32;}i:6;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:60;}i:7;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:18:"1.1 Giới thiệu";i:1;i:2;i:2;i:60;}i:2;i:60;}i:8;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:2;}i:2;i:60;}i:9;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:60;}i:10;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:120:"Laravel được tích hợp sẵn PHPUnit. Sau khi cài xong Laravel bạn có thể chạy câu lệnh sau để test.";}i:2;i:92;}i:11;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:218;}i:12;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:11:"
 $ phpunit
 ";i:1;N;i:2;N;}i:2;i:218;}i:13;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:218;}i:14;a:3:{i:0;s:13:"internalmedia";i:1;a:7:{i:0;s:48:":php:laravel:capture_2015_08_27_13_38_38_794.png";i:1;s:0:"";i:2;N;i:3;N;i:4;N;i:5;s:5:"cache";i:6;s:7:"details";}i:2;i:239;}i:15;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:292;}i:16;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:294;}i:17;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:32:"1.2 Định nghĩa & chạy Test";i:1;i:2;i:2;i:294;}i:2;i:294;}i:18;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:2;}i:2;i:294;}i:19;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:294;}i:20;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:116:"Các file test được đặt trong thư mục /tests, và thường được extend từ class TestCase. Ví dụ:";}i:2;i:340;}i:21;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:456;}i:22;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:125:"
 class FooTest extends TestCase {
@@ -220,7 +220,7 @@ $ php codecept.phar bootstrap
 $ php codecept.phar generate:cept acceptance Welcome
 ";i:1;N;i:2;N;}i:2;i:11246;}i:499;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:11310;}i:500;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:42:"3. Acceptance Testing & Functional Testing";i:1;i:1;i:2;i:11310;}i:2;i:11310;}i:501;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:1;}i:2;i:11310;}i:502;a:3:{i:0;s:10:"quote_open";i:1;a:0:{}i:2;i:11367;}i:503;a:3:{i:0;s:11:"strong_open";i:1;a:0:{}i:2;i:11369;}i:504;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:18:"Acceptance testing";}i:2;i:11371;}i:505;a:3:{i:0;s:12:"strong_close";i:1;a:0:{}i:2;i:11389;}i:506;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:252:" can be performed by a non-technical person. That person can be your tester, manager or even client. If you are developing a web-application (and probably you are) the tester needs nothing more than a web browser to check that your site works correctly";}i:2;i:11391;}i:507;a:3:{i:0;s:11:"quote_close";i:1;a:0:{}i:2;i:11643;}i:508;a:3:{i:0;s:10:"quote_open";i:1;a:0:{}i:2;i:11644;}i:509;a:3:{i:0;s:11:"strong_open";i:1;a:0:{}i:2;i:11646;}i:510;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:18:"Functional testing";}i:2;i:11648;}i:511;a:3:{i:0;s:12:"strong_close";i:1;a:0:{}i:2;i:11666;}i:512;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:380:": Now that we've written some acceptance tests, functional tests are almost the same, with just one major difference: functional tests don't require a web server to run tests. In simple terms we set $_REQUEST, $_GET and $_POST variables and then we execute application from a test. This may be valuable as functional tests are faster and provide detailed stack traces on failures.";}i:2;i:11668;}i:513;a:3:{i:0;s:11:"quote_close";i:1;a:0:{}i:2;i:12048;}i:514;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:12049;}i:515;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:22:"3.1 Functional Testing";i:1;i:2;i:2;i:12049;}i:2;i:12049;}i:516;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:2;}i:2;i:12049;}i:517;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:12084;}i:518;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:36:"3.1.1 Cấu hình Functional Testing";i:1;i:3;i:2;i:12084;}i:2;i:12084;}i:519;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:3;}i:2;i:12084;}i:520;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:12084;}i:521;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:65:"Để tạo 1 functional Contact Testing , ta chạy command sau:";}i:2;i:12131;}i:522;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:12202;}i:523;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:56:"
 $ php codecept.phar generate:cept functional Contact  
-";i:1;N;i:2;N;}i:2;i:12202;}i:524;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:12202;}i:525;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:91:"Thêm module laravel5 vào function test: cập nhật nội dung file functional.suite.yml";}i:2;i:12267;}i:526;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:12364;}i:527;a:3:{i:0;s:4:"file";i:1;a:3:{i:0;s:105:"
+";i:1;N;i:2;N;}i:2;i:12202;}i:524;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:12202;}i:525;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:91:"Cập nhật nội dung file functional.suite.yml: thêm module laravel5 vào function test";}i:2;i:12267;}i:526;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:12364;}i:527;a:3:{i:0;s:4:"file";i:1;a:3:{i:0;s:105:"
 class_name: FunctionalTester  
 modules:  
     enabled: 
@@ -228,15 +228,15 @@ modules:
         - \Helper\Functional
 ";i:1;s:3:"yml";i:2;s:18:"function.suite.yml";}i:2;i:12364;}i:528;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:12364;}i:529;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:23:"Build lại codeception";}i:2;i:12502;}i:530;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:12531;}i:531;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:29:"
 $ php codecept.phar build  
-";i:1;N;i:2;N;}i:2;i:12531;}i:532;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:12569;}i:533;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:30:"3.1.2 Functional Testing mẫu";i:1;i:3;i:2;i:12569;}i:2;i:12569;}i:534;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:3;}i:2;i:12569;}i:535;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:12569;}i:536;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:48:"Nội dung cần test có kịch bản như sau:";}i:2;i:12610;}i:537;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:12658;}i:538;a:3:{i:0;s:10:"listu_open";i:1;a:0:{}i:2;i:12658;}i:539;a:3:{i:0;s:13:"listitem_open";i:1;a:1:{i:0;i:1;}i:2;i:12658;}i:540;a:3:{i:0;s:16:"listcontent_open";i:1;a:0:{}i:2;i:12658;}i:541;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:29:" Tôi đang ở trang contact";}i:2;i:12662;}i:542;a:3:{i:0;s:17:"listcontent_close";i:1;a:0:{}i:2;i:12691;}i:543;a:3:{i:0;s:14:"listitem_close";i:1;a:0:{}i:2;i:12691;}i:544;a:3:{i:0;s:13:"listitem_open";i:1;a:1:{i:0;i:1;}i:2;i:12691;}i:545;a:3:{i:0;s:16:"listcontent_open";i:1;a:0:{}i:2;i:12691;}i:546;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:75:" Tôi điền đúng thông tin vào form contact :name, email and comment.";}i:2;i:12695;}i:547;a:3:{i:0;s:17:"listcontent_close";i:1;a:0:{}i:2;i:12770;}i:548;a:3:{i:0;s:14:"listitem_close";i:1;a:0:{}i:2;i:12770;}i:549;a:3:{i:0;s:13:"listitem_open";i:1;a:1:{i:0;i:1;}i:2;i:12770;}i:550;a:3:{i:0;s:16:"listcontent_open";i:1;a:0:{}i:2;i:12770;}i:551;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:24:" Tôi nhấn nút submit";}i:2;i:12774;}i:552;a:3:{i:0;s:17:"listcontent_close";i:1;a:0:{}i:2;i:12798;}i:553;a:3:{i:0;s:14:"listitem_close";i:1;a:0:{}i:2;i:12798;}i:554;a:3:{i:0;s:13:"listitem_open";i:1;a:1:{i:0;i:1;}i:2;i:12798;}i:555;a:3:{i:0;s:16:"listcontent_open";i:1;a:0:{}i:2;i:12798;}i:556;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:54:" Tôi vẫn ở trang contact và tôi thấy message ";}i:2;i:12802;}i:557;a:3:{i:0;s:18:"doublequoteopening";i:1;a:0:{}i:2;i:12856;}i:558;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:13:"Message sent!";}i:2;i:12857;}i:559;a:3:{i:0;s:18:"doublequoteclosing";i:1;a:0:{}i:2;i:12870;}i:560;a:3:{i:0;s:17:"listcontent_close";i:1;a:0:{}i:2;i:12871;}i:561;a:3:{i:0;s:14:"listitem_close";i:1;a:0:{}i:2;i:12871;}i:562;a:3:{i:0;s:11:"listu_close";i:1;a:0:{}i:2;i:12871;}i:563;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:12871;}i:564;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:44:"Functional Testing được viết như sau:";}i:2;i:12872;}i:565;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:12922;}i:566;a:3:{i:0;s:4:"file";i:1;a:3:{i:0;s:592:"
+";i:1;N;i:2;N;}i:2;i:12531;}i:532;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:12569;}i:533;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:30:"3.1.2 Functional Testing mẫu";i:1;i:3;i:2;i:12569;}i:2;i:12569;}i:534;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:3;}i:2;i:12569;}i:535;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:12569;}i:536;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:48:"Nội dung cần test có kịch bản như sau:";}i:2;i:12610;}i:537;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:12658;}i:538;a:3:{i:0;s:10:"listu_open";i:1;a:0:{}i:2;i:12658;}i:539;a:3:{i:0;s:13:"listitem_open";i:1;a:1:{i:0;i:1;}i:2;i:12658;}i:540;a:3:{i:0;s:16:"listcontent_open";i:1;a:0:{}i:2;i:12658;}i:541;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:29:" Tôi đang ở trang contact";}i:2;i:12662;}i:542;a:3:{i:0;s:17:"listcontent_close";i:1;a:0:{}i:2;i:12691;}i:543;a:3:{i:0;s:14:"listitem_close";i:1;a:0:{}i:2;i:12691;}i:544;a:3:{i:0;s:13:"listitem_open";i:1;a:1:{i:0;i:1;}i:2;i:12691;}i:545;a:3:{i:0;s:16:"listcontent_open";i:1;a:0:{}i:2;i:12691;}i:546;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:75:" Tôi điền đúng thông tin vào form contact :name, email and comment.";}i:2;i:12695;}i:547;a:3:{i:0;s:17:"listcontent_close";i:1;a:0:{}i:2;i:12770;}i:548;a:3:{i:0;s:14:"listitem_close";i:1;a:0:{}i:2;i:12770;}i:549;a:3:{i:0;s:13:"listitem_open";i:1;a:1:{i:0;i:1;}i:2;i:12770;}i:550;a:3:{i:0;s:16:"listcontent_open";i:1;a:0:{}i:2;i:12770;}i:551;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:24:" Tôi nhấn nút submit";}i:2;i:12774;}i:552;a:3:{i:0;s:17:"listcontent_close";i:1;a:0:{}i:2;i:12798;}i:553;a:3:{i:0;s:14:"listitem_close";i:1;a:0:{}i:2;i:12798;}i:554;a:3:{i:0;s:13:"listitem_open";i:1;a:1:{i:0;i:1;}i:2;i:12798;}i:555;a:3:{i:0;s:16:"listcontent_open";i:1;a:0:{}i:2;i:12798;}i:556;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:54:" Tôi vẫn ở trang contact và tôi thấy message ";}i:2;i:12802;}i:557;a:3:{i:0;s:18:"doublequoteopening";i:1;a:0:{}i:2;i:12856;}i:558;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:13:"Message sent!";}i:2;i:12857;}i:559;a:3:{i:0;s:18:"doublequoteclosing";i:1;a:0:{}i:2;i:12870;}i:560;a:3:{i:0;s:17:"listcontent_close";i:1;a:0:{}i:2;i:12871;}i:561;a:3:{i:0;s:14:"listitem_close";i:1;a:0:{}i:2;i:12871;}i:562;a:3:{i:0;s:11:"listu_close";i:1;a:0:{}i:2;i:12871;}i:563;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:12871;}i:564;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:44:"Functional Testing được viết như sau:";}i:2;i:12872;}i:565;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:12922;}i:566;a:3:{i:0;s:4:"file";i:1;a:3:{i:0;s:354:"
 <?php
-
-$I = new FunctionalTester($scenario);
-
+ $I = new FunctionalTester($scenario);
+ 
 $I->am('guest');
-$I->wantTo('send email using contact form');
+$I->wantTo('send email using contact form.');
 
-$I->amOnPage('/');
+$I->amOnPage('/contact');
+
 $I->submitForm('.contact-form', [
     'name' => 'Mario Basic',
     'email' => 'test@test.com',
@@ -244,18 +244,101 @@ $I->submitForm('.contact-form', [
 ]);
 $I->seeCurrentUrlEquals('/contact');
 $I->see('Message sent!');
+";i:1;s:3:"php";i:2;s:15:"ContactCept.php";}i:2;i:12922;}i:567;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:12922;}i:568;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:67:"Ta chuẩn 2 file source code như sau:
+1. File Contact Controller:";}i:2;i:13306;}i:569;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:13379;}i:570;a:3:{i:0;s:4:"file";i:1;a:3:{i:0;s:373:"
+namespace App\Http\Controllers;
 
-$I->amOnPage('/');
+use Illuminate\Http\Request;
+
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+class ContactController extends Controller
+{
+    public function getIndex()
+    {
+        return view('contact.index', ['msg' => '']);
+    }
+
+    public function postIndex() {
+        return view('contact.index', ['msg' => 'Message sent!']);
+    }
+";i:1;s:3:"php";i:2;s:21:"ContactController.php";}i:2;i:13379;}i:571;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:13379;}i:572;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:22:"2. File contact view :";}i:2;i:13788;}i:573;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:13816;}i:574;a:3:{i:0;s:4:"file";i:1;a:3:{i:0;s:480:"
+<!DOCTYPE>
+<html>
+<title>Demo Functional Testing</title>
+<body>
+    <form action="" method="post" accept-charset="utf-8" class="contact-form">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <input type="text" name="name" value="" placeholder="">
+        <input type="email" name="email" value="">
+        <input type="text" name="comment" value="">
+        <input type="submit" name="submit" value="OK">
+    </form>
+    {{ $msg }}
+</body>
+</html>
+";i:1;s:3:"php";i:2;s:15:"index.blade.php";}i:2;i:13816;}i:575;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:13816;}i:576;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:111:"Và giờ ta chạy Functional Testing để kiểm tra kịch bản chạy có pass được hết hay không.";}i:2;i:14327;}i:577;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:14444;}i:578;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:293:"
+// Chạy tất cả các file Functional Testing
+$ php codecept.phar run functional 
+
+// Chạy 1 Functional Testing
+$ php codecept.phar run functional ContactCept
+
+// Chạy 1 Functional Testing theo từng bước trong kịch bản
+$ php codecept.phar run functional ContactCept --steps
+
+";i:1;N;i:2;N;}i:2;i:14444;}i:579;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:14444;}i:580;a:3:{i:0;s:13:"internalmedia";i:1;a:7:{i:0;s:37:"::capture_2015_08_28_09_08_29_282.png";i:1;s:23:"Fail Functional Testing";i:2;N;i:3;N;i:4;N;i:5;s:5:"cache";i:6;s:7:"details";}i:2;i:14747;}i:581;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:81:"
+Demo chạy functional test bị lỗi. Khi pass test sẽ có dạng như sau :";}i:2;i:14812;}i:582;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:14893;}i:583;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:14893;}i:584;a:3:{i:0;s:13:"internalmedia";i:1;a:7:{i:0;s:36:":capture_2015_08_28_09_23_37_673.png";i:1;s:26:"Success Functional Testing";i:2;N;i:3;N;i:4;N;i:5;s:5:"cache";i:6;s:7:"details";}i:2;i:14895;}i:585;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:14962;}i:586;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:14964;}i:587;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:18:"3.1.4 Demo project";i:1;i:3;i:2;i:14964;}i:2;i:14964;}i:588;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:3;}i:2;i:14964;}i:589;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:14964;}i:590;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:6:"Link: ";}i:2;i:14994;}i:591;a:3:{i:0;s:12:"externallink";i:1;a:2:{i:0;s:63:"https://github.com/janhenkgerritsen/codeception-laravel5-sample";i:1;s:28:"Codeception Laravel 5 Sample";}i:2;i:15000;}i:592;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:15096;}i:593;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:15096;}i:594;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:10:"Clone repo";}i:2;i:15098;}i:595;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:15114;}i:596;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:89:"
+$ git clone https://github.com/janhenkgerritsen/codeception-laravel5-sample.git testing
+";i:1;N;i:2;N;}i:2;i:15114;}i:597;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:15114;}i:598;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:45:"Create your .env file from the example file: ";}i:2;i:15212;}i:599;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:15263;}i:600;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:24:"
+$ cp .env.testing .env
+";i:1;N;i:2;N;}i:2;i:15263;}i:601;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:15263;}i:602;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:31:"Install composer dependencies: ";}i:2;i:15296;}i:603;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:15333;}i:604;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:20:"
+$ composer install
+";i:1;N;i:2;N;}i:2;i:15333;}i:605;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:15333;}i:606;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:49:"Create databases by creating the following files:";}i:2;i:15362;}i:607;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:15417;}i:608;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:64:"
+$ touch storage/database.sqlite
+$ touch storage/testing.sqlite
+";i:1;N;i:2;N;}i:2;i:15417;}i:609;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:15417;}i:610;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:27:"Run the following commands:";}i:2;i:15490;}i:611;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:15523;}i:612;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:71:"
+$ php artisan migrate
+$ php artisan migrate --database=sqlite_testing
+";i:1;N;i:2;N;}i:2;i:15523;}i:613;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:15604;}i:614;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:19:"3.2 Acceptance Test";i:1;i:2;i:2;i:15604;}i:2;i:15604;}i:615;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:2;}i:2;i:15604;}i:616;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:15604;}i:617;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:261:"Acceptance Test: dùng để test giao diện , dành cho những người không biết về kỹ thuật. Công việc của Tester chỉ là viết kịch bản và theo dõi test trực tiếp trên trình duyệt. 1 Kịch bản mẫu về acceptance test:";}i:2;i:15637;}i:618;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:15904;}i:619;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:150:"
+I WANT TO SIGN IN
+I am on page '/login'
+I fill field 'username', 'davert'
+I fill field 'password', 'qwerty'
+I click 'LOGIN'
+I see 'Welcome, Davert!'
+";i:1;N;i:2;N;}i:2;i:15904;}i:620;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:15904;}i:621;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:27:"Chuyển qua php như sau :";}i:2;i:16064;}i:622;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:16097;}i:623;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:218:"
+<?php
+$I = new AcceptanceTester($scenario);
+$I->wantTo('sign in');
+$I->amOnPage('/login');
+$I->fillField('username', 'davert');
+$I->fillField('password', 'qwerty');
+$I->click('LOGIN');
+$I->see('Welcome, Davert!');
+?>
+";i:1;s:3:"php";i:2;N;}i:2;i:16097;}i:624;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:16329;}i:625;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:17:"3.2.1 PHP Browser";i:1;i:3;i:2;i:16329;}i:2;i:16329;}i:626;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:3;}i:2;i:16329;}i:627;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:16329;}i:628;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:185:"Nếu ta không muốn chạy trực tiếp trên trình duyệt ta có thể dùng PHP Browser chạy ngầm. Để cấu hình PHP Browser ta sửa file acceptance.suite.yml như sau:";}i:2;i:16357;}i:629;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:16548;}i:630;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:136:"
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - PhpBrowser:
+            url: http://demo.app
+        - \Helper\Acceptance
+";i:1;s:4:"java";i:2;N;}i:2;i:16548;}i:631;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:16548;}i:632;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:42:"Chạy lệnh build để load cấu hình";}i:2;i:16699;}i:633;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:16747;}i:634;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:27:"
+$ php codecept.phar build
+";i:1;N;i:2;N;}i:2;i:16747;}i:635;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:16747;}i:636;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:100:"Ta tạo 1 file kịch bản giống như trên ( functional Test) /tests/acceptance/ContactCept.php";}i:2;i:16784;}i:637;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:16890;}i:638;a:3:{i:0;s:4:"file";i:1;a:3:{i:0;s:282:"
+$I = new AcceptanceTester($scenario);
+
+$I->amOnPage('/contact');
+
 $I->submitForm('.contact-form', [
     'name' => 'Mario Basic',
-    'email' => 'testtest.com',
+    'email' => 'test@test.com',
     'comment' => 'This is a codeception test email.'
 ]);
 $I->seeCurrentUrlEquals('/contact');
-$I->see('Error sending your message.');
-";i:1;s:3:"php";i:2;s:15:"ContactCept.php";}i:2;i:12922;}i:567;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:12922;}i:568;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:26:"Chạy Functional Testing ";}i:2;i:13544;}i:569;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:13576;}i:570;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:165:"
-// Chạy tất cả các file Functional Testing
-$ php codecept.phar run functional 
-// Chạy 1 Functional Testing
-$ php codecept.phar run functional ContactCept
-";i:1;N;i:2;N;}i:2;i:13576;}i:571;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:13749;}i:572;a:3:{i:0;s:12:"document_end";i:1;a:0:{}i:2;i:13749;}}
+$I->see('Message sent!');
+";i:1;s:3:"php";i:2;s:15:"ContactCept.php";}i:2;i:16890;}i:639;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:16890;}i:640;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:18:"Bắt đầu test:";}i:2;i:17202;}i:641;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:17226;}i:642;a:3:{i:0;s:4:"code";i:1;a:3:{i:0;s:48:"
+$ php codecept.phar run acceptance ContactCept
+";i:1;N;i:2;N;}i:2;i:17226;}i:643;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:17285;}i:644;a:3:{i:0;s:6:"header";i:1;a:3:{i:0;s:34:"3.2.2 Selenium Server & Phantom JS";i:1;i:3;i:2;i:17285;}i:2;i:17285;}i:645;a:3:{i:0;s:12:"section_open";i:1;a:1:{i:0;i:3;}i:2;i:17285;}i:646;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:17285;}i:647;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:105:"Để chạy testing trên trình duyệt ta phải cài đặt 1 server selenium, 1 webdriver PhantomJS.";}i:2;i:17331;}i:648;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:17437;}i:649;a:3:{i:0;s:10:"quote_open";i:1;a:0:{}i:2;i:17437;}i:650;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:287:"Selenium automates browsers. That's it! What you do with that power is entirely up to you. Primarily, it is for automating web applications for testing purposes, but is certainly not limited to just that. Boring web-based administration tasks can (and should!) also be automated as well.";}i:2;i:17439;}i:651;a:3:{i:0;s:11:"quote_close";i:1;a:0:{}i:2;i:17726;}i:652;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:17726;}i:653;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:62:"Download Selenium Server vào trong thư mục root của app:";}i:2;i:17728;}i:654;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:17790;}i:655;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:17790;}i:656;a:3:{i:0;s:12:"externallink";i:1;a:2:{i:0;s:20:"http://goo.gl/yLJLZg";i:1;s:15:"Selenium Server";}i:2;i:17792;}i:657;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:0:"";}i:2;i:17832;}i:658;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:17833;}i:659;a:3:{i:0;s:10:"quote_open";i:1;a:0:{}i:2;i:17833;}i:660;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:153:"PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol. It allows you to run Selenium tests on a server without a ";}i:2;i:17835;}i:661;a:3:{i:0;s:7:"acronym";i:1;a:1:{i:0;s:3:"GUI";}i:2;i:17988;}i:662;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:11:" installed.";}i:2;i:17991;}i:663;a:3:{i:0;s:11:"quote_close";i:1;a:0:{}i:2;i:18002;}i:664;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:18002;}i:665;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:30:"Download & Install PhantomJS :";}i:2;i:18004;}i:666;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:18034;}i:667;a:3:{i:0;s:6:"p_open";i:1;a:0:{}i:2;i:18034;}i:668;a:3:{i:0;s:12:"externallink";i:1;a:2:{i:0;s:34:"http://phantomjs.org/download.html";i:1;s:9:"PhantomJS";}i:2;i:18036;}i:669;a:3:{i:0;s:5:"cdata";i:1;a:1:{i:0;s:0:"";}i:2;i:18084;}i:670;a:3:{i:0;s:7:"p_close";i:1;a:0:{}i:2;i:18084;}i:671;a:3:{i:0;s:13:"section_close";i:1;a:0:{}i:2;i:18084;}i:672;a:3:{i:0;s:12:"document_end";i:1;a:0:{}i:2;i:18084;}}
