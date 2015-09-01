@@ -1,9 +1,7 @@
 1440574749	192.168.10.1	C	laravel	admin	created	
 1440574997	192.168.10.1	C	indexmenu	admin	created	
 1440575159	192.168.10.1	D	laravel	admin	removed	
-1440338651	127.0.0.1	E	playground:playground		external edit	
 1440575179	192.168.10.1	D	playground:playground	admin	removed	
-1440338246	127.0.0.1	E	wiki:welcome		external edit	
 1440575189	192.168.10.1	D	wiki:welcome	admin	removed	
 1440575314	192.168.10.1	C	artisan	admin	created	
 1440575420	192.168.10.1	C	laravel	admin	created	
@@ -38,3 +36,18 @@
 1440754418	192.168.10.1	E	testing	admin	[3.1.1 Cấu hình Functional Testing] 	
 1440755686	192.168.10.1	E	homestead	admin	[Install Homestead on Windows] 	
 1440756376	192.168.10.1	E	testing	admin	[3.2.1 PHP Browser] 	
+1440988877	192.168.10.1	E	testing	admin	[3.2.2 Selenium Server & Phantom JS] 	
+1440989020	192.168.10.1	E	testing	admin	[1.1 Giới thiệu] 	
+1440989581	192.168.10.1	E	homestead	admin	[Install Homestead on Windows] 	
+1440989826	192.168.10.1	E	homestead	admin	[Install Homestead on Windows] 	
+1440996364	192.168.10.1	E	homestead	admin	[Install Homestead on Windows] 	
+1440996450	192.168.10.1	E	homestead	admin	[Destroy homestead] 	
+1441074747	192.168.10.1	E	testing	admin	[Các bước chạy Acceptance Test với Selenium] 	
+1441074836	192.168.10.1	E	testing	admin	[Create a VNC Service File] 	
+1441075368	192.168.10.1	E	testing	admin	[Create a VNC Service File] 	
+1441075639	192.168.10.1	E	testing	admin	[Create a VNC Service File] 	
+1441080058	192.168.10.1	E	testing	admin	[3.2.1 PHP Browser] 	
+1441080150	192.168.10.1	E	testing	admin	[3.2.1 PHP Browser] 	
+1441080220	192.168.10.1	E	testing	admin	[3.2.2 Selenium Server & Phantom JS] 	
+1441080359	192.168.10.1	E	testing	admin	[Create a VNC Service File] 	
+1441080765	192.168.10.1	E	testing	admin	[Create a VNC Service File] 	

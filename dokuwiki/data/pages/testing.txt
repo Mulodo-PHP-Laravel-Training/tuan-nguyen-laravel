@@ -9,7 +9,7 @@ Laravel được tích hợp sẵn PHPUnit. Sau khi cài xong Laravel bạn có 
 $ phpunit
 </code>
 
-{{:php:laravel:capture_2015_08_27_13_38_38_794.png|}}
+{{:capture_2015_08_27_13_38_38_794.png|PHP Unit}}
 
 ===== 1.2 Định nghĩa & chạy Test =====
 
@@ -659,7 +659,7 @@ $I->seeCurrentUrlEquals('/contact');
 $I->see('Message sent!');
 </file>
 
-Bắt đầu test:
+Bắt đầu test: ( trước đó ta phải cài đặt desktop, Selenium server , java, firefox ) . Lệnh test này phải được chạy trong bên trong màn hình desktop.
 <code>
 $ php codecept.phar run acceptance ContactCept
 </code>
@@ -667,7 +667,7 @@ $ php codecept.phar run acceptance ContactCept
 
 ==== 3.2.2 Selenium Server & Phantom JS ====
 
-Để chạy testing trên trình duyệt ta phải cài đặt 1 server selenium, 1 webdriver PhantomJS.
+Để chạy testing trên trình duyệt ta phải cài đặt 1 server selenium hoặc 1 webdriver PhantomJS[optional].
 
 >Selenium automates browsers. That's it! What you do with that power is entirely up to you. Primarily, it is for automating web applications for testing purposes, but is certainly not limited to just that. Boring web-based administration tasks can (and should!) also be automated as well.
 
@@ -680,3 +680,194 @@ Download Selenium Server vào trong thư mục root của app:
 Download & Install PhantomJS :
 
 [[http://phantomjs.org/download.html|PhantomJS]]
+
+
+==== Các bước chạy Acceptance Test với Selenium ====
+
+** Cài giao diện desktop cho Ubuntu **
+ - Install Desktop Environment and VNC Server
+
+<code>
+sudo apt-get update
+sudo apt-get install xfce4 xfce4-goodies tightvncserver
+</code>
+To complete the VNC server's initial configuration, use the vncserver command to set up a secure password:
+<code>
+vncserver
+</code>
+ - Configure VNC Server
+Since we are going to be changing how our VNC servers are configured, we'll need to first stop the VNC server instance that is running on port 5901:
+<code>
+vncserver -kill :1
+</code>
+
+Before we begin configuring our new xstartup file, let's back up the original in case we need it later:
+
+<code>
+mv ~/.vnc/xstartup ~/.vnc/xstartup.bak
+</code>
+
+Now we can open a new xstartup file with nano:
+
+<code>
+nano ~/.vnc/xstartup
+</code>
+
+Insert these commands into the file so that they are performed automatically whenever you start or restart your VNC server:
+
+<code>
+#!/bin/bash
+xrdb $HOME/.Xresources
+startxfce4 &
+</code>
+
+The first command in the file, xrdb $HOME/.Xresources, tells VNC's GUI framework to read the server user's .Xresources file. .Xresources is where a user can make changes to certain settings of the graphical desktop, like terminal colors, cursor themes, and font rendering.
+
+The second command simply tells the server to launch XFCE, which is where you will find all of the graphical software that you need to comfortably manage your server.
+
+To ensure that the VNC server will be able to use this new startup file properly, we'll need to grant executable privileges to it:
+
+<code>
+sudo chmod +x ~/.vnc/xstartup
+</code>
+==== Create a VNC Service File ====
+
+To easily control our new VNC server, we should set it up as an Ubuntu service. This will allow us to start, stop, and restart our VNC server as needed.
+
+First, open a new service file in /etc/init.d with nano:
+
+<code>
+sudo nano /etc/init.d/vncserver
+</code>
+
+The first block of data will be where we declare some common settings that VNC will be referring to a lot, like our username and the display resolution.
+
+<code>
+#!/bin/bash
+PATH="$PATH:/usr/bin/"
+export USER="vagrant"
+DISPLAY="1"
+DEPTH="16"
+GEOMETRY="1024x768"
+OPTIONS="-depth ${DEPTH} -geometry ${GEOMETRY} :${DISPLAY} -localhost"
+. /lib/lsb/init-functions
+</code>
+
+Be sure to replace user with the non-root user that you have set up, and change 1024x768 if you want to use another screen resolution for your virtual display.
+
+Next, we can start inserting the command instructions that will allow us to manage the new service. The following block binds the command needed to start a VNC server, and feedback that it is being started, to the command keyword start.
+
+<code>
+case "$1" in
+start)
+log_action_begin_msg "Starting vncserver for user '${USER}' on localhost:${DISPLAY}"
+su ${USER} -c "/usr/bin/vncserver ${OPTIONS}"
+;;
+</code>
+
+The next block creates the command keyword stop, which will immediately kill an existing VNC server instance.
+
+<code>
+stop)
+log_action_begin_msg "Stopping vncserver for user '${USER}' on localhost:${DISPLAY}"
+su ${USER} -c "/usr/bin/vncserver -kill :${DISPLAY}"
+;;
+</code>
+
+The final block is for the command keyword restart, which is simply the two previous commands (stop and start) combined into one command.
+
+<code>
+restart)
+$0 stop
+$0 start
+;;
+esac
+exit 0
+</code>
+
+Once all of those blocks are in your service script, you can save and close that file. Make this service script executable, so that you can use the commands that you just set up:
+
+<code>
+sudo chmod +x /etc/init.d/vncserver
+sudo service vncserver start
+</code>
+- Connect to Your VNC Desktop
+To test your VNC server, you'll need to use a client that supports VNC connections over SSH tunnels. If you are using Windows, you could use TightVNC, RealVNC, or UltraVNC. Mac OS X users can use the built-in Screen Sharing, or can use a cross-platform app like RealVNC.
+
+First, we need to create an SSH connection on your local computer that securely forwards to the localhost connection for VNC. You can do this via the terminal on Linux or OS X via the following command:
+
+<code>
+ssh -L 5901:127.0.0.1:5901 -N -f -l user server_ip_address
+
+// Thay user vagrant , ip 192.168.10.10
+ssh -L 5901:127.0.0.1:5901 -N -f -l vagrant 192.168.10.10
+</code>
+
+Next, you can use your VNC viewer to connect to the VNC server at localhost:5901. Make sure you don't forget that :5901 at the end, as that is the only port that the VNC instance is accessible from.
+
+{{::capture_2015_09_01_11_07_23_24.png|Ubuntu Desktop}}
+
+
+**Chạy server Selenium** :
+
+Chạy server Selenium dùng ssh.
+<code>
+// Nếu server chưa có java thì ta phải cài đặt java
+sudo apt-get install default-jre
+
+// Nếu chưa có firefox 
+sudeo apt-get install firefox
+
+// Chạy server selenium bằng ssh
+$ java -jar selenium-server-standalone-2.47.1.jar
+</code>
+
+**Cập nhật file config của Acceptance test**, chọn trình duyệt chạy là firefox:
+<file xml acceptance.suite.yml>
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+            url: http://demo.app
+            browser: firefox
+            window_size: 1024x768
+            wait: 10            
+        - \Helper\Acceptance
+</file>
+**Build lại file config:**
+
+<code>
+$ php codecept.phar build
+</code>
+
+**Chạy Acceptance Test:**
+Trong giao diện desktop của Ubuntu , chạy lệnh test trong console
+<code>
+$ php codecept.phar run acceptance ContactCept
+</code>
+Nội dung file ContactCept.php gần giống với file trong Functional Testing. Ta có thể thêm hàm wait để thấy rõ hơn trên duyệt. Khi chạy Test ta sẽ thấy 1 trình duyệt firefox bật lên trên màn hình và thực hiện các thao tác cần test.
+
+{{::capture_2015_09_01_11_12_07_164.png|Run acceptance test with browser}}
+
+
+
+<file php ContactCept.php>
+<?php
+$I = new AcceptanceTester($scenario);
+
+$I->am('guest');
+$I->wantTo('send email using contact form.');
+ 
+$I->amOnPage('/contact');
+ 
+$I->submitForm('.contact-form', [
+    'name' => 'Mario Basic',
+    'email' => 'test@test.com',
+    'comment' => 'This is a codeception test email.'
+]);
+$I->seeCurrentUrlEquals('/contact');
+$I->wait(10);
+$I->see('Message sent!');
+?>
+</file>
+

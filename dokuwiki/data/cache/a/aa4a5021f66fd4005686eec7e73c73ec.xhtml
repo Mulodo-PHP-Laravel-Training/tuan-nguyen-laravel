@@ -192,8 +192,34 @@ Note : Create app key after install libraries , if not will occurs error like th
 <pre class="code">PHP Warning:  require(/vagrant/laravel/bootstrap/../vendor/autoload.php): failed to open stream: No such file or directory in /vagrant/laravel/bootstrap/autoload.php on line 17.</pre>
 
 <p>
-Attention : when running vagrant up , mount share folder maybe isn’t correct with config in file Homestead.yaml → check file Homestead.yaml in this folder ~/.homestead
+Attention : when running vagrant up , mount share folder maybe isn’t correct with config in file C:/Users/mulodo/Desktop/Code/Homestead.yaml .
+<a href="/lib/exe/detail.php?id=homestead&amp;media=capture_2015_08_31_09_54_12_141.png" class="media" title="capture_2015_08_31_09_54_12_141.png"><img src="/lib/exe/fetch.php?media=capture_2015_08_31_09_54_12_141.png" class="media" title="Booting Vagrant" alt="Booting Vagrant" /></a>
+In the picture , link E:/Code/laravel-homestead isn’t in file Homestead.yaml.
+⇒ Logging ssh and check folder /home/vagrant/Code or /vagrant , find the correct path. → check file Homestead.yaml in this folder ~/.homestead.
+</p>
+<pre class="code">$ cd ~/.homestead
+$ vim Homstead.yaml</pre>
+
+</div>
+<!-- EDIT5 SECTION "Install Homestead on Windows" [1333-3958] -->
+<h3 class="sectionedit6" id="destroy_homestead">Destroy homestead</h3>
+<div class="level3">
+
+<p>
+To destroying homestead, we use vagrant destroy command. But first, check list of running vagrant and its folder.
+</p>
+<pre class="code">// Check list of vagrants
+$ vagrant global-status
+
+// If your&#039;re current in running vagrant directory, you can destroy vagrant directly
+$ vagrant destroy
+
+// If your aren&#039;t current in running vagrant directory, you can destroy vagrant remotely by id (which you see in the list)
+$ vagrant destroy b42b42b7 </pre>
+
+<p>
+<em><strong>Note:</strong></em> Remember backup database before destroy because when you run vagrant up again , your databases will be lost.
 </p>
 
 </div>
-<!-- EDIT5 SECTION "Install Homestead on Windows" [1333-] -->
+<!-- EDIT6 SECTION "Destroy homestead" [3959-] -->

@@ -130,4 +130,26 @@ Note : Create app key after install libraries , if not will occurs error like th
 <code>
 PHP Warning:  require(/vagrant/laravel/bootstrap/../vendor/autoload.php): failed to open stream: No such file or directory in /vagrant/laravel/bootstrap/autoload.php on line 17.
 </code>
-Attention : when running vagrant up , mount share folder maybe isn’t correct with config in file Homestead.yaml -> check file Homestead.yaml in this folder ~/.homestead
+Attention : when running vagrant up , mount share folder maybe isn’t correct with config in file C:/Users/mulodo/Desktop/Code/Homestead.yaml .
+{{:capture_2015_08_31_09_54_12_141.png|Booting Vagrant}}
+In the picture , link E:/Code/laravel-homestead isn’t in file Homestead.yaml.
+⇒ Logging ssh and check folder /home/vagrant/Code or /vagrant , find the correct path. -> check file Homestead.yaml in this folder ~/.homestead.
+<code>
+$ cd ~/.homestead
+$ vim Homstead.yaml
+</code>
+
+==== Destroy homestead ====
+To destroying homestead, we use vagrant destroy command. But first, check list of running vagrant and its folder.
+<code>
+// Check list of vagrants
+$ vagrant global-status
+
+// If your're current in running vagrant directory, you can destroy vagrant directly
+$ vagrant destroy
+
+// If your aren't current in running vagrant directory, you can destroy vagrant remotely by id (which you see in the list)
+$ vagrant destroy b42b42b7 
+</code>
+
+//**Note:**// Remember backup database before destroy because when you run vagrant up again , your databases will be lost.

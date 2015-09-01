@@ -1,0 +1,9 @@
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+            url: http://demo.app
+            browser: firefox
+            window_size: 1024x768
+            wait: 10            
+        - \Helper\Acceptance
