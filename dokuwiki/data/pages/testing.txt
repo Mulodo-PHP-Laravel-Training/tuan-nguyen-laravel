@@ -682,10 +682,12 @@ Download & Install PhantomJS :
 [[http://phantomjs.org/download.html|PhantomJS]]
 
 
-==== Các bước chạy Acceptance Test với Selenium ====
+==== 3.2.3 Các bước chạy Acceptance Test với Selenium ====
 
 ** Cài giao diện desktop cho Ubuntu **
- - Install Desktop Environment and VNC Server
+
+Link gốc : [[https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-14-04|Tut install desktop on Ubuntu]]
+- Install Desktop Environment and VNC Server
 
 <code>
 sudo apt-get update
