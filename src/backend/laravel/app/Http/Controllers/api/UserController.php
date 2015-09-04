@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\v1;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 
@@ -19,7 +19,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        return 'ok';
+        return trans('validation.api.CODE_INPUT_FAILED');
     }
 
     /**
@@ -45,27 +45,36 @@ class UserController extends Controller
             'data' => null
         );
         $validator = $this->validator($request->all());
-
+        // Validation fails
         if ($validator->fails()) {
-            $response['meta']['code'] = 1001;
-            $response['meta']['description'] = 'Input validation failed.';
-            foreach ($validator->errors()->getMessages() as $k => $v) {
-                foreach ($v as $e) {
-                    $response['meta']['messages'][] = array('message' => $e);
+            $response['meta']['code'] = trans('api.CODE_INPUT_FAILED');
+            $response['meta']['description'] = trans('api.DESCRIPTION_INPUT_FAILED');
+            foreach ($validator->errors()->getMessages() as $messages) {
+                foreach ($messages as $message) {
+                    $response['meta']['messages'][] = array('message' => $message);
                 }
             }
         } else {
+            // Validation success
             $user = $this->createUser($request->all());
             if ($user) {
                 // Create user successfully 
                 $response = array(
                     'meta' => array(
-                            'code' => 200,
-                            'message' => 'Account created success!'
+                            'code' => trans('api.CODE_INPUT_SUCCESS'),
+                            'message' => trans('api.CREATE_SUCCESS_MESSAGE',['objectCreated' => 'Account'])
                         ),
                     'data' => $user->toArray()
                 );
             } else {
+                // Create user failed 
+                $response = array(
+                    'meta' => array(
+                            'code' => trans('api.CODE_DB_ERROR'),
+                            'description' => trans('api.DESCRIPTION_DB_ERROR')
+                        ),
+                    'data' => null
+                );
 
             }
         }        
@@ -148,8 +157,7 @@ class UserController extends Controller
             'first_name' => $data['first_name'],
             'last_name'  => $data['last_name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'created_at' => time(),
+            'password' => bcrypt($data['password']),            
         ]);
     }
 

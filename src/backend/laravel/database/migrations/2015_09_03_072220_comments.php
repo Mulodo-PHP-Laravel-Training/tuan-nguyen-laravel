@@ -21,7 +21,7 @@ class Comments extends Migration
             $table->foreign('post_id')->references('id')->on('posts');
             $table->text('content');
             $table->integer('created_at')->unsigned();
-            $table->integer('modified_at')->unsigned()->nullable();            
+            $table->integer('updated_at')->unsigned()->nullable();            
         });
     }
 

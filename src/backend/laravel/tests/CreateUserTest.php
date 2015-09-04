@@ -1,10 +1,11 @@
 <?php 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 class CreateUserTest extends TestCase
 {
-    //use DatabaseMigrations;
+
+    use DatabaseTransactions;
     /**
      * Test Validate Required.
      *
@@ -12,20 +13,19 @@ class CreateUserTest extends TestCase
      */
     public function testValidateRequired()
     {
-
-        $this->post('/v1/users', [
+        $this->post('/api/users', [
             ])
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code' => 1001,
-                        'description' => 'Input validation failed.',
+                        'code' => trans('api.CODE_INPUT_FAILED'),
+                        'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
                         "messages" => array(                                              
-                            array("message" => "The username field is required."),                        
-                            array("message" => "The email field is required."),
-                            array("message" => "The first name field is required."),
-                            array("message" => "The last name field is required."),
-                            array("message" => "The password field is required."),                            
+                            array("message" => trans('validation.required', ['attribute' => 'username']) ),                        
+                            array("message" => trans('validation.required', ['attribute' => 'email']) ),
+                            array("message" => trans('validation.required', ['attribute' => 'first name']) ),
+                            array("message" => trans('validation.required', ['attribute' => 'last name']) ),
+                            array("message" => trans('validation.required', ['attribute' => 'password']) ),                            
                         )                        
                     )                 
              ]);
@@ -39,7 +39,7 @@ class CreateUserTest extends TestCase
     public function testValidateMin()
     {
 
-        $this->post('/v1/users', [
+        $this->post('/api/users', [
                 'username' => 'ab',
                 'first_name' => 'Ronan',
                 'last_name'  => 'Tuan',
@@ -49,11 +49,11 @@ class CreateUserTest extends TestCase
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code' => 1001,
-                        'description' => 'Input validation failed.',
+                        'code' => trans('api.CODE_INPUT_FAILED'),
+                        'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
                         "messages" => array(                                              
-                            array("message" => "The username must be at least 3 characters."),                        
-                            array("message" => "The password must be at least 6 characters."),
+                            array("message" => trans('validation.min.string',['attribute' => 'username', 'min' => 3])),
+                            array("message" => trans('validation.min.string',['attribute' => 'password', 'min' => 6])),
                         )                        
                     )                 
              ]);
@@ -67,7 +67,7 @@ class CreateUserTest extends TestCase
     public function testValidateMax()
     {
 
-        $this->post('/v1/users', [
+        $this->post('/api/users', [
                 'username' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
                 'first_name' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
                 'last_name'  => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
@@ -77,14 +77,14 @@ class CreateUserTest extends TestCase
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code' => 1001,
-                        'description' => 'Input validation failed.',
+                        'code' => trans('api.CODE_INPUT_FAILED'),
+                        'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
                         "messages" => array(                                              
-                            array("message" => "The first name may not be greater than 50 characters."),                        
-                            array("message" => "The last name may not be greater than 50 characters."),
-                            array("message" => "The username may not be greater than 50 characters."),
-                            array("message" => "The email may not be greater than 50 characters."),
-                            array("message" => "The email must be a valid email address.")
+                            array("message" => trans('validation.max.string',['attribute' => 'first name', 'max' => 50])),
+                            array("message" => trans('validation.max.string',['attribute' => 'last name', 'max' => 50])),
+                            array("message" => trans('validation.max.string',['attribute' => 'username', 'max' => 50])),
+                            array("message" => trans('validation.max.string',['attribute' => 'email', 'max' => 50])),
+                            array("message" => trans('validation.email', ['attribute' => 'email']) ),
                         )                        
                     )                 
              ]);
@@ -96,9 +96,8 @@ class CreateUserTest extends TestCase
      * @return void
      */
     public function testValidateEmail()
-    {
-
-        $this->post('/v1/users', [
+    {        
+        $this->post('/api/users', [
                 'username' => 'abcdef',
                 'first_name' => 'Ronan',
                 'last_name'  => 'Tuan',
@@ -108,10 +107,10 @@ class CreateUserTest extends TestCase
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code' => 1001,
-                        'description' => 'Input validation failed.',
+                        'code' => trans('api.CODE_INPUT_FAILED'),
+                        'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
                         "messages" => array(                                              
-                            array("message" => "The email must be a valid email address.")
+                            array("message" => trans('validation.email', ['attribute' => 'email']) )
                         )                        
                     )                 
              ]);
@@ -125,8 +124,35 @@ class CreateUserTest extends TestCase
      */
     public function testValidateUnique()
     {
+        $user = App\User::where('username', 'anh.tuan')->first();
+        // if db is not rollback and migrate
+        if (!$user) {
+            $this->post('/api/users', [
+                    'username' => 'anh.tuan',
+                    'first_name' => 'Ronan',
+                    'last_name'  => 'Tuan',
+                    'email'      => 'anh.tuan@mulodo.com',
+                    'password'   => '123456',
+                ])
+                 ->seeJson([                 
+                     'meta' => array(
+                            'code' => trans('api.CODE_INPUT_SUCCESS'),
+                            'message' => trans('api.CREATE_SUCCESS_MESSAGE',['objectCreated' => 'Account'])                        
+                        )                 
+                 ])
+                 ->seeInDatabase('users', 
+                    [
+                        'username' => 'anh.tuan',
+                        'email' => 'anh.tuan@mulodo.com',
+                        'first_name' => 'Ronan',
+                        'last_name' => 'Tuan',                    
+                    ]
+                );
 
-        $this->post('/v1/users', [
+
+        }
+
+        $this->post('/api/users', [
                 'username' => 'anh.tuan',
                 'first_name' => 'Ronan',
                 'last_name'  => 'Tuan',
@@ -136,14 +162,16 @@ class CreateUserTest extends TestCase
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code' => 1001,
-                        'description' => 'Input validation failed.',
+                        'code' => trans('api.CODE_INPUT_FAILED'),
+                        'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
                         "messages" => array(                                              
-                            array("message" => "The email has already been taken."),
-                            array("message" => "The username has already been taken.")
+                            array("message" => trans('validation.unique', ['attribute' => 'email']) ),
+                            array("message" => trans('validation.unique', ['attribute' => 'username']) ),
                         )                        
                     )                 
-             ]);
+             ]
+        );
+
     }    
 
     /**
@@ -153,7 +181,7 @@ class CreateUserTest extends TestCase
     public function testSuccess()
     {
 
-        $this->post('/v1/users', [
+        $this->post('/api/users', [
                 'username' => 'anh.tuan2',
                 'first_name' => 'Ronan',
                 'last_name'  => 'Tuan',
@@ -162,8 +190,8 @@ class CreateUserTest extends TestCase
             ])
              ->seeJson([                 
                  'meta' => array(
-                        'code' => 200,
-                        'message' => 'Account created success!'                        
+                        'code' => trans('api.CODE_INPUT_SUCCESS'),
+                        'message' => trans('api.CREATE_SUCCESS_MESSAGE',['objectCreated' => 'Account'])                        
                     )                 
              ])
              ->seeInDatabase('users', 
@@ -175,6 +203,5 @@ class CreateUserTest extends TestCase
                 ]
             );
     }    
-
 
 }

@@ -11,7 +11,7 @@ return [
     | the validator class. Some of these rules have multiple versions such
     | as the size rules. Feel free to tweak each of these messages here.
     |
-    */
+    */    
 
     'accepted'             => 'The :attribute must be accepted.',
     'active_url'           => 'The :attribute is not a valid URL.',
@@ -105,5 +105,21 @@ return [
     */
 
     'attributes' => [],
+
+    /*
+    |-------------------------------------------------------------------------
+    | Custom API Messages
+    |-------------------------------------------------------------------------
+    | The following lines are used to defined API messages 
+    |
+    */
+    'api' => [
+        'CODE_INPUT_FAILED'     => '1001',
+        'DESCRIPTION_INPUT_FAILED' => 'Input validation failed.',
+        'CODE_INPUT_SUCCESS'    => '200',        
+        'CREATE_SUCCESS_MESSAGE'=> ':objectCreated was created successfully!',
+        'CODE_DB_ERROR'         => '2001',
+        'DESCRIPTION_DB_ERROR'  => 'Database error occured. Please try again later.'
+    ]
 
 ];

@@ -19,8 +19,7 @@ class UsersSeeder extends Seeder
                 'first_name' => 'Tuan',
                 'last_name' => 'Nguyen' ,
                 'email' => 'anh.tuan@mulodo.com',
-                'password' => '$2y$10$Qsfad3yzjM0NBHCStjKvZ.w7EEM2ZOX1qnAjZbszXFs6H07qJkk/e',
-                'created_at' => 1441278311
+                'password' => bcrypt('123456'),                
         ] );
     }
 }

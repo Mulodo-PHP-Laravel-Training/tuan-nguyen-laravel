@@ -42,5 +42,10 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var bool
      */
-    public $timestamps = false;    
+    public $timestamps = true;    
+
+    protected function getDateFormat()
+    {
+        return 'U';
+    }    
 }

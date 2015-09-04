@@ -21,7 +21,7 @@ class Posts extends Migration
             $table->text('content');
             $table->string('image', 100)->nullable();
             $table->integer('created_at')->unsigned();
-            $table->integer('modified_at')->unsigned()->nullable();
+            $table->integer('updated_at')->unsigned()->nullable();
             $table->boolean('status');
         });
     }

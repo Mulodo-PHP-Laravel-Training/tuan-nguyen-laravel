@@ -22,7 +22,7 @@ class Users extends Migration
             $table->integer('last_login')->unsigned()->nullable();
             $table->string('login_hash', 100)->nullable();
             $table->integer('created_at')->unsigned();
-            $table->integer('modified_at')->unsigned()->nullable();
+            $table->integer('updated_at')->unsigned()->nullable();
 
         });
     }
