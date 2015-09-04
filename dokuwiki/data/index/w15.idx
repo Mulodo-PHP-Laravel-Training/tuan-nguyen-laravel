@@ -12,3 +12,4 @@ getdataprovider
 lessthanorequal
 routeparameters
 devdependencies
+mergeconfigfrom

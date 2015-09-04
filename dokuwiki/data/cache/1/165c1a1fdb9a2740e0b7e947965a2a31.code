@@ -1,0 +1,6 @@
+<span class="kw2">&lt;?php</span>
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'home'</span><span class="sy0">,</span> <span class="st_h">'\Bestmomo\Scafold\Http\Controllers\HomeController@index'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+Route<span class="sy0">::</span><span class="me2">controllers</span><span class="br0">&#40;</span><span class="br0">&#91;</span>
+	<span class="st_h">'auth'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Auth\AuthController'</span><span class="sy0">,</span>
+	<span class="st_h">'password'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Auth\PasswordController'</span><span class="sy0">,</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>

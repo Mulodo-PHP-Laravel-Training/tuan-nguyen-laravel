@@ -1,0 +1,4 @@
+<span class="co1">// trong mảng providers thêm phần tử</span>
+Intervention\Image\ImageServiceProvider<span class="sy0">::</span><span class="kw2">class</span>
+<span class="co1">// thêm alias class</span>
+<span class="st_h">'Image'</span>     <span class="sy0">=&gt;</span> Intervention\Image\Facades\Image<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span>

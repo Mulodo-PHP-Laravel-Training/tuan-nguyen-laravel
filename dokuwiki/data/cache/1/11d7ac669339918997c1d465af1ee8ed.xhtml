@@ -1,0 +1,299 @@
+
+<h1 class="sectionedit1" id="laravel_package_bundle">Laravel Package [Bundle]</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT1 SECTION "Laravel Package [Bundle]" [1-40] -->
+<h1 class="sectionedit2" id="dịnh_nghia">1. Định nghĩa</h1>
+<div class="level1">
+
+<p>
+Laravel Bundle: là những gói cài thêm mà bạn có thể download và cài plug in vào Laravel.
+</p>
+
+<p>
+Từ phiên bản Laravel 4 trở lên bundle được thay bằng package.
+</p>
+
+<p>
+Danh sách các package được tìm thấy ở đây : <a href="http://packalyst.com/" class="urlextern" title="http://packalyst.com/"  rel="nofollow">Package list</a>
+</p>
+
+<p>
+Các package có thể dễ dàng được thêm vào Laravel qua file composer.json.
+</p>
+
+<p>
+Ex : Ta thêm 1 package Intervention Image, ta có thể dùng lệnh sau thêm vào composer.json
+</p>
+<pre class="code">$ php composer.phar require intervention/image</pre>
+
+</div>
+<!-- EDIT2 SECTION "1. Định nghĩa" [41-600] -->
+<h1 class="sectionedit3" id="tich_hợp_package_vao_laravel">2. Tích hợp Package vào Laravel</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT3 SECTION "2. Tích hợp Package vào Laravel" [601-651] -->
+<h2 class="sectionedit4" id="service_providers">2.1 Service Providers</h2>
+<div class="level2">
+
+<p>
+Để tích hợp các package vào Laravel ta sử dụng Service Providers. Một Service provider có trách nhiệm ràng buộc các thứ vào Laravel và chỉ ra cho Laravel các resources như là views, config, …
+</p>
+
+<p>
+Ex: Thêm service provider cho package Intervention Image, ta thêm vào file config/app.php :
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=package_bundle&amp;codeblock=1" title="Download Snippet" class="mediafile mf_php">app.php</a></dt>
+<dd><pre class="code file php"><span class="co1">// trong mảng providers thêm phần tử</span>
+Intervention\Image\ImageServiceProvider<span class="sy0">::</span><span class="kw2">class</span>
+<span class="co1">// thêm alias class</span>
+<span class="st_h">'Image'</span>     <span class="sy0">=&gt;</span> Intervention\Image\Facades\Image<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span></pre>
+</dd></dl>
+
+<p>
+Bây giờ ta có thể dùng thử package trong Route
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=package_bundle&amp;codeblock=2" title="Download Snippet" class="mediafile mf_php">route.php</a></dt>
+<dd><pre class="code file php"><span class="co1">// usage inside a laravel route</span>
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'/testimage'</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$img</span> <span class="sy0">=</span> Image<span class="sy0">::</span><span class="me2">make</span><span class="br0">&#40;</span><span class="st_h">'foo.png'</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">resize</span><span class="br0">&#40;</span><span class="nu0">300</span><span class="sy0">,</span> <span class="nu0">200</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="kw1">return</span> <span class="re0">$img</span><span class="sy0">-&gt;</span><span class="me1">response</span><span class="br0">&#40;</span><span class="st_h">'jpg'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+</dd></dl>
+
+</div>
+<!-- EDIT4 SECTION "2.1 Service Providers" [652-1451] -->
+<h2 class="sectionedit5" id="routing">2.2 Routing</h2>
+<div class="level2">
+
+<p>
+Để thêm route cho package, ta chỉ cần thêm require file routes trong phương thức boot của service provider. 
+<strong><em>Ex</em></strong>: Package bestmomo/scafold ta có thêm các route là &#039;home&#039;, &#039;auth/*&#039;, &#039;password/*&#039; … Trong class ScafoldServiceprovider ta thêm phương thức boot như sau :
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=package_bundle&amp;codeblock=3" title="Download Snippet" class="mediafile mf_php">ScafoldServiceprovider.php</a></dt>
+<dd><pre class="code file php"><span class="kw2">public</span> <span class="kw2">function</span> boot<span class="br0">&#40;</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="co1">// Get namespace</span>
+		<span class="re0">$nameSpace</span> <span class="sy0">=</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">app</span><span class="sy0">-&gt;</span><span class="me1">getNamespace</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="co1">// Routes</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">app</span><span class="sy0">-&gt;</span><span class="me1">router</span><span class="sy0">-&gt;</span><span class="me1">group</span><span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'namespace'</span> <span class="sy0">=&gt;</span> <span class="re0">$nameSpace</span> <span class="sy0">.</span> <span class="st_h">'Http\Controllers'</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">require</span> __DIR__<span class="sy0">.</span><span class="st_h">'/Http/routes.php'</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span></pre>
+</dd></dl>
+
+<p>
+Trong package ta thêm file routes.php
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=package_bundle&amp;codeblock=4" title="Download Snippet" class="mediafile mf_php">routes.php</a></dt>
+<dd><pre class="code file php"><span class="kw2">&lt;?php</span>
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'home'</span><span class="sy0">,</span> <span class="st_h">'\Bestmomo\Scafold\Http\Controllers\HomeController@index'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+Route<span class="sy0">::</span><span class="me2">controllers</span><span class="br0">&#40;</span><span class="br0">&#91;</span>
+	<span class="st_h">'auth'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Auth\AuthController'</span><span class="sy0">,</span>
+	<span class="st_h">'password'</span> <span class="sy0">=&gt;</span> <span class="st_h">'Auth\PasswordController'</span><span class="sy0">,</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+</dd></dl>
+
+</div>
+<!-- EDIT5 SECTION "2.2 Routing" [1452-2319] -->
+<h2 class="sectionedit6" id="resource">2.3 Resource</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT6 SECTION "2.3 Resource" [2320-2345] -->
+<h3 class="sectionedit7" id="views">2.3.1 Views</h3>
+<div class="level3">
+
+<p>
+Đối với các package có sử dụng Views, ta có các phương thức để đưa vào views như :
+</p>
+
+</div>
+<!-- EDIT7 SECTION "2.3.1 Views" [2346-2476] -->
+<h3 class="sectionedit8" id="service_provider_loadviewsfrom">Service Provider loadViewsFrom</h3>
+<div class="level3">
+
+<p>
+Ta có thể sử dụng phương thức loadViewsFrom trong server provider để chỉ cho Laravel biết các views của package đó.
+</p>
+<pre class="code php"><span class="kw2">public</span> <span class="kw2">function</span> boot<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">loadViewsFrom</span><span class="br0">&#40;</span>__DIR__<span class="sy0">.</span><span class="st_h">'/path/to/views'</span><span class="sy0">,</span> <span class="st_h">'courier'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Để sử dụng view đó ta có thể viết như sau :
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'admin'</span><span class="sy0">,</span> <span class="kw2">function</span> <span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> view<span class="br0">&#40;</span><span class="st_h">'courier::admin'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT8 SECTION "Service Provider loadViewsFrom" [2477-2921] -->
+<h3 class="sectionedit9" id="ghi_de_cac_package_views">Ghi đè các package views</h3>
+<div class="level3">
+
+<p>
+Nếu dùng cách trên thì ta có đến 2 đường dẫn trỏ đến views : 1 là views trong lavavel, 2 là views của package. Để đơn giản hơn ta có chuyển các views trong package sang views của Laravel. 
+</p>
+
+<p>
+<strong><em>Ex:</em></strong> Trong package BestMomo/scafold dùng phương thức publish để chuyển views của package đó sang views của Laravel.
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=package_bundle&amp;codeblock=7" title="Download Snippet" class="mediafile mf_php">ScafoldServiceprovider.php</a></dt>
+<dd><pre class="code file php"><span class="kw2">public</span> <span class="kw2">function</span> boot<span class="br0">&#40;</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="co1">// Get namespace</span>
+		<span class="re0">$nameSpace</span> <span class="sy0">=</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">app</span><span class="sy0">-&gt;</span><span class="me1">getNamespace</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="co1">// Routes</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">app</span><span class="sy0">-&gt;</span><span class="me1">router</span><span class="sy0">-&gt;</span><span class="me1">group</span><span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'namespace'</span> <span class="sy0">=&gt;</span> <span class="re0">$nameSpace</span> <span class="sy0">.</span> <span class="st_h">'Http\Controllers'</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">require</span> __DIR__<span class="sy0">.</span><span class="st_h">'/Http/routes.php'</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="co1">// Views</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">publishes</span><span class="br0">&#40;</span><span class="br0">&#91;</span>
+			__DIR__<span class="sy0">.</span><span class="st_h">'/../views'</span> <span class="sy0">=&gt;</span> base_path<span class="br0">&#40;</span><span class="st_h">'resources/views'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+			__DIR__<span class="sy0">.</span><span class="st_h">'/../views/auth'</span> <span class="sy0">=&gt;</span> base_path<span class="br0">&#40;</span><span class="st_h">'resources/views/auth'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+			__DIR__<span class="sy0">.</span><span class="st_h">'/../views/emails'</span> <span class="sy0">=&gt;</span> base_path<span class="br0">&#40;</span><span class="st_h">'resources/views/emails'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+		<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="co1">// Assets</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">publishes</span><span class="br0">&#40;</span><span class="br0">&#91;</span>
+			__DIR__<span class="sy0">.</span><span class="st_h">'/../public'</span> <span class="sy0">=&gt;</span> public_path<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">,</span>
+		<span class="br0">&#93;</span><span class="sy0">,</span> <span class="st_h">'public'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span></pre>
+</dd></dl>
+
+<p>
+Để thực hiện việc copy các views ta sử dụng artisan:
+</p>
+<pre class="code">$ php artisan vendor:publish
+Copied Directory [/vendor/bestmomo/scafold/views] To [/resources/views]
+Copied Directory [/vendor/bestmomo/scafold/views/auth] To [/resources/views/auth]
+Copied Directory [/vendor/bestmomo/scafold/views/emails] To [/resources/views/emails]
+Copied Directory [/vendor/bestmomo/scafold/public] To [/public]
+Publishing complete for tag []!</pre>
+
+</div>
+<!-- EDIT9 SECTION "Ghi đè các package views" [2922-4384] -->
+<h3 class="sectionedit10" id="translations">2.3.2 Translations</h3>
+<div class="level3">
+
+<p>
+Nếu package có nhiều ngôn ngữ, ta khai báo bằng phương thức loadTranslationsFrom() để chỉ cho Laravel cách load chúng.
+</p>
+<pre class="code php"><span class="kw2">public</span> <span class="kw2">function</span> boot<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">loadTranslationsFrom</span><span class="br0">&#40;</span>__DIR__<span class="sy0">.</span><span class="st_h">'/path/to/translations'</span><span class="sy0">,</span> <span class="st_h">'packagename'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Cách dùng như sau :
+</p>
+<pre class="code php"><span class="kw1">echo</span> trans<span class="br0">&#40;</span><span class="st_h">'packagename::messages.welcome'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Cũng giống như views, ta có thể copy các file translations từ package sang laravel như sau:
+</p>
+<pre class="code php"><span class="kw2">public</span> <span class="kw2">function</span> boot<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">loadTranslationsFrom</span><span class="br0">&#40;</span>__DIR__<span class="sy0">.</span><span class="st_h">'/path/to/translations'</span><span class="sy0">,</span> <span class="st_h">'courier'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">publishes</span><span class="br0">&#40;</span><span class="br0">&#91;</span>
+        __DIR__<span class="sy0">.</span><span class="st_h">'/path/to/translations'</span> <span class="sy0">=&gt;</span> base_path<span class="br0">&#40;</span><span class="st_h">'resources/lang/vendor/courier'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    <span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Sau đó chạy lệnh vendor:publish
+</p>
+<pre class="code">php artisan vendor:publish</pre>
+
+</div>
+<!-- EDIT10 SECTION "2.3.2 Translations" [4385-5197] -->
+<h3 class="sectionedit11" id="configuration">2.2.3 Configuration</h3>
+<div class="level3">
+
+<p>
+Để thêm cấu hình cho package ta có thể dùng phương thức publish.
+</p>
+<pre class="code php"><span class="kw2">public</span> <span class="kw2">function</span> boot<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">publishes</span><span class="br0">&#40;</span><span class="br0">&#91;</span>
+        __DIR__<span class="sy0">.</span><span class="st_h">'/path/to/config/courier.php'</span> <span class="sy0">=&gt;</span> config_path<span class="br0">&#40;</span><span class="st_h">'courier.php'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    <span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Giờ ta có thể sử dụng config của package đó.
+</p>
+<pre class="code php"><span class="re0">$value</span> <span class="sy0">=</span> config<span class="br0">&#40;</span><span class="st_h">'courier.option'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Ta có thể trộn các cấu hình của package với Laravel như sau :
+</p>
+<pre class="code php"><span class="kw2">public</span> <span class="kw2">function</span> register<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">mergeConfigFrom</span><span class="br0">&#40;</span>
+        __DIR__<span class="sy0">.</span><span class="st_h">'/path/to/config/courier.php'</span><span class="sy0">,</span> <span class="st_h">'courier'</span>
+    <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT11 SECTION "2.2.3 Configuration" [5198-5793] -->
+<h3 class="sectionedit12" id="asset">2.2.4 Asset</h3>
+<div class="level3">
+
+<p>
+- Để load các file js, css trong package ta có dùng cách giống như views và transition.
+</p>
+<pre class="code php">    <span class="kw2">public</span> <span class="kw2">function</span> boot<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    	<span class="br0">&#123;</span>
+    		<span class="co1">// Assets</span>
+    		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">publishes</span><span class="br0">&#40;</span><span class="br0">&#91;</span>
+    			__DIR__<span class="sy0">.</span><span class="st_h">'/../public'</span> <span class="sy0">=&gt;</span> public_path<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    		<span class="br0">&#93;</span><span class="sy0">,</span> <span class="st_h">'public'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    	<span class="br0">&#125;</span></pre>
+
+<p>
+Sau đó cũng cmd vendor:publish
+</p>
+<pre class="code">$ php artisan vendor:publish
+// Các file assset sẽ được ghi đè mỗi khi package update
+$ php artisan vendor:publish --tag=public --force</pre>
+
+</div>
+<!-- EDIT12 SECTION "2.2.4 Asset" [5794-6281] -->
+<h3 class="sectionedit13" id="publish_từng_phần">2.2.5 Publish từng phần</h3>
+<div class="level3">
+
+<p>
+Ta có thể cấu hình package theo từng phần như sau :
+</p>
+<pre class="code php"><span class="kw2">public</span> <span class="kw2">function</span> boot<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">publishes</span><span class="br0">&#40;</span><span class="br0">&#91;</span>
+        __DIR__<span class="sy0">.</span><span class="st_h">'/../config/package.php'</span> <span class="sy0">=&gt;</span> config_path<span class="br0">&#40;</span><span class="st_h">'package.php'</span><span class="br0">&#41;</span>
+    <span class="br0">&#93;</span><span class="sy0">,</span> <span class="st_h">'config'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">publishes</span><span class="br0">&#40;</span><span class="br0">&#91;</span>
+        __DIR__<span class="sy0">.</span><span class="st_h">'/../database/migrations/'</span> <span class="sy0">=&gt;</span> database_path<span class="br0">&#40;</span><span class="st_h">'migrations'</span><span class="br0">&#41;</span>
+    <span class="br0">&#93;</span><span class="sy0">,</span> <span class="st_h">'migrations'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+khi publish config, ta chỉ cần chạy cmd như sau :
+</p>
+<pre class="code">$ php artisan vendor:publish --provider=&quot;Vendor\Providers\PackageServiceProvider&quot; --tag=&quot;config&quot;</pre>
+
+</div>
+<!-- EDIT13 SECTION "2.2.5 Publish từng phần" [6282-] -->

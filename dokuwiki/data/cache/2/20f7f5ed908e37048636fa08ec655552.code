@@ -1,0 +1,3 @@
+<span class="kw2">public</span> static <span class="kw2">function</span> comFunc<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>            
+        <span class="kw1">return</span> \<a href="http://www.php.net/hash"><span class="kw3">Hash</span></a><span class="sy0">::</span><span class="me2">make</span><span class="br0">&#40;</span><span class="st_h">'secret'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>

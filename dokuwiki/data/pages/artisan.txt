@@ -13,9 +13,16 @@ php artisan list
 
 ==== Create key ====
 <code>
-php artisan key:generate
+$ php artisan key:generate
 </code>
 
+==== Maintenance Mode ====
+<code>
+// Enable maintenance mode
+$ php artisan down
+// Disable maintenance mode
+$ php artisan up
+</code>
 ===== Make ( create new things) =====
 
 ==== Create new Controller class ====

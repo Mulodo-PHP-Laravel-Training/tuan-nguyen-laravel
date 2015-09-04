@@ -1,0 +1,71 @@
+
+<h1 class="sectionedit1" id="laravel_package_bundle">Laravel Package [Bundle]</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT1 SECTION "Laravel Package [Bundle]" [1-40] -->
+<h1 class="sectionedit2" id="dịnh_nghia">1. Định nghĩa</h1>
+<div class="level1">
+
+<p>
+Laravel Bundle: là những gói cài thêm mà bạn có thể download và cài plug in vào Laravel.
+</p>
+
+<p>
+Từ phiên bản Laravel 4 trở lên bundle được thay bằng package.
+</p>
+
+<p>
+Danh sách các package được tìm thấy ở đây : <a href="http://packalyst.com/" class="urlextern" title="http://packalyst.com/"  rel="nofollow">Package list</a>
+</p>
+
+<p>
+Các package có thể dễ dàng được thêm vào Laravel qua file composer.json.
+</p>
+
+<p>
+Ex : Ta thêm 1 package Intervention Image, ta có thể dùng lệnh sau thêm vào composer.json
+</p>
+<pre class="code">$ php composer.phar require intervention/image</pre>
+
+</div>
+<!-- EDIT2 SECTION "1. Định nghĩa" [41-600] -->
+<h1 class="sectionedit3" id="tich_hợp_package_vao_laravel">2. Tích hợp Package vào Laravel</h1>
+<div class="level1">
+
+</div>
+<!-- EDIT3 SECTION "2. Tích hợp Package vào Laravel" [601-651] -->
+<h2 class="sectionedit4" id="service_providers">2.1 Service Providers</h2>
+<div class="level2">
+
+<p>
+Để tích hợp các package vào Laravel ta sử dụng Service Providers. Một Service provider có trách nhiệm ràng buộc các thứ vào Laravel và chỉ ra cho Laravel các resources như là views, config, …
+</p>
+
+<p>
+Ex: Thêm service provider cho package Intervention Image, ta thêm vào file config/app.php :
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=bundle&amp;codeblock=1" title="Download Snippet" class="mediafile mf_php">app.php</a></dt>
+<dd><pre class="code file php"><span class="co1">// trong mảng providers thêm phần tử</span>
+<span class="st_h">'Intervention\Image\ImageServiceProvider'</span>
+<span class="co1">// thêm alias class</span>
+<span class="st_h">'Image'</span>     <span class="sy0">=&gt;</span> <span class="st_h">'Intervention\Image\Facades\Image'</span><span class="sy0">,</span></pre>
+</dd></dl>
+
+<p>
+Bây giờ ta có thể dùng thử package trong Route
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=bundle&amp;codeblock=2" title="Download Snippet" class="mediafile mf_php">route.php</a></dt>
+<dd><pre class="code file php"><span class="co1">// usage inside a laravel route</span>
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'/testimage'</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$img</span> <span class="sy0">=</span> Image<span class="sy0">::</span><span class="me2">make</span><span class="br0">&#40;</span><span class="st_h">'foo.png'</span><span class="br0">&#41;</span><span class="sy0">-&gt;</span><span class="me1">resize</span><span class="br0">&#40;</span><span class="nu0">300</span><span class="sy0">,</span> <span class="nu0">200</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="kw1">return</span> <span class="re0">$img</span><span class="sy0">-&gt;</span><span class="me1">response</span><span class="br0">&#40;</span><span class="st_h">'jpg'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+</dd></dl>
+
+</div>
+<!-- EDIT4 SECTION "2.1 Service Providers" [652-] -->

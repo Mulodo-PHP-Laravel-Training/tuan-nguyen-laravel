@@ -1,0 +1,9 @@
+    &quot;autoload&quot;: {
+        &quot;classmap&quot;: [
+            &quot;database&quot;
+        ],
+        &quot;psr-4&quot;: {
+            &quot;App\\&quot;: &quot;app/&quot;,
+            &quot;Mulodo\\&quot; : &quot;app/Mulodo&quot;
+        }
+    },

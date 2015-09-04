@@ -75,3 +75,9 @@ executable
 privileges
 resolution
 accessible
+publishing
+transition
+migrations
+autoloader
+jeremeamia
+fzaninotto

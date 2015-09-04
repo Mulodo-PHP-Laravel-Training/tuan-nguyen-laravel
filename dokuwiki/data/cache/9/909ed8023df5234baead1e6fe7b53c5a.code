@@ -1,0 +1,20 @@
+<span class="kw2">public</span> <span class="kw2">function</span> boot<span class="br0">&#40;</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="co1">// Get namespace</span>
+		<span class="re0">$nameSpace</span> <span class="sy0">=</span> <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">app</span><span class="sy0">-&gt;</span><span class="me1">getNamespace</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="co1">// Routes</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">app</span><span class="sy0">-&gt;</span><span class="me1">router</span><span class="sy0">-&gt;</span><span class="me1">group</span><span class="br0">&#40;</span><span class="br0">&#91;</span><span class="st_h">'namespace'</span> <span class="sy0">=&gt;</span> <span class="re0">$nameSpace</span> <span class="sy0">.</span> <span class="st_h">'Http\Controllers'</span><span class="br0">&#93;</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">require</span> __DIR__<span class="sy0">.</span><span class="st_h">'/Http/routes.php'</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="co1">// Views</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">publishes</span><span class="br0">&#40;</span><span class="br0">&#91;</span>
+			__DIR__<span class="sy0">.</span><span class="st_h">'/../views'</span> <span class="sy0">=&gt;</span> base_path<span class="br0">&#40;</span><span class="st_h">'resources/views'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+			__DIR__<span class="sy0">.</span><span class="st_h">'/../views/auth'</span> <span class="sy0">=&gt;</span> base_path<span class="br0">&#40;</span><span class="st_h">'resources/views/auth'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+			__DIR__<span class="sy0">.</span><span class="st_h">'/../views/emails'</span> <span class="sy0">=&gt;</span> base_path<span class="br0">&#40;</span><span class="st_h">'resources/views/emails'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+		<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="co1">// Assets</span>
+		<span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">publishes</span><span class="br0">&#40;</span><span class="br0">&#91;</span>
+			__DIR__<span class="sy0">.</span><span class="st_h">'/../public'</span> <span class="sy0">=&gt;</span> public_path<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">,</span>
+		<span class="br0">&#93;</span><span class="sy0">,</span> <span class="st_h">'public'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>

@@ -1,0 +1,6 @@
+<span class="kw2">public</span> <span class="kw2">function</span> register<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="re0">$this</span><span class="sy0">-&gt;</span><span class="me1">mergeConfigFrom</span><span class="br0">&#40;</span>
+        __DIR__<span class="sy0">.</span><span class="st_h">'/path/to/config/courier.php'</span><span class="sy0">,</span> <span class="st_h">'courier'</span>
+    <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span>

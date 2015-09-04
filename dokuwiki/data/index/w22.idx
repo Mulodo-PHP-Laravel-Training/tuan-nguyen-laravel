@@ -3,3 +3,5 @@ shareerrorsfromsession
 laravelserviceprovider
 backupstaticattributes
 assertsessionhaserrors
+scafoldserviceprovider
+packageserviceprovider

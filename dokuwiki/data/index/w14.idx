@@ -16,3 +16,5 @@ databaseseeder
 assertcontains
 administration
 tightvncserver
+authcontroller
+classpreloader

@@ -1,0 +1,26 @@
+Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'/show-autoloaders'</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#123;</span>
+    <span class="kw1">foreach</span><span class="br0">&#40;</span><a href="http://www.php.net/spl_autoload_functions"><span class="kw3">spl_autoload_functions</span></a><span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="kw1">as</span> <span class="re0">$callback</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">if</span><span class="br0">&#40;</span><a href="http://www.php.net/is_string"><span class="kw3">is_string</span></a><span class="br0">&#40;</span><span class="re0">$callback</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+        <span class="br0">&#123;</span>
+            <span class="kw1">echo</span> <span class="st_h">'- '</span><span class="sy0">,</span><span class="re0">$callback</span><span class="sy0">,</span><span class="st0">&quot;<span class="es1">\n</span>&lt;br&gt;<span class="es1">\n</span>&quot;</span><span class="sy0">;</span>
+        <span class="br0">&#125;</span>
+&nbsp;
+        <span class="kw1">else</span> <span class="kw1">if</span><span class="br0">&#40;</span><a href="http://www.php.net/is_array"><span class="kw3">is_array</span></a><span class="br0">&#40;</span><span class="re0">$callback</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+        <span class="br0">&#123;</span>
+            <span class="kw1">if</span><span class="br0">&#40;</span><a href="http://www.php.net/is_object"><span class="kw3">is_object</span></a><span class="br0">&#40;</span><span class="re0">$callback</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+            <span class="br0">&#123;</span>
+                <span class="kw1">echo</span> <span class="st_h">'- '</span><span class="sy0">,</span><a href="http://www.php.net/get_class"><span class="kw3">get_class</span></a><span class="br0">&#40;</span><span class="re0">$callback</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+            <span class="br0">&#125;</span>
+            <span class="kw1">elseif</span><span class="br0">&#40;</span><a href="http://www.php.net/is_string"><span class="kw3">is_string</span></a><span class="br0">&#40;</span><span class="re0">$callback</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+            <span class="br0">&#123;</span>
+                <span class="kw1">echo</span> <span class="st_h">'- '</span><span class="sy0">,</span><span class="re0">$callback</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="sy0">;</span>
+            <span class="br0">&#125;</span>
+            <span class="kw1">echo</span> <span class="st_h">'::'</span><span class="sy0">,</span><span class="re0">$callback</span><span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="sy0">,</span><span class="st0">&quot;<span class="es1">\n</span>&lt;br&gt;<span class="es1">\n</span>&quot;</span><span class="sy0">;</span>            
+        <span class="br0">&#125;</span>
+        <span class="kw1">else</span>
+        <span class="br0">&#123;</span>
+            <a href="http://www.php.net/var_dump"><span class="kw3">var_dump</span></a><span class="br0">&#40;</span><span class="re0">$callback</span><span class="br0">&#41;</span><span class="sy0">;</span>
+        <span class="br0">&#125;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>    

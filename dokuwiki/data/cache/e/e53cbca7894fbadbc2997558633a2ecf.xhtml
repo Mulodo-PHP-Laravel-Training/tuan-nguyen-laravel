@@ -1,0 +1,224 @@
+
+<h1 class="sectionedit1" id="autoload_class">Autoload Class</h1>
+<div class="level1">
+
+<p>
+Autoload Class trong Laravel 5 sử dụng chuẩn PSR-4. Chuẩn đó được mô tả như sau :
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Autoload Class" [1-131] -->
+<h1 class="sectionedit2" id="psr-4_autoload">1. PSR-4 Autoload</h1>
+<div class="level1">
+
+<p>
+1 Class theo chuẩn PSR-4 thường có dạng như sau :
+</p>
+<pre class="code">\&lt;NamespaceName&gt;(\&lt;SubNamespaceNames&gt;)*\&lt;ClassName&gt;</pre>
+
+<p>
+Các đặc điểm chính:
+</p>
+<ul>
+<li class="level1"><div class="li"> Class hợp lệ phải có top level namespace, ( hoặc gọi là vendor namespace)</div>
+</li>
+<li class="level1"><div class="li"> Class hợp lệ phải có 1 namespace hoặc thêm nhiều subnamespace</div>
+</li>
+<li class="level1"><div class="li"> Class hợp lệ phải có tên 1 lớp cuối cùng.</div>
+</li>
+<li class="level1"><div class="li"> Dấu gạch dưới thì không có ý nghĩa trong tên class</div>
+</li>
+<li class="level1"><div class="li"> Tên lớp hợp lệ có thể là sự kết hợp bất kỳ giữa ký tự thường và ký tự hoa</div>
+</li>
+<li class="level1"><div class="li"> Tên các lớp tham chiếu phải phân biệt chữ thường và chữ hoa</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT2 SECTION "1. PSR-4 Autoload" [132-807] -->
+<h1 class="sectionedit3" id="cach_tạo_auto_load_class_trong_laravel_5">2. Cách tạo auto load class trong Laravel 5</h1>
+<div class="level1">
+
+<p>
+Ví dụ: Ta tạo 1 common class nằm trong thư mục app/classes như sau:
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=autoloader_class&amp;codeblock=1" title="Download Snippet" class="mediafile mf_php">app/Classes/Common.php</a></dt>
+<dd><pre class="code file php"><span class="kw2">&lt;?php</span>
+<span class="kw2">namespace</span> App\Classes<span class="sy0">;</span>
+<span class="kw2">class</span> Common<span class="br0">&#123;</span>
+&nbsp;
+   <span class="kw2">public</span> static <span class="kw2">function</span> comFunc<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>            
+        <span class="kw1">return</span> <span class="st_h">'This is common function.'</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span>    </pre>
+</dd></dl>
+
+<p>
+Để dùng class ta thêm đoạn code sau:
+</p>
+<pre class="code php"><span class="kw2">use</span> App\Classes\Common<span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT3 SECTION "2. Cách tạo auto load class trong Laravel 5" [808-1229] -->
+<h2 class="sectionedit4" id="cach_dung_model_va_helper_trong_custom_class">2.1 Cách dùng model và helper trong custom class</h2>
+<div class="level2">
+
+<p>
+Để dùng được model hay các helper trong các class này ta phải thêm dấu “\” và trước các tên class đó.
+Ví dụ: Để tạo 1 đoạn mã hash trong custom class ta dùng như sau :
+</p>
+<pre class="code php"><span class="kw2">public</span> static <span class="kw2">function</span> comFunc<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>            
+        <span class="kw1">return</span> \<a href="http://www.php.net/hash"><span class="kw3">Hash</span></a><span class="sy0">::</span><span class="me2">make</span><span class="br0">&#40;</span><span class="st_h">'secret'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "2.1 Cách dùng model và helper trong custom class" [1230-1610] -->
+<h2 class="sectionedit5" id="tạo_alias_class">2.2 Tạo alias class</h2>
+<div class="level2">
+
+<p>
+Để gọi tên class ngắn gọn hơn ta có thể alias class . Trong file config/app.php , ta thêm trong mảng aliases:
+</p>
+<pre class="code php"><span class="st_h">'Common'</span>    <span class="sy0">=&gt;</span> App\Classes\Common<span class="sy0">::</span><span class="kw2">class</span><span class="sy0">,</span></pre>
+
+<p>
+Bây giờ ta có thể dùng class Common 1 cách ngắn ngọn hơn như sau :
+</p>
+<pre class="code php"><span class="kw2">use</span> Common<span class="sy0">;</span>
+<span class="sy0">...</span>
+<span class="kw2">public</span> <span class="kw2">function</span> index<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="kw1">return</span> Common<span class="sy0">::</span><span class="me2">comFunc</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT5 SECTION "2.2 Tạo alias class" [1611-2007] -->
+<h2 class="sectionedit6" id="hiển_thị_cac_autoloader_dang_chạy">2.3 Hiển thị các autoloader đang chạy</h2>
+<div class="level2">
+
+<p>
+Để hiển thị các autoloader ta thêm 1 route trong file app/Http/Routes.php“
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=autoloader_class&amp;codeblock=6" title="Download Snippet" class="mediafile mf_php">app/Http/routes.php</a></dt>
+<dd><pre class="code file php">Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'/show-autoloaders'</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#123;</span>
+    <span class="kw1">foreach</span><span class="br0">&#40;</span><a href="http://www.php.net/spl_autoload_functions"><span class="kw3">spl_autoload_functions</span></a><span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="kw1">as</span> <span class="re0">$callback</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">if</span><span class="br0">&#40;</span><a href="http://www.php.net/is_string"><span class="kw3">is_string</span></a><span class="br0">&#40;</span><span class="re0">$callback</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+        <span class="br0">&#123;</span>
+            <span class="kw1">echo</span> <span class="st_h">'- '</span><span class="sy0">,</span><span class="re0">$callback</span><span class="sy0">,</span><span class="st0">&quot;<span class="es1">\n</span>&lt;br&gt;<span class="es1">\n</span>&quot;</span><span class="sy0">;</span>
+        <span class="br0">&#125;</span>
+&nbsp;
+        <span class="kw1">else</span> <span class="kw1">if</span><span class="br0">&#40;</span><a href="http://www.php.net/is_array"><span class="kw3">is_array</span></a><span class="br0">&#40;</span><span class="re0">$callback</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+        <span class="br0">&#123;</span>
+            <span class="kw1">if</span><span class="br0">&#40;</span><a href="http://www.php.net/is_object"><span class="kw3">is_object</span></a><span class="br0">&#40;</span><span class="re0">$callback</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+            <span class="br0">&#123;</span>
+                <span class="kw1">echo</span> <span class="st_h">'- '</span><span class="sy0">,</span><a href="http://www.php.net/get_class"><span class="kw3">get_class</span></a><span class="br0">&#40;</span><span class="re0">$callback</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+            <span class="br0">&#125;</span>
+            <span class="kw1">elseif</span><span class="br0">&#40;</span><a href="http://www.php.net/is_string"><span class="kw3">is_string</span></a><span class="br0">&#40;</span><span class="re0">$callback</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+            <span class="br0">&#123;</span>
+                <span class="kw1">echo</span> <span class="st_h">'- '</span><span class="sy0">,</span><span class="re0">$callback</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="sy0">;</span>
+            <span class="br0">&#125;</span>
+            <span class="kw1">echo</span> <span class="st_h">'::'</span><span class="sy0">,</span><span class="re0">$callback</span><span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="sy0">,</span><span class="st0">&quot;<span class="es1">\n</span>&lt;br&gt;<span class="es1">\n</span>&quot;</span><span class="sy0">;</span>            
+        <span class="br0">&#125;</span>
+        <span class="kw1">else</span>
+        <span class="br0">&#123;</span>
+            <a href="http://www.php.net/var_dump"><span class="kw3">var_dump</span></a><span class="br0">&#40;</span><span class="re0">$callback</span><span class="br0">&#41;</span><span class="sy0">;</span>
+        <span class="br0">&#125;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>    </pre>
+</dd></dl>
+
+<p>
+Kết quả hiển thị danh sách autoloader:
+</p>
+<pre class="code">- Illuminate\Foundation\AliasLoader::load
+- Composer\Autoload\ClassLoader::loadClass
+- PhpParser\Autoloader::autoload
+- Swift::autoload </pre>
+
+</div>
+<!-- EDIT6 SECTION "2.3 Hiển thị các autoloader đang chạy" [2008-3017] -->
+<h3 class="sectionedit7" id="autoload_với_composer">2.4 Autoload với composer</h3>
+<div class="level3">
+
+<p>
+Để xem danh sách các autload namespace trong composer, ta xem file vendor/autoload/psr-4.php
+</p>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=autoloader_class&amp;codeblock=8" title="Download Snippet" class="mediafile mf_php">vendor/autload/psr-4.php</a></dt>
+<dd><pre class="code file php"><span class="sy0">...</span>
+   <span class="st_h">'Symfony\\Component\\CssSelector\\'</span> <span class="sy0">=&gt;</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="re0">$vendorDir</span> <span class="sy0">.</span> <span class="st_h">'/symfony/css-selector'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    <span class="st_h">'Symfony\\Component\\Console\\'</span> <span class="sy0">=&gt;</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="re0">$vendorDir</span> <span class="sy0">.</span> <span class="st_h">'/symfony/console'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    <span class="st_h">'SuperClosure\\'</span> <span class="sy0">=&gt;</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="re0">$vendorDir</span> <span class="sy0">.</span> <span class="st_h">'/jeremeamia/SuperClosure/src'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    <span class="st_h">'Stringy\\'</span> <span class="sy0">=&gt;</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="re0">$vendorDir</span> <span class="sy0">.</span> <span class="st_h">'/danielstjules/stringy/src'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    <span class="st_h">'Monolog\\'</span> <span class="sy0">=&gt;</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="re0">$vendorDir</span> <span class="sy0">.</span> <span class="st_h">'/monolog/monolog/src/Monolog'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    <span class="st_h">'League\\Flysystem\\'</span> <span class="sy0">=&gt;</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="re0">$vendorDir</span> <span class="sy0">.</span> <span class="st_h">'/league/flysystem/src'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    <span class="st_h">'Illuminate\\'</span> <span class="sy0">=&gt;</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="re0">$vendorDir</span> <span class="sy0">.</span> <span class="st_h">'/laravel/framework/src/Illuminate'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    <span class="st_h">'Faker\\'</span> <span class="sy0">=&gt;</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="re0">$vendorDir</span> <span class="sy0">.</span> <span class="st_h">'/fzaninotto/faker/src/Faker'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    <span class="st_h">'Doctrine\\Instantiator\\'</span> <span class="sy0">=&gt;</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="re0">$vendorDir</span> <span class="sy0">.</span> <span class="st_h">'/doctrine/instantiator/src/Doctrine/Instantiator'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    <span class="st_h">'ClassPreloader\\'</span> <span class="sy0">=&gt;</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="re0">$vendorDir</span> <span class="sy0">.</span> <span class="st_h">'/classpreloader/classpreloader/src'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    <span class="st_h">'Bestmomo\\Scafold\\'</span> <span class="sy0">=&gt;</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="re0">$vendorDir</span> <span class="sy0">.</span> <span class="st_h">'/bestmomo/scafold/src'</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    <span class="st_h">'App\\'</span> <span class="sy0">=&gt;</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="re0">$baseDir</span> <span class="sy0">.</span> <span class="st_h">'/app'</span><span class="br0">&#41;</span><span class="sy0">,</span></pre>
+</dd></dl>
+
+<p>
+Ta thấy namespace Illuminate sẽ chỉ đến thư mục vendor/laravel/framework/src/Illuminate.
+</p>
+
+<p>
+Ta cũng có thể thêm 1 autoload qua composer theo các bước sau:
+</p>
+
+<p>
+- Tạo thư mục, và các class
+</p>
+<pre class="code">app/Mulodo
+app/Mulodo/Common.php</pre>
+<dl class="file">
+<dt><a href="/doku.php?do=export_code&amp;id=autoloader_class&amp;codeblock=10" title="Download Snippet" class="mediafile mf_php">app/Mulodo/Common.php</a></dt>
+<dd><pre class="code file php"><span class="kw2">&lt;?php</span>
+<span class="kw2">namespace</span> App\Mulodo<span class="sy0">;</span>
+<span class="kw2">class</span> Common<span class="br0">&#123;</span>
+&nbsp;
+   <span class="kw2">public</span> static <span class="kw2">function</span> comFunc<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>            
+        <span class="kw1">return</span> <span class="st_h">'This is common function.'</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span>    </pre>
+</dd></dl>
+
+<p>
+- Bây giờ nếu trong routes ta thêm 1 route như sau sẽ có lỗi :
+</p>
+<pre class="code php">Route<span class="sy0">::</span><span class="me2">get</span><span class="br0">&#40;</span><span class="st_h">'/mulodo'</span><span class="sy0">,</span> <span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+    <span class="kw1">return</span> Mulodo\Common<span class="sy0">::</span><span class="me2">comFunc</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="br0">&#41;</span> <span class="sy0">;</span></pre>
+
+<p>
+- Khi chạy route trên sẽ có lỗi là Class không tìm thấy do ta chưa thêm Mulodo vào file composer. Mở file composer.json:
+</p>
+<dl class="code">
+<dt><a href="/doku.php?do=export_code&amp;id=autoloader_class&amp;codeblock=12" title="Download Snippet" class="mediafile mf_json">composer.json</a></dt>
+<dd><pre class="code json">    &quot;autoload&quot;: {
+        &quot;classmap&quot;: [
+            &quot;database&quot;
+        ],
+        &quot;psr-4&quot;: {
+            &quot;App\\&quot;: &quot;app/&quot;,
+            &quot;Mulodo\\&quot; : &quot;app/Mulodo&quot;
+        }
+    },</pre>
+</dd></dl>
+
+<p>
+- Cập nhật Composer:
+</p>
+<pre class="code">$ composer dump-autoload -o</pre>
+
+<p>
+- Bây giờ ta chạy lại sẽ không còn hiện thông báo lỗi. Namespace Mulodo sẽ hiểu trỏ đếnn thư mục app/Mulodo.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "2.4 Autoload với composer" [3018-] -->

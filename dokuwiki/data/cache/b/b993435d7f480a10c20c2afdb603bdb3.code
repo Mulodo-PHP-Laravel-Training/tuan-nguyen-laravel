@@ -1,0 +1,6 @@
+&lt;?php
+Route::get('home', '\Bestmomo\Scafold\Http\Controllers\HomeController@index');
+Route::controllers([
+	'auth' =&gt; 'Auth\AuthController',
+	'password' =&gt; 'Auth\PasswordController',
+]);

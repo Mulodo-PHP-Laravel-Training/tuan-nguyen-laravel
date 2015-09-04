@@ -1,0 +1,225 @@
+====== Laravel Package [Bundle] ======
+
+====== 1. Định nghĩa ======
+Laravel Bundle: là những gói cài thêm mà bạn có thể download và cài plug in vào Laravel.
+
+Từ phiên bản Laravel 4 trở lên bundle được thay bằng package.
+
+Danh sách các package được tìm thấy ở đây : [[http://packalyst.com/|Package list]]
+
+Các package có thể dễ dàng được thêm vào Laravel qua file composer.json.
+
+Ex : Ta thêm 1 package Intervention Image, ta có thể dùng lệnh sau thêm vào composer.json
+<code>
+$ php composer.phar require intervention/image
+</code>
+
+====== 2. Tích hợp Package vào Laravel ======
+
+===== 2.1 Service Providers =====
+Để tích hợp các package vào Laravel ta sử dụng Service Providers. Một Service provider có trách nhiệm ràng buộc các thứ vào Laravel và chỉ ra cho Laravel các resources như là views, config, ...
+
+Ex: Thêm service provider cho package Intervention Image, ta thêm vào file config/app.php :
+
+<file php app.php>
+// trong mảng providers thêm phần tử
+Intervention\Image\ImageServiceProvider::class
+// thêm alias class
+'Image'     => Intervention\Image\Facades\Image::class,
+</file>
+
+Bây giờ ta có thể dùng thử package trong Route
+<file php route.php>
+// usage inside a laravel route
+Route::get('/testimage', function()
+{
+    $img = Image::make('foo.png')->resize(300, 200);
+
+    return $img->response('jpg');
+});
+</file>
+
+===== 2.2 Routing =====
+Để thêm route cho package, ta chỉ cần thêm require file routes trong phương thức boot của service provider. 
+**//Ex//**: Package bestmomo/scafold ta có thêm các route là 'home', 'auth/*', 'password/*' ... Trong class ScafoldServiceprovider ta thêm phương thức boot như sau :
+<file php ScafoldServiceprovider.php>
+public function boot()
+	{
+		// Get namespace
+		$nameSpace = $this->app->getNamespace();
+		// Routes
+		$this->app->router->group(['namespace' => $nameSpace . 'Http\Controllers'], function()
+		{
+			require __DIR__.'/Http/routes.php';
+		});
+	}
+</file>
+
+Trong package ta thêm file routes.php
+
+<file php routes.php>
+<?php
+Route::get('home', '\Bestmomo\Scafold\Http\Controllers\HomeController@index');
+Route::controllers([
+	'auth' => 'Auth\AuthController',
+	'password' => 'Auth\PasswordController',
+]);
+</file>
+===== 2.3 Resource =====
+
+==== 2.3.1 Views ====
+
+Đối với các package có sử dụng Views, ta có các phương thức để đưa vào views như :
+
+==== Service Provider loadViewsFrom ====
+
+Ta có thể sử dụng phương thức loadViewsFrom trong server provider để chỉ cho Laravel biết các views của package đó.
+
+<code php>
+public function boot()
+{
+    $this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
+}
+</code>
+
+Để sử dụng view đó ta có thể viết như sau :
+
+<code php>
+Route::get('admin', function () {
+    return view('courier::admin');
+});
+</code>
+
+==== Ghi đè các package views ====
+Nếu dùng cách trên thì ta có đến 2 đường dẫn trỏ đến views : 1 là views trong lavavel, 2 là views của package. Để đơn giản hơn ta có chuyển các views trong package sang views của Laravel. 
+
+**//Ex://** Trong package BestMomo/scafold dùng phương thức publish để chuyển views của package đó sang views của Laravel.
+
+<file php ScafoldServiceprovider.php>
+public function boot()
+	{
+		// Get namespace
+		$nameSpace = $this->app->getNamespace();
+		// Routes
+		$this->app->router->group(['namespace' => $nameSpace . 'Http\Controllers'], function()
+		{
+			require __DIR__.'/Http/routes.php';
+		});
+		// Views
+		$this->publishes([
+			__DIR__.'/../views' => base_path('resources/views'),
+			__DIR__.'/../views/auth' => base_path('resources/views/auth'),
+			__DIR__.'/../views/emails' => base_path('resources/views/emails'),
+		]);
+		// Assets
+		$this->publishes([
+			__DIR__.'/../public' => public_path(),
+		], 'public');
+	}
+</file>
+Để thực hiện việc copy các views ta sử dụng artisan:
+<code>
+$ php artisan vendor:publish
+Copied Directory [/vendor/bestmomo/scafold/views] To [/resources/views]
+Copied Directory [/vendor/bestmomo/scafold/views/auth] To [/resources/views/auth]
+Copied Directory [/vendor/bestmomo/scafold/views/emails] To [/resources/views/emails]
+Copied Directory [/vendor/bestmomo/scafold/public] To [/public]
+Publishing complete for tag []!
+</code>
+
+==== 2.3.2 Translations ====
+Nếu package có nhiều ngôn ngữ, ta khai báo bằng phương thức loadTranslationsFrom() để chỉ cho Laravel cách load chúng.
+
+<code php>
+public function boot()
+{
+    $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'packagename');
+}
+</code>
+
+Cách dùng như sau :
+<code php>
+echo trans('packagename::messages.welcome');
+</code>
+
+Cũng giống như views, ta có thể copy các file translations từ package sang laravel như sau:
+<code php>
+public function boot()
+{
+    $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
+
+    $this->publishes([
+        __DIR__.'/path/to/translations' => base_path('resources/lang/vendor/courier'),
+    ]);
+}
+</code>
+Sau đó chạy lệnh vendor:publish
+<code>
+php artisan vendor:publish
+</code>
+
+==== 2.2.3 Configuration ====
+Để thêm cấu hình cho package ta có thể dùng phương thức publish.
+<code php>
+public function boot()
+{
+    $this->publishes([
+        __DIR__.'/path/to/config/courier.php' => config_path('courier.php'),
+    ]);
+}
+</code>
+Giờ ta có thể sử dụng config của package đó.
+<code php>
+$value = config('courier.option');
+</code>
+
+Ta có thể trộn các cấu hình của package với Laravel như sau :
+<code php>
+public function register()
+{
+    $this->mergeConfigFrom(
+        __DIR__.'/path/to/config/courier.php', 'courier'
+    );
+}
+</code>
+
+==== 2.2.4 Asset ====
+- Để load các file js, css trong package ta có dùng cách giống như views và transition.
+<code php>
+    public function boot()
+    	{
+    		// Assets
+    		$this->publishes([
+    			__DIR__.'/../public' => public_path(),
+    		], 'public');
+    	}
+
+
+</code>
+
+Sau đó cũng cmd vendor:publish
+<code>
+$ php artisan vendor:publish
+// Các file assset sẽ được ghi đè mỗi khi package update
+$ php artisan vendor:publish --tag=public --force
+</code>
+
+==== 2.2.5 Publish từng phần ====
+Ta có thể cấu hình package theo từng phần như sau :
+<code php>
+public function boot()
+{
+    $this->publishes([
+        __DIR__.'/../config/package.php' => config_path('package.php')
+    ], 'config');
+
+    $this->publishes([
+        __DIR__.'/../database/migrations/' => database_path('migrations')
+    ], 'migrations');
+}
+</code>
+
+khi publish config, ta chỉ cần chạy cmd như sau :
+<code>
+$ php artisan vendor:publish --provider="Vendor\Providers\PackageServiceProvider" --tag="config"
+</code>

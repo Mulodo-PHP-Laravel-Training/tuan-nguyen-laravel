@@ -1,0 +1,163 @@
+====== Autoload Class ======
+
+Autoload Class trong Laravel 5 sử dụng chuẩn PSR-4. Chuẩn đó được mô tả như sau :
+
+====== 1. PSR-4 Autoload ======
+1 Class theo chuẩn PSR-4 thường có dạng như sau :
+<code>
+\<NamespaceName>(\<SubNamespaceNames>)*\<ClassName>
+</code>
+Các đặc điểm chính:
+  * Class hợp lệ phải có top level namespace, ( hoặc gọi là vendor namespace)
+  * Class hợp lệ phải có 1 namespace hoặc thêm nhiều subnamespace
+  * Class hợp lệ phải có tên 1 lớp cuối cùng.
+  * Dấu gạch dưới thì không có ý nghĩa trong tên class
+  * Tên lớp hợp lệ có thể là sự kết hợp bất kỳ giữa ký tự thường và ký tự hoa
+  * Tên các lớp tham chiếu phải phân biệt chữ thường và chữ hoa
+
+====== 2. Cách tạo auto load class trong Laravel 5 ======
+
+Ví dụ: Ta tạo 1 common class nằm trong thư mục app/classes như sau:
+<file php app/Classes/Common.php>
+<?php
+namespace App\Classes;
+class Common{
+ 
+   public static function comFunc() {            
+        return 'This is common function.';
+    }
+}    
+</file>
+
+Để dùng class ta thêm đoạn code sau:
+<code php>
+use App\Classes\Common;
+</code>
+===== 2.1 Cách dùng model và helper trong custom class =====
+Để dùng được model hay các helper trong các class này ta phải thêm dấu "\" và trước các tên class đó.
+Ví dụ: Để tạo 1 đoạn mã hash trong custom class ta dùng như sau :
+<code php>
+public static function comFunc() {            
+        return \Hash::make('secret');
+    }
+</code>
+
+===== 2.2 Tạo alias class =====
+Để gọi tên class ngắn gọn hơn ta có thể alias class . Trong file config/app.php , ta thêm trong mảng aliases:
+<code php>
+'Common'    => App\Classes\Common::class,
+</code>
+Bây giờ ta có thể dùng class Common 1 cách ngắn ngọn hơn như sau :
+<code php>
+use Common;
+...
+public function index()
+{
+    return Common::comFunc();
+}
+</code>
+
+===== 2.3 Hiển thị các autoloader đang chạy =====
+Để hiển thị các autoloader ta thêm 1 route trong file app/Http/Routes.php"
+<file php app/Http/routes.php>
+Route::get('/show-autoloaders', function(){
+    foreach(spl_autoload_functions() as $callback)
+    {
+        if(is_string($callback))
+        {
+            echo '- ',$callback,"\n<br>\n";
+        }
+ 
+        else if(is_array($callback))
+        {
+            if(is_object($callback[0]))
+            {
+                echo '- ',get_class($callback[0]);
+            }
+            elseif(is_string($callback[0]))
+            {
+                echo '- ',$callback[0];
+            }
+            echo '::',$callback[1],"\n<br>\n";            
+        }
+        else
+        {
+            var_dump($callback);
+        }
+    }
+});    
+</file>
+
+Kết quả hiển thị danh sách autoloader:
+<code>
+- Illuminate\Foundation\AliasLoader::load
+- Composer\Autoload\ClassLoader::loadClass
+- PhpParser\Autoloader::autoload
+- Swift::autoload 
+</code>
+
+==== 2.4 Autoload với composer ====
+Để xem danh sách các autload namespace trong composer, ta xem file vendor/autoload/psr-4.php
+<file php vendor/autload/psr-4.php>
+...
+   'Symfony\\Component\\CssSelector\\' => array($vendorDir . '/symfony/css-selector'),
+    'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
+    'SuperClosure\\' => array($vendorDir . '/jeremeamia/SuperClosure/src'),
+    'Stringy\\' => array($vendorDir . '/danielstjules/stringy/src'),
+    'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
+    'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),
+    'Illuminate\\' => array($vendorDir . '/laravel/framework/src/Illuminate'),
+    'Faker\\' => array($vendorDir . '/fzaninotto/faker/src/Faker'),
+    'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
+    'ClassPreloader\\' => array($vendorDir . '/classpreloader/classpreloader/src'),
+    'Bestmomo\\Scafold\\' => array($vendorDir . '/bestmomo/scafold/src'),
+    'App\\' => array($baseDir . '/app'),
+</file>
+
+Ta thấy namespace Illuminate sẽ chỉ đến thư mục vendor/laravel/framework/src/Illuminate.
+
+Ta cũng có thể thêm 1 autoload qua composer theo các bước sau:
+
+- Tạo thư mục, và các class
+<code>
+app/Mulodo
+app/Mulodo/Common.php
+</code>
+
+<file php app/Mulodo/Common.php>
+<?php
+namespace App\Mulodo;
+class Common{
+ 
+   public static function comFunc() {            
+        return 'This is common function.';
+    }
+}    
+</file>
+
+- Bây giờ nếu trong routes ta thêm 1 route như sau sẽ có lỗi :
+<code php>
+Route::get('/mulodo', function() {
+    return Mulodo\Common::comFunc();
+}) ;
+</code>
+
+- Khi chạy route trên sẽ có lỗi là Class không tìm thấy do ta chưa thêm Mulodo vào file composer. Mở file composer.json:
+<code json composer.json>
+    "autoload": {
+        "classmap": [
+            "database"
+        ],
+        "psr-4": {
+            "App\\": "app/",
+            "Mulodo\\" : "app/Mulodo"
+        }
+    },
+
+</code>
+- Cập nhật Composer:
+<code>
+$ composer dump-autoload -o
+</code>
+
+- Bây giờ ta chạy lại sẽ không còn hiện thông báo lỗi. Namespace Mulodo sẽ hiểu trỏ đếnn thư mục app/Mulodo.

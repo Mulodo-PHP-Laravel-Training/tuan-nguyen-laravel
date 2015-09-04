@@ -14,3 +14,6 @@ Laravel Routing
 Laravel Views
 Dependencies Injection
 Laravel Testing
+
+Laravel Package [Bundle]
+Autoload Class

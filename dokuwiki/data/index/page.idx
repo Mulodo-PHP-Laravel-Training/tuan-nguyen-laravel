@@ -14,3 +14,6 @@ routing
 view
 dependencies_injection
 testing
+bundle
+package_bundle
+autoloader_class
