@@ -43,7 +43,7 @@ class CreateUserTest extends TestCase
                 'username' => 'ab',
                 'first_name' => 'Ronan',
                 'last_name'  => 'Tuan',
-                'email'      => 'anh.tuan3@mulodo.com',
+                'email'      => 'anh.tuan3snv@mulodo.com',
                 'password'   => '12345',
             ])
              ->seeJson([
@@ -148,7 +148,6 @@ class CreateUserTest extends TestCase
                         'last_name' => 'Tuan',                    
                     ]
                 );
-
 
         }
 

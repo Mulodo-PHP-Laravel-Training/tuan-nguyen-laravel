@@ -46,6 +46,7 @@ class User extends Model implements AuthenticatableContract,
 
     protected function getDateFormat()
     {
+        // return Unix timestamp (10 numbers)
         return 'U';
     }    
 }
