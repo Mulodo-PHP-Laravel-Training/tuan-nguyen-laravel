@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use App\MyClasses\MessageUtility;
 
 class Handler extends ExceptionHandler
 {
@@ -46,6 +47,17 @@ class Handler extends ExceptionHandler
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
 
+        if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException){
+            $response = MessageUtility::getResponse(
+                trans('api.CODE_NOT_FOUND'), 
+                trans('api.DESCRIPTION_NOT_FOUND'),
+                trans('api.MSG_NOT_FOUND')
+            );
+            return response()->json($response);            
+        }
+
         return parent::render($request, $e);
     }
+
+
 }

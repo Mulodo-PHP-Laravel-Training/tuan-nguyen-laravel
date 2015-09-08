@@ -196,7 +196,10 @@ class CreateUserTest extends TestCase
              ->seeJson([                 
                  'meta' => array(
                         'code' => trans('api.CODE_INPUT_SUCCESS'),
-                        'message' => trans('api.CREATE_SUCCESS_MESSAGE',['objectCreated' => 'Account'])                        
+                        'description' => trans('api.DESCRIPTION_CREATE_SUCCESS'),
+                        'messages' => array(
+                            array('message' => trans('api.MSG_CREATE_SUCCESS',['objectCreated' => 'Account']) )                       
+                        )
                     )                 
              ])
              ->seeInDatabase('users', 
