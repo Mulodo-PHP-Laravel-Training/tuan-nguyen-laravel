@@ -8,6 +8,7 @@ use Validator;
 use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\MyClasses\MessageUtility;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
@@ -47,11 +48,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             $response['meta']['code'] = trans('api.CODE_INPUT_FAILED');
             $response['meta']['description'] = trans('api.DESCRIPTION_INPUT_FAILED');
-            foreach ($validator->errors()->getMessages() as $messages) {
-                foreach ($messages as $message) {
-                    $response['meta']['messages'][] = array('message' => $message);
-                }
-            }
+            $response['meta']['messages'] = MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages());
         } else {
             // Validation success
             $user = $this->createUser($request->all());
@@ -115,11 +112,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             $response['meta']['code'] = trans('api.CODE_INPUT_FAILED');
             $response['meta']['description'] = trans('api.DESCRIPTION_INPUT_FAILED');
-            foreach ($validator->errors()->getMessages() as $messages) {
-                foreach ($messages as $message) {
-                    $response['meta']['messages'][] = array('message' => $message);
-                }
-            }
+            $response['meta']['messages'] = MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages());
         } else {            
 
             $throttles = $this->isUsingThrottlesLoginsTrait();            
@@ -128,7 +121,9 @@ class UserController extends Controller
             if ($throttles && $this->hasTooManyLoginAttempts($request)) {
                 $response['meta']['code'] = trans('api.CODE_ATTEMPT_LOGIN');
                 $response['meta']['description'] = trans('api.DESCRIPTION_ATTEMPT_LOGIN');
-                $response['meta']['messages'] = array('message' => $this->sendLockoutResponse($request));
+                $response['meta']['messages'] = array(
+                    array('message' => $this->sendLockoutResponse($request))
+                );
                 return response()->json($response);
             }
 
@@ -137,16 +132,22 @@ class UserController extends Controller
             // login succesffully
             if (Auth::attempt($credentials, $remember_token = true )) {
                 $this->clearLoginAttempts($request);
-                $user = Auth::user()->toArray();
+                $user = Auth::user();
+                $user->last_login = time();
+                $user->save();
                 $response['meta']['code'] = trans('api.CODE_INPUT_SUCCESS');
                 $response['meta']['description'] = trans('api.LOGIN_SUCCESS');
-                $response['meta']['messages'] = array('message' => trans('api.MSG_LOGIN_SUCCESS', ['attribute' => $user['first_name'] . ' ' . $user['last_name'] ]) );
+                $response['meta']['messages'] = array(
+                    array('message' => trans('api.MSG_LOGIN_SUCCESS', ['attribute' => $user->first_name . ' ' . $user->last_name ]) ) 
+                );
                 $response['data']['token'] = $user['remember_token'];
             } else {
                 // login failed:username or password is invalid
                 $response['meta']['code'] = trans('api.CODE_AUTHENTICATE_FAILED');
                 $response['meta']['description'] = trans('api.DESCRIPTION_AUTHENTICATE_FAILED');
-                $response['meta']['messages'] = array('message' => trans('api.MSG_AUTHENTICATE_FAILED') );
+                $response['meta']['messages'] = array(
+                    array('message' => trans('api.MSG_AUTHENTICATE_FAILED') )
+                );
             }
 
             // increase login attempts
@@ -179,16 +180,22 @@ class UserController extends Controller
                 $user->save();
                 $response['meta']['code'] = trans('api.CODE_INPUT_SUCCESS');
                 $response['meta']['description'] = trans('api.LOGOUT_SUCCESS');                
-                $response['meta']['messages'] = array('message' => trans('api.LOGOUT_SUCCESS') );            
+                $response['meta']['messages'] = array(
+                    array('message' => trans('api.LOGOUT_SUCCESS') )
+                );            
             } else {
                 $response['meta']['code'] = trans('api.CODE_TOKEN_INVALID');
                 $response['meta']['description'] = trans('api.DESCRIPTION_TOKEN_INVALID');                
-                $response['meta']['messages'] = array('message' => trans('api.DESCRIPTION_TOKEN_INVALID') );            
+                $response['meta']['messages'] = array(
+                    array('message' => trans('api.DESCRIPTION_TOKEN_INVALID') )
+                );            
             }
         } else {
             $response['meta']['code'] = trans('api.CODE_INPUT_FAILED');
             $response['meta']['description'] = trans('api.DESCRIPTION_INPUT_FAILED');            
-            $response['meta']['messages'] = array('message' => trans('api.MSG_TOKEN_REQUIRED') );            
+            $response['meta']['messages'] = array(
+                array('message' => trans('api.MSG_TOKEN_REQUIRED') )
+            );            
         }
         
         return response()->json($response);
@@ -221,11 +228,11 @@ class UserController extends Controller
     protected function createUser(array $data)
     {
         return User::create([
-            'username' => $data['username'],
+            'username'   => $data['username'],
             'first_name' => $data['first_name'],
             'last_name'  => $data['last_name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),            
+            'email'      => $data['email'],
+            'password'   => bcrypt($data['password']),            
         ]);
     }
 
@@ -241,7 +248,7 @@ class UserController extends Controller
         $seconds = app(RateLimiter::class)->availableIn(
             $request->input($this->loginUsername()).$request->ip()
         );
-        return $this->getLockoutErrorMessage($seconds);
+        return trans('api.MSG_ATTEMPT_LOGIN', ['attribute' =>$seconds]);
     }
 
 
