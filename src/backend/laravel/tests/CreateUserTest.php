@@ -2,6 +2,8 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\User;
+
 class CreateUserTest extends TestCase
 {
 
@@ -124,8 +126,8 @@ class CreateUserTest extends TestCase
      */
     public function testValidateUnique()
     {
-        $user = App\User::where('username', 'anh.tuan')->first();
-        // if db is not rollback and migrate
+        $user = User::where('username', 'anh.tuan')->first();
+        // User is not exist in database
         if (!$user) {
             $this->post('/api/users', [
                     'username' => 'anh.tuan',
@@ -179,7 +181,11 @@ class CreateUserTest extends TestCase
      */
     public function testSuccess()
     {
-
+        $users = User::where('username', 'anh.tuan2')
+                        ->orwhere('email','anh.tuan2@mulodo.com');
+        if ($users) {
+            $users->delete();
+        }
         $this->post('/api/users', [
                 'username' => 'anh.tuan2',
                 'first_name' => 'Ronan',
@@ -200,7 +206,7 @@ class CreateUserTest extends TestCase
                     'first_name' => 'Ronan',
                     'last_name' => 'Tuan',                    
                 ]
-            );
+            );                    
     }    
 
 }
