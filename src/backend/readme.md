@@ -13,11 +13,13 @@ Mini Blog is small app written by Laravel 5.1. It's very simple app with 3 modul
     to: /home/vagrant/Code/miniblog/src/backend/laravel/public
 
 3.Create db : blog with below information:
+
     DB   : blog
     User : homestead
     Pass : secret
 
-4.Run cmd migrate to create and insert databse
+4.Run cmd migrate to create and insert databse:
+
     $ php artisan migrate
     $ php artisan db:seed
 
