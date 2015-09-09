@@ -1,10 +1,10 @@
-<?php 
+<?php
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
 
-class CreateUserTest extends TestCase
+class UserCreateTest extends TestCase
 {
 
     use DatabaseTransactions;
@@ -22,14 +22,14 @@ class CreateUserTest extends TestCase
                  'meta' => array(
                         'code' => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages" => array(                                              
-                            array("message" => trans('validation.required', ['attribute' => 'username']) ),                        
+                        "messages" => array(
+                            array("message" => trans('validation.required', ['attribute' => 'username']) ),
                             array("message" => trans('validation.required', ['attribute' => 'email']) ),
                             array("message" => trans('validation.required', ['attribute' => 'first name']) ),
                             array("message" => trans('validation.required', ['attribute' => 'last name']) ),
-                            array("message" => trans('validation.required', ['attribute' => 'password']) ),                            
-                        )                        
-                    )                 
+                            array("message" => trans('validation.required', ['attribute' => 'password']) ),
+                        )
+                    )
              ]);
     }
 
@@ -53,13 +53,13 @@ class CreateUserTest extends TestCase
                  'meta' => array(
                         'code' => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages" => array(                                              
+                        "messages" => array(
                             array("message" => trans('validation.min.string',['attribute' => 'username', 'min' => 3])),
                             array("message" => trans('validation.min.string',['attribute' => 'password', 'min' => 6])),
-                        )                        
-                    )                 
+                        )
+                    )
              ]);
-    }    
+    }
 
     /**
      * Test Validate Max Character.
@@ -81,16 +81,16 @@ class CreateUserTest extends TestCase
                  'meta' => array(
                         'code' => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages" => array(                                              
+                        "messages" => array(
                             array("message" => trans('validation.max.string',['attribute' => 'first name', 'max' => 50])),
                             array("message" => trans('validation.max.string',['attribute' => 'last name', 'max' => 50])),
                             array("message" => trans('validation.max.string',['attribute' => 'username', 'max' => 50])),
                             array("message" => trans('validation.max.string',['attribute' => 'email', 'max' => 50])),
                             array("message" => trans('validation.email', ['attribute' => 'email']) ),
-                        )                        
-                    )                 
+                        )
+                    )
              ]);
-    }    
+    }
 
     /**
      * Test Validate Max Character.
@@ -98,7 +98,7 @@ class CreateUserTest extends TestCase
      * @return void
      */
     public function testValidateEmail()
-    {        
+    {
         $this->post('/api/users', [
                 'username' => 'abcdef',
                 'first_name' => 'Ronan',
@@ -111,12 +111,12 @@ class CreateUserTest extends TestCase
                  'meta' => array(
                         'code' => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages" => array(                                              
+                        "messages" => array(
                             array("message" => trans('validation.email', ['attribute' => 'email']) )
-                        )                        
-                    )                 
+                        )
+                    )
              ]);
-    }    
+    }
 
 
     /**
@@ -136,18 +136,18 @@ class CreateUserTest extends TestCase
                     'email'      => 'anh.tuan@mulodo.com',
                     'password'   => '123456',
                 ])
-                 ->seeJson([                 
+                 ->seeJson([
                      'meta' => array(
                             'code' => trans('api.CODE_INPUT_SUCCESS'),
-                            'message' => trans('api.CREATE_SUCCESS_MESSAGE',['objectCreated' => 'Account'])                        
-                        )                 
+                            'message' => trans('api.CREATE_SUCCESS_MESSAGE',['objectCreated' => 'Account'])
+                        )
                  ])
-                 ->seeInDatabase('users', 
+                 ->seeInDatabase('users',
                     [
                         'username' => 'anh.tuan',
                         'email' => 'anh.tuan@mulodo.com',
                         'first_name' => 'Ronan',
-                        'last_name' => 'Tuan',                    
+                        'last_name' => 'Tuan',
                     ]
                 );
 
@@ -165,15 +165,15 @@ class CreateUserTest extends TestCase
                  'meta' => array(
                         'code' => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages" => array(                                              
+                        "messages" => array(
                             array("message" => trans('validation.unique', ['attribute' => 'email']) ),
                             array("message" => trans('validation.unique', ['attribute' => 'username']) ),
-                        )                        
-                    )                 
+                        )
+                    )
              ]
         );
 
-    }    
+    }
 
     /**
      * Test success create user.
@@ -193,23 +193,23 @@ class CreateUserTest extends TestCase
                 'email'      => 'anh.tuan2@mulodo.com',
                 'password'   => '123456',
             ])
-             ->seeJson([                 
+             ->seeJson([
                  'meta' => array(
                         'code' => trans('api.CODE_INPUT_SUCCESS'),
                         'description' => trans('api.DESCRIPTION_CREATE_SUCCESS'),
                         'messages' => array(
-                            array('message' => trans('api.MSG_CREATE_SUCCESS',['objectCreated' => 'Account']) )                       
+                            array('message' => trans('api.MSG_CREATE_SUCCESS',['objectCreated' => 'Account']) )
                         )
-                    )                 
+                    )
              ])
-             ->seeInDatabase('users', 
+             ->seeInDatabase('users',
                 [
                     'username' => 'anh.tuan2',
                     'email' => 'anh.tuan2@mulodo.com',
                     'first_name' => 'Ronan',
-                    'last_name' => 'Tuan',                    
+                    'last_name' => 'Tuan',
                 ]
-            );                    
-    }    
+            );
+    }
 
 }

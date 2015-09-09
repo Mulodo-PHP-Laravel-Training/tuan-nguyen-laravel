@@ -4,7 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
 
-class UserLogoutTest extends TestCase
+class UserGetInfoTest extends TestCase
 {
 
     use DatabaseTransactions;
@@ -16,7 +16,7 @@ class UserLogoutTest extends TestCase
      */
     public function testValidateRequired()
     {
-        $this->get('/api/users/logout', [
+        $this->get('/api/users', [
             ])
              ->seeJson([
                  'data' => null,
@@ -30,16 +30,14 @@ class UserLogoutTest extends TestCase
              ]);
     }
 
-
     /**
-     * Test Logout Falied, invalid token.
+     * Test Validate Token.
      *
      * @return void
      */
-
-    public function testLogoutFailed()
+    public function testValidateToken()
     {
-        $this->get('/api/users/logout?token=f8IKRC6ookhF1DjKTsI0eLYlBnm4tYT9FiAAMtXzObCLApQe3joPI3Mrx3OK')
+        $this->get('/api/users?token=xyz')
              ->seeJson([
                  'data' => null,
                  'meta' => array(
@@ -52,35 +50,27 @@ class UserLogoutTest extends TestCase
              ]);
     }
 
-
     /**
-     * Test Logout Successfully.
+     * Test Validate Token.
      *
      * @return void
      */
-
-    public function testLogoutSuccess()
+    public function testGetInfoSuccess()
     {
+
         $user = $this->getUserLogin();
-        $this->get('/api/users/logout?token='.$user->remember_token)
+        $this->get('/api/users?token='.$user->remember_token)
              ->seeJson([
-                 'data' => null,
                  'meta' => array(
                         'code'        => trans('api.CODE_INPUT_SUCCESS'),
-                        'description' => trans('api.LOGOUT_SUCCESS'),
+                        'description' => trans('api.DESCRIPTION_GET_INFO_SUCCESS'),
                         "messages"    => array(
-                            array("message" => trans('api.LOGOUT_SUCCESS') )
+                            array("message" => trans('api.MSG_GET_INFO_SUCCESS', ['attribute' => 'User']) )
                         )
-                    )
-             ])
-            ->seeInDatabase('users',
-                [
-                    'username' => 'anh.tuan',
-                    'remember_token' => '',
-                ]
-            );
+                    ),
+                 'data' => $user->toArray()
+
+             ]);
     }
-
-
 
 }

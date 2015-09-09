@@ -20,7 +20,7 @@ class Users extends Migration
             $table->string('last_name', 50);
             $table->string('email', 50)->unique();
             $table->integer('last_login')->unsigned()->nullable();
-            $table->string('login_hash', 100)->nullable();
+            $table->string('remember_token', 100)->nullable();
             $table->integer('created_at')->unsigned();
             $table->integer('updated_at')->unsigned()->nullable();
 
@@ -34,7 +34,7 @@ class Users extends Migration
      */
     public function down()
     {
-        //        
+        //
         Schema::drop('users');
     }
 }

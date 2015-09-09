@@ -3,6 +3,12 @@ namespace App\MyClasses;
 
 class MessageUtility
 {
+    /**
+     * Get messages from an array messages.
+     *
+     * @param array $errorMessages
+     * @return array $responseMessages
+     */
     public static function getErrorMessageForResponse (array $errorMessages)
     {
         $responseMessages = array();
@@ -14,7 +20,16 @@ class MessageUtility
         }
         return $responseMessages;
     }
-
+    /**
+     * Process response array.
+     *
+     * @param string $code
+     * @param string $description
+     * @param mixed $messages
+     * @param array $data
+     *
+     * @return array $response
+     */
     public static function getResponse($code, $description , $messages , $data = null) {
         $response = array(
             'meta' => array(
@@ -23,19 +38,22 @@ class MessageUtility
                 'messages'    => []
             ),
             'data' => null
-        );        
-        $response['meta']['code'] = (string) $code;        
+        );
+        $response['meta']['code'] = (string) $code;
         $response['meta']['description'] = (string) $description;
         if (is_string($messages)) {
             $response['meta']['messages'] = array(
                 array('message' => $messages)
             );
-        } 
+        }
 
         if (is_array($messages)) {
             $response['meta']['messages'] = $messages;
         }
-        
+
+        if (is_array($data) ) {
+            $response['data'] = $data;
+        }
         return $response;
     }
 }

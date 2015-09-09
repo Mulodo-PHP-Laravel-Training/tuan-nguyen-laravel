@@ -49,13 +49,23 @@ class Handler extends ExceptionHandler
 
         if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException){
             $response = MessageUtility::getResponse(
-                trans('api.CODE_NOT_FOUND'), 
+                trans('api.CODE_NOT_FOUND'),
                 trans('api.DESCRIPTION_NOT_FOUND'),
                 trans('api.MSG_NOT_FOUND')
             );
-            return response()->json($response);            
+            return response()->json($response);
         }
-
+        /*
+        // Code will be used in the future
+        if ($e instanceof \Exception){
+            $response = MessageUtility::getResponse(
+                trans('api.CODE_SERVER_ERROR'),
+                trans('api.DESCRIPTION_SERVER_ERROR'),
+                $e->getMessage()
+            );
+            return response()->json($response);
+        }
+        */
         return parent::render($request, $e);
     }
 

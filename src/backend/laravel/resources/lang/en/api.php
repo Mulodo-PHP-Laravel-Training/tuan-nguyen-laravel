@@ -7,24 +7,31 @@ return [
     |-------------------------------------------------------------------------
     | Custom API Messages
     |-------------------------------------------------------------------------
-    | The following lines are used to defined API messages 
+    | The following lines are used to defined API messages
     |
-    */    
-    'CODE_INPUT_SUCCESS'              => '200',      
+    */
+    'CODE_INPUT_SUCCESS'              => '200',
     'DESCRIPTION_CREATE_SUCCESS'      => 'Created successfully',
+    'DESCRIPTION_UPDATE_SUCCESS'      => 'Updated successfully',
     'MSG_CREATE_SUCCESS'              => ':objectCreated was created successfully!',
+    'MSG_UPDATE_SUCCESS'              => ':objectCreated was updated successfully!',
     'LOGIN_SUCCESS'                   => 'Login successfully!',
     'LOGOUT_SUCCESS'                  => 'Logout successfully!',
     'MSG_LOGIN_SUCCESS'               => 'Welcome, :attribute !',
+    'DESCRIPTION_GET_INFO_SUCCESS'    => 'Get info successfully',
+    'MSG_GET_INFO_SUCCESS'            => 'Get :attribute info successfully',
     'CODE_NOT_FOUND'                  => '404',
     'DESCRIPTION_NOT_FOUND'           => '404 Not Found',
     'MSG_NOT_FOUND'                   => 'Your request is not found.',
+    'CODE_SERVER_ERROR'               => '500',
+    'DESCRIPTION_SERVER_ERROR'        => 'Internal server error',
+
 
     'CODE_INPUT_FAILED'               => '1001',
     'DESCRIPTION_INPUT_FAILED'        => 'Input validation failed.',
     'MSG_TOKEN_REQUIRED'              => 'The token field is required.',
 
-    
+
     'CODE_DB_ERROR'                   => '2001',
     'DESCRIPTION_DB_ERROR'            => 'Database error.',
     'MSG_DB_ERROR'                    => 'Database error occured. Please try again later.',

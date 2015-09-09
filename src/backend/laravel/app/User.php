@@ -28,25 +28,39 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['first_name','last_name','username', 'email', 'password', 'created_at'];
+    protected $fillable = ['first_name','last_name','username', 'email'];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
-    protected $hidden = ['password', 'login_hash'];
+    protected $hidden = ['password','remember_token'];
 
     /**
      * Indicates if the model should be timestamped.
      *
      * @var bool
      */
-    public $timestamps = true;    
+    public $timestamps = true;
+
+    /**
+     * Set date time format
+     *
+     * @var string
+     */
+    protected $dateFormat = 'U';
+
+
+    /**
+     * Change time format to Unix timestamp
+     *
+     * @return string
+     */
 
     protected function getDateFormat()
     {
         // return Unix timestamp (10 numbers)
         return 'U';
-    }    
+    }
 }
