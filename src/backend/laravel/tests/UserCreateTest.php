@@ -129,27 +129,13 @@ class UserCreateTest extends TestCase
         $user = User::where('username', 'anh.tuan')->first();
         // User is not exist in database
         if (!$user) {
-            $this->post('/api/users', [
-                    'username' => 'anh.tuan',
-                    'first_name' => 'Ronan',
-                    'last_name'  => 'Tuan',
-                    'email'      => 'anh.tuan@mulodo.com',
-                    'password'   => '123456',
-                ])
-                 ->seeJson([
-                     'meta' => array(
-                            'code' => trans('api.CODE_INPUT_SUCCESS'),
-                            'message' => trans('api.CREATE_SUCCESS_MESSAGE',['objectCreated' => 'Account'])
-                        )
-                 ])
-                 ->seeInDatabase('users',
-                    [
-                        'username' => 'anh.tuan',
-                        'email' => 'anh.tuan@mulodo.com',
-                        'first_name' => 'Ronan',
-                        'last_name' => 'Tuan',
-                    ]
-                );
+            User::create([
+                'username'   => 'anh.tuan',
+                'first_name' => 'Tuan',
+                'last_name'  => 'Nguyen',
+                'email'      => 'anh.tuan@mulodo.com',
+                'password'   => bcrypt('123456'),
+            ]);
 
         }
 

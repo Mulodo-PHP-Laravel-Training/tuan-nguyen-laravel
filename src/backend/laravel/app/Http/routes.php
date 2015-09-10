@@ -16,8 +16,10 @@ Route::get('/', function () {
 });
 
 Route::group(['namespace' => 'api'], function(){
-    Route::post('api/users/login', 'UserController@postLogin');
     Route::get('api/users/logout', 'UserController@getLogout');
+    Route::post('api/users/login', 'UserController@postLogin');
+    Route::post('api/users/changepassword', 'UserController@postChangePassword');
+    Route::post('api/users/search', 'UserController@postSearch');
     Route::resource('api/users', 'UserController');
 });
 

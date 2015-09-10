@@ -36,8 +36,8 @@ class UserUpdateTest extends TestCase
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code'        => trans('api.CODE_AUTHENTICATE_FAILED'),
-                        'description' => trans('api.DESCRIPTION_AUTHENTICATE_FAILED'),
+                        'code'        => trans('api.CODE_TOKEN_INVALID'),
+                        'description' => trans('api.DESCRIPTION_TOKEN_INVALID'),
                         "messages"    => array(
                             array("message" => trans('api.DESCRIPTION_TOKEN_INVALID') )
                         )

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -23,11 +23,11 @@ class UserLoginTest extends TestCase
                  'meta' => array(
                         'code'        => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages"    => array(                                              
-                            array("message" => trans('validation.required', ['attribute' => 'username']) ),                        
-                            array("message" => trans('validation.required', ['attribute' => 'password']) ),                            
-                        )                        
-                    )                 
+                        "messages"    => array(
+                            array("message" => trans('validation.required', ['attribute' => 'username']) ),
+                            array("message" => trans('validation.required', ['attribute' => 'password']) ),
+                        )
+                    )
              ]);
     }
 
@@ -48,24 +48,24 @@ class UserLoginTest extends TestCase
                  'meta' => array(
                         'code'        => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages"    => array(                                              
+                        "messages"    => array(
                             array("message" => trans('validation.min.string',['attribute' => 'username', 'min' => 3])),
                             array("message" => trans('validation.min.string',['attribute' => 'password', 'min' => 6])),
-                        )                        
-                    )                 
+                        )
+                    )
              ]);
-    }    
+    }
 
     /**
      * Test Login Successfully.
-     * 
+     *
      * @return void
      */
     public function testLoginSuccess()
     {
         // Check username in database
         $user = User::where('username', 'anh.tuan')
-                    ->where('password', bcrypt('123456789') )->first();
+                    ->where('password', bcrypt('123456789z') )->first();
         if (!$user) {
             // Check username existed
             $user = User::where('username', 'anh.tuan')->first();
@@ -79,34 +79,34 @@ class UserLoginTest extends TestCase
                     'first_name' => 'Tuan',
                     'last_name'  => 'Nguyen',
                     'email'      => 'anh.tuan@mulodo.com',
-                    'password'   => bcrypt('123456789'),            
-                ]);                
+                    'password'   => bcrypt('123456789'),
+                ]);
             }
 
-        }                    
+        }
         $this->post('/api/users/login', [
                 'username' => 'anh.tuan',
                 'password' => '123456789',
             ])
-            ->seeJson([                 
+            ->seeJson([
                 'meta' => array
                     (
                         'code'        => trans('api.CODE_INPUT_SUCCESS'),
                         'description' => trans('api.LOGIN_SUCCESS'),
                         'messages'    => array(
-                            array('message' => trans('api.MSG_LOGIN_SUCCESS', ['attribute' => $user['first_name'] . ' ' . $user['last_name'] ]) 
+                            array('message' => trans('api.MSG_LOGIN_SUCCESS', ['attribute' => $user['first_name'] . ' ' . $user['last_name'] ])
                         )
                     )
-                )                 
+                )
             ]
         );
-    }    
+    }
 
     /**
      * Test Login Failed and too many attempt (5 times).
-     * 
+     *
      * @return void
-     */    
+     */
     public function testLoginFailedAndManyAttempt()
     {
         // Check username & password in database
@@ -124,16 +124,16 @@ class UserLoginTest extends TestCase
                         'username' => 'anh.tuan',
                         'password' => '123456789',
                     ])
-                    ->seeJson([                 
+                    ->seeJson([
                         'meta' => array
                             (
                                 'code'        => trans('api.CODE_AUTHENTICATE_FAILED'),
                                 'description' => trans('api.DESCRIPTION_AUTHENTICATE_FAILED'),
                                 'messages'    => array(
-                                    array('message' => trans('api.MSG_AUTHENTICATE_FAILED') 
+                                    array('message' => trans('api.MSG_AUTHENTICATE_FAILED')
                                 )
                             )
-                        )                 
+                        )
                     ]
                 );
             } else {
@@ -142,22 +142,22 @@ class UserLoginTest extends TestCase
                         'username' => 'anh.tuan',
                         'password' => '123456789',
                     ])
-                    ->seeJson([                 
+                    ->seeJson([
                         'meta' => array
                             (
                                 'code'        => trans('api.CODE_ATTEMPT_LOGIN'),
                                 'description' => trans('api.DESCRIPTION_ATTEMPT_LOGIN'),
                                 'messages'    => array(
-                                    array('message' => trans('api.MSG_ATTEMPT_LOGIN', ['attribute' => 60]) 
+                                    array('message' => trans('api.MSG_ATTEMPT_LOGIN', ['attribute' => 60])
                                 )
                             )
-                        )                 
+                        )
                     ]
-                );                
+                );
             }
 
         }
-    }      
+    }
 
 
 }

@@ -20,6 +20,11 @@ return [
     'MSG_LOGIN_SUCCESS'               => 'Welcome, :attribute !',
     'DESCRIPTION_GET_INFO_SUCCESS'    => 'Get info successfully',
     'MSG_GET_INFO_SUCCESS'            => 'Get :attribute info successfully',
+    'DESCRIPTION_CHANGE_PASS_SUCCESS' => 'Change password successfully',
+    'DESCRIPTION_SEARCH_SUCCESS'      => 'Search data successfully',
+    'MSG_SEARCH_SUCCESS'              => 'Search :attribute successfully',
+
+
     'CODE_NOT_FOUND'                  => '404',
     'DESCRIPTION_NOT_FOUND'           => '404 Not Found',
     'MSG_NOT_FOUND'                   => 'Your request is not found.',
@@ -43,5 +48,4 @@ return [
     'MSG_AUTHENTICATE_FAILED'         => 'Username or password is invalid.',
     'CODE_TOKEN_INVALID'              => '2004',
     'DESCRIPTION_TOKEN_INVALID'       => 'The token field is invalid.',
-
 ];
