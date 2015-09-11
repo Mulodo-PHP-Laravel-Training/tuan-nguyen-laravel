@@ -36,7 +36,6 @@ return [
     'DESCRIPTION_INPUT_FAILED'        => 'Input validation failed.',
     'MSG_TOKEN_REQUIRED'              => 'The token field is required.',
 
-
     'CODE_DB_ERROR'                   => '2001',
     'DESCRIPTION_DB_ERROR'            => 'Database error.',
     'MSG_DB_ERROR'                    => 'Database error occured. Please try again later.',
@@ -48,4 +47,10 @@ return [
     'MSG_AUTHENTICATE_FAILED'         => 'Username or password is invalid.',
     'CODE_TOKEN_INVALID'              => '2004',
     'DESCRIPTION_TOKEN_INVALID'       => 'The token field is invalid.',
+
+    'CODE_POST_NOT_FOUND'             => '2501',
+    'DESCRIPTION_INPUT_FAILED'        => 'Post is not found.',
+    'DESCRIPTION_POST_ACTIVE_SUCCESS' => 'Activate post successfully',
+    'MSG_POST_ACTIVE_SUCCESS'         => ''
+
 ];

@@ -22,6 +22,7 @@ Route::group(['namespace' => 'api'], function(){
     Route::post('api/users/search', 'UserController@postSearch');
     Route::resource('api/users', 'UserController');
 
+    Route::put('api/posts/{id}/active', 'PostController@putActive');
     Route::resource('api/posts', 'PostController');
 });
 

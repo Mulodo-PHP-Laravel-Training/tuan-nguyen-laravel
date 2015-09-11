@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 class ApiController extends Controller
 {
+    /**
+     * Result array to convert json
+     *
+     * @var array
+     */
+    public  $response = array();
 
     /**
      * Display request not found.

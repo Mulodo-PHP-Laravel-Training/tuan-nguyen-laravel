@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'url' => 'http://localhost',
+    'url' => 'http://api.app',
 
     /*
     |--------------------------------------------------------------------------
@@ -135,7 +135,7 @@ return [
         Illuminate\Session\SessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
-        Illuminate\View\ViewServiceProvider::class,        
+        Illuminate\View\ViewServiceProvider::class,
 
         /*
          * Application Service Providers...
