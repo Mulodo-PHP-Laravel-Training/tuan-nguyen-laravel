@@ -47,13 +47,15 @@ Mini Blog is small app written by Laravel 5.1. It's very simple app with 3 modul
 
 1.3 Logout User:
 
-    Method: GET
-    Link: http://api.app/api/users/logout?token=Gb1AKNWBgkxLeiedPK4ktYKP9aQW8xi6iHJjmEsihNxjRBVpZ06P9N2eMGcn
-
+    Method: POST
+    Link: http://api.app/api/users/logout
+    Params: 
+      token: Gb1AKNWBgkxLeiedPK4ktYKP9aQW8xi6iHJjmEsihNxjRBVpZ06P9N2eMGcn
+      
 1.4 Get User Info:
 
     Method: GET
-    Link: http://api.app/api/users?token=AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
+    Link: http://api.app/api/users/{id}/?token=AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
 
 1.5 Update User Info:
 
@@ -66,6 +68,18 @@ Mini Blog is small app written by Laravel 5.1. It's very simple app with 3 modul
       + last_name: Lam
       + email: anh.tuan2@mulodo.com
       
+1.6 Change password:
+
+    Method: POST
+    Link : http://api.app/api/users/password
+    Params:
+      + token: xxxxxx
+      + password: 123456789
+
+1.7 Search user by name:
+
+    Method: GET
+    Link: http://api.app/api/users?name=abc
 
 ## Contributing
 
