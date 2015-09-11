@@ -7,7 +7,7 @@ use App\User;
 class UserLoginTest extends TestCase
 {
 
-    use DatabaseTransactions;
+    //use DatabaseTransactions;
 
     /**
      * Test Validate Required.
@@ -65,13 +65,13 @@ class UserLoginTest extends TestCase
     {
         // Check username in database
         $user = User::where('username', 'anh.tuan')
-                    ->where('password', bcrypt('123456789z') )->first();
+                    ->where('password', bcrypt('123456') )->first();
         if (!$user) {
             // Check username existed
             $user = User::where('username', 'anh.tuan')->first();
             if ($user) {
                 // change password
-                $user->password = bcrypt('123456789');
+                $user->password = bcrypt('123456');
                 $user->save();
             } else {
                 User::create([
@@ -79,14 +79,15 @@ class UserLoginTest extends TestCase
                     'first_name' => 'Tuan',
                     'last_name'  => 'Nguyen',
                     'email'      => 'anh.tuan@mulodo.com',
-                    'password'   => bcrypt('123456789'),
+                    'password'   => bcrypt('123456'),
                 ]);
+                $this->seeInDatabase('users',['username' => 'anh.tuan']);
             }
 
         }
         $this->post('/api/users/login', [
                 'username' => 'anh.tuan',
-                'password' => '123456789',
+                'password' => '123456',
             ])
             ->seeJson([
                 'meta' => array

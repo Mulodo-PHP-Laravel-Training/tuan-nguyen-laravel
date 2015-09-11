@@ -21,5 +21,7 @@ Route::group(['namespace' => 'api'], function(){
     Route::post('api/users/changepassword', 'UserController@postChangePassword');
     Route::post('api/users/search', 'UserController@postSearch');
     Route::resource('api/users', 'UserController');
+
+    Route::resource('api/posts', 'PostController');
 });
 
