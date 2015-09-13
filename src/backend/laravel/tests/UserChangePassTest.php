@@ -16,7 +16,7 @@ class UserChangePassTest extends TestCase
      */
     public function testValidateToken()
     {
-        $this->post('/api/users/changepassword', [
+        $this->put('/api/users/password', [
                 'token' => 'abcxyz'
             ])
              ->seeJson([
@@ -41,7 +41,7 @@ class UserChangePassTest extends TestCase
     public function testValidateRequired()
     {
         $user= $this->getUserLogin();
-        $this->post('/api/users/changepassword', [
+        $this->put('/api/users/password', [
             'token' => $user->remember_token
             ])
              ->seeJson([
@@ -65,7 +65,7 @@ class UserChangePassTest extends TestCase
     public function testValidateMin()
     {
         $user = $this->getUserLogin();
-        $this->post('/api/users/changepassword', [
+        $this->put('/api/users/password', [
                 'password'   => '12345',
                 'token'      => $user->remember_token
             ])
@@ -91,7 +91,7 @@ class UserChangePassTest extends TestCase
     public function testChangePassSuccess()
     {
         $user = $this->getUserLogin();
-        $this->post('/api/users/changepassword',[
+        $this->put('/api/users/password',[
                 'token' => $user->remember_token,
                 'password' => '9876654321'
             ])

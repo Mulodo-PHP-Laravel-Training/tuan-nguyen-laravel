@@ -16,13 +16,16 @@ Route::get('/', function () {
 });
 
 Route::group(['namespace' => 'api'], function(){
-    Route::get('api/users/logout', 'UserController@getLogout');
+	Route::get('api/users/self', 'UserController@getSelf');
+    Route::post('api/users/logout', 'UserController@postLogout');
     Route::post('api/users/login', 'UserController@postLogin');
-    Route::post('api/users/changepassword', 'UserController@postChangePassword');
+    Route::put('api/users/password', 'UserController@putChangePassword');
     Route::post('api/users/search', 'UserController@postSearch');
     Route::resource('api/users', 'UserController');
 
     Route::put('api/posts/{id}/active', 'PostController@putActive');
+    Route::put('api/posts/{id}/deactive', 'PostController@putDeactive');    
+	Route::get('api/users/{id}/posts', 'PostController@getUserPosts');    
     Route::resource('api/posts', 'PostController');
 });
 

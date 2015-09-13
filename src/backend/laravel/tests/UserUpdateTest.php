@@ -75,7 +75,7 @@ class UserUpdateTest extends TestCase
 
     /**
      * Test Validate Max Character.
-     * username,first_name,last_name,email: max 50, password: min 6
+     * username,first_name,last_name,email: max 50
      * @return void
      */
     public function testValidateMax()
@@ -105,8 +105,7 @@ class UserUpdateTest extends TestCase
     }
 
     /**
-     * Test Validate Max Character.
-     * username,first_name,last_name,email: max 50, password: min 6
+     * Test Validate Email.
      * @return void
      */
     public function testValidateEmail()
@@ -161,6 +160,35 @@ class UserUpdateTest extends TestCase
     }
 
     /**
+     * Test Permission Denied.
+     * User can't update infomation of other user
+     * @return void
+     */
+    public function testPermissionDenied()
+    {
+        $user = $this->getUserLogin();
+        $subUser = $this->getSubUser();
+
+        $this->put('/api/users/'. $subUser->id, [
+                'first_name' => 'Ronan',
+                'last_name'  => 'Tuan',
+                'token'      => $user->remember_token
+            ])
+             ->seeJson([
+                 'data' => null,
+                 'meta' => array(
+                        'code' => trans('api.CODE_PERMISSION_DENIED'),
+                        'description' => trans('api.DESCRIPTION_PERMISSION_DENIED'),
+                        "messages" => array(
+                            array("message" => trans('api.MSG_PERMISSION_DENIED') ),
+                        )
+                    )
+             ]
+        );
+
+    }
+
+    /**
      * Test success update user.
      * @return void
      */
@@ -186,7 +214,7 @@ class UserUpdateTest extends TestCase
                         'code' => trans('api.CODE_INPUT_SUCCESS'),
                         'description' => trans('api.DESCRIPTION_UPDATE_SUCCESS'),
                         'messages' => array(
-                            array('message' => trans('api.MSG_UPDATE_SUCCESS',['objectCreated' => 'Account']) )
+                            array('message' => trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'User']) )
                         )
                     )
              ])

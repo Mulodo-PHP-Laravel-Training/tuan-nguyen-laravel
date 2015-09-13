@@ -184,7 +184,7 @@ class UserCreateTest extends TestCase
                         'code' => trans('api.CODE_INPUT_SUCCESS'),
                         'description' => trans('api.DESCRIPTION_CREATE_SUCCESS'),
                         'messages' => array(
-                            array('message' => trans('api.MSG_CREATE_SUCCESS',['objectCreated' => 'Account']) )
+                            array('message' => trans('api.MSG_CREATE_SUCCESS',['attribute' => 'User']) )
                         )
                     )
              ])

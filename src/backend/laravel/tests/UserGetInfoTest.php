@@ -16,7 +16,8 @@ class UserGetInfoTest extends TestCase
      */
     public function testValidateRequired()
     {
-        $this->get('/api/users', [
+        $user = $this->getUserLogin();
+        $this->get('/api/users/'. $user->id, [
             ])
              ->seeJson([
                  'data' => null,
@@ -37,7 +38,8 @@ class UserGetInfoTest extends TestCase
      */
     public function testValidateToken()
     {
-        $this->get('/api/users?token=xyz')
+        $user = $this->getUserLogin();
+        $this->get('/api/users/'.$user->id.'?token=xyz')
              ->seeJson([
                  'data' => null,
                  'meta' => array(
@@ -59,7 +61,7 @@ class UserGetInfoTest extends TestCase
     {
 
         $user = $this->getUserLogin();
-        $this->get('/api/users?token='.$user->remember_token)
+        $this->get('/api/users/'.$user->id.'?token='.$user->remember_token)
              ->seeJson([
                  'meta' => array(
                         'code'        => trans('api.CODE_INPUT_SUCCESS'),

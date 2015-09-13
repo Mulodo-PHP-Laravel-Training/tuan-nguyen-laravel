@@ -16,7 +16,7 @@ class UserLogoutTest extends TestCase
      */
     public function testValidateRequired()
     {
-        $this->get('/api/users/logout', [
+        $this->post('/api/users/logout', [
             ])
              ->seeJson([
                  'data' => null,
@@ -39,7 +39,9 @@ class UserLogoutTest extends TestCase
 
     public function testLogoutFailed()
     {
-        $this->get('/api/users/logout?token=f8IKRC6ookhF1DjKTsI0eLYlBnm4tYT9FiAAMtXzObCLApQe3joPI3Mrx3OK')
+        $this->post('/api/users/logout', [
+            'token' => 'f8IKRC6ookhF1DjKTsI0eLYlBnm4tYT9FiAAMtXzObCLApQe3joPI3Mrx3OK'
+            ])
              ->seeJson([
                  'data' => null,
                  'meta' => array(
@@ -62,7 +64,9 @@ class UserLogoutTest extends TestCase
     public function testLogoutSuccess()
     {
         $user = $this->getUserLogin();
-        $this->get('/api/users/logout?token='.$user->remember_token)
+        $this->post('/api/users/logout', [
+            'token' => $user->remember_token
+            ])
              ->seeJson([
                  'data' => null,
                  'meta' => array(

@@ -16,9 +16,7 @@ class UserSearchNameTest extends TestCase
      */
     public function testValidateToken()
     {
-        $this->post('/api/users/search', [
-                'token' => 'abcxyz'
-            ])
+        $this->get('/api/users/?token=nyMC8YChBO86QhnzckSDBSic9TOMTZZumUzUQVlBy1HRc8nu2Nt26tXimh')
              ->seeJson([
                  'data' => null,
                  'meta' => array(
@@ -41,16 +39,14 @@ class UserSearchNameTest extends TestCase
     public function testValidateRequired()
     {
         $user= $this->getUserLogin();
-        $this->post('/api/users/search', [
-            'token' => $user->remember_token
-            ])
+        $this->get('/api/users?token='. $user->remember_token)
              ->seeJson([
                  'data' => null,
                  'meta' => array(
                         'code'        => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
                         "messages"    => array(
-                            array("message" => trans('validation.required', ['attribute' => 'keyword']) ),
+                            array("message" => trans('validation.required', ['attribute' => 'name']) ),
                         )
                     )
              ]);
@@ -58,7 +54,7 @@ class UserSearchNameTest extends TestCase
 
 
     /**
-     * Test Change password Successfully.
+     * Test searching by name Successfully.
      *
      * @return void
      */
@@ -66,10 +62,7 @@ class UserSearchNameTest extends TestCase
     public function testSearchNameSuccess()
     {
         $user = $this->getUserLogin();
-        $this->post('/api/users/search',[
-                'token' => $user->remember_token,
-                'keyword' => 'tuan'
-            ])
+        $this->get('/api/users?name=tuan&token='.$user->remember_token)
              ->seeJson([
                  'meta' => array(
                         'code'        => trans('api.CODE_INPUT_SUCCESS'),
