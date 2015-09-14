@@ -53,6 +53,12 @@ Mini Blog is small app written by Laravel 5.1. It's very simple app with 3 modul
       token: Gb1AKNWBgkxLeiedPK4ktYKP9aQW8xi6iHJjmEsihNxjRBVpZ06P9N2eMGcn
       
 1.4 Get User Info:
+Get user self info :
+
+    Method: GET
+    Link: http://api.app/api/users/self/?token=AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
+
+Get other user info:
 
     Method: GET
     Link: http://api.app/api/users/{id}/?token=AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
@@ -80,6 +86,55 @@ Mini Blog is small app written by Laravel 5.1. It's very simple app with 3 modul
 
     Method: GET
     Link: http://api.app/api/users?name=abc
+
+2. Post Module:
+
+2.1 Create Post:
+
+    Method: POST
+    Link: http://api.app/api/posts
+    Params: 
+      + token: xxxxx
+      + title: 'Test post',
+      + content: 'This is post content',
+      + status: 1,
+      + image
+    
+2.2 Active/Deactive Post:
+
+    Method: PUT
+    Link active post: http://api.app/api/posts/{id}/active
+    Link deative post: http://api.app/api/posts/{id}/deactive
+    Params:
+      + token: xxxx
+
+2.3 Edit post:
+
+    Method: PUT
+    Link: http://api.app/api/posts/{id}
+    Params:
+      + token: xxxx
+      + title: 'Test post',
+      + content: 'Edit post content',
+      + status: 1
+      
+2.4 Delete post:
+
+    Method: DELETE
+    Link: http://api.app/api/posts/{id}
+    Params:
+      + token: xxxxxx
+      
+2.5 Get all post:
+
+    Method: GET
+    Link: http://api.app/api/posts
+    
+2.6 Get all posts for user:
+
+    Method: GET
+    Link: http://api.app/api/users/{id}/posts
+    
 
 ## Contributing
 
