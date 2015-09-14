@@ -9,12 +9,14 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Carbon\Carbon;
+use App\MyClasses\ModelTrait;
 
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
                                     CanResetPasswordContract
 {
-    use Authenticatable, Authorizable, CanResetPassword;
+    use Authenticatable, Authorizable, CanResetPassword, ModelTrait;
 
     /**
      * The database table used by the model.
@@ -45,11 +47,18 @@ class User extends Model implements AuthenticatableContract,
     public $timestamps = true;
 
     /**
-     * Set date time format
+     * Set date time format string
      *
      * @var string
      */
-    protected $dateFormat = 'U';
+    protected $dateFormatStr = 'm/d/Y H:i:s';
+
+    /**
+     * List date time fields
+     *
+     * @var string
+     */
+    protected $dates = ['created_at', 'updated_at', 'last_login'];
 
 
     /**
@@ -63,4 +72,11 @@ class User extends Model implements AuthenticatableContract,
         // return Unix timestamp (10 numbers)
         return 'U';
     }
+
+    public function getLastLoginAttribute($attr) {
+        return ($this->attributes['last_login'] > 0)
+            ? date($this->dateFormatStr,$this->attributes['updated_at'])
+            : '';
+    }
+
 }

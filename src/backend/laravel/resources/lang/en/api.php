@@ -27,7 +27,7 @@ return [
     'MSG_POST_ACTIVE_SUCCESS'         => 'Activate post #:attribute successfully.',
     'DESCRIPTION_POST_DEACTIVE_SUCCESS' => 'Deactivate post successfully.',
     'MSG_POST_DEACTIVE_SUCCESS'         => 'Deactivate post #:attribute successfully.',
-	
+
 	'DESCRIPTION_DELETE_SUCCESS'	  => 'Item was deleted successfully.',
 	'MSG_DELETE_SUCCESS'			  => ':attribute #:id was deleted successfully.',
 	'DESCRIPTION_GET_SUCCESS'		  => 'Get infomation successfully.',
@@ -38,6 +38,10 @@ return [
     'CODE_NOT_FOUND'                  => '404',
     'DESCRIPTION_NOT_FOUND'           => '404 Not Found.',
     'MSG_NOT_FOUND'                   => 'Your request is not found.',
+    'CODE_METHOD_NOT_ALLOWED'         => '405',
+    'DESCRIPTION_METHOD_NOT_ALLOWED'  => 'Method not allowed.',
+    'MSG_METHOD_NOT_ALLOWED'          => 'Method not allowed on this request. Please try other method.',
+
     'CODE_SERVER_ERROR'               => '500',
     'DESCRIPTION_SERVER_ERROR'        => 'Internal server error',
 
@@ -45,6 +49,9 @@ return [
     'CODE_INPUT_FAILED'               => '1001',
     'DESCRIPTION_INPUT_FAILED'        => 'Input validation failed.',
     'MSG_TOKEN_REQUIRED'              => 'The token field is required.',
+    'CODE_INPUT_REQUIRED'             => '1002',
+    'DESCRIPTION_INPUT_REQUIRED'      => 'Input fields required.',
+    'MSG_INPUT_REQUIRED'              => 'The input fields must have one of fields : :attribute.',
 
 
     'CODE_DB_ERROR'                   => '1501',

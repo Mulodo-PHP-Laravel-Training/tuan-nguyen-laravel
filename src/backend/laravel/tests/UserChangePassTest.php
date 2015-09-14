@@ -1,13 +1,11 @@
 <?php
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
 
 class UserChangePassTest extends TestCase
 {
 
-    use DatabaseTransactions;
 
     /**
      * Test Validate Token.
@@ -29,7 +27,6 @@ class UserChangePassTest extends TestCase
                         )
                     )
              ]);
-
     }
 
 
@@ -50,7 +47,8 @@ class UserChangePassTest extends TestCase
                         'code'        => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
                         "messages"    => array(
-                            array("message" => trans('validation.required', ['attribute' => 'password']) ),
+                            array("message" => trans('validation.required', ['attribute' => 'new password']) ),
+                            array("message" => trans('validation.required', ['attribute' => 'old password']) ),
                         )
                     )
              ]);
@@ -58,7 +56,7 @@ class UserChangePassTest extends TestCase
 
 
     /**
-     * Test Validate Min Character.
+     * Test Validate Min Character & validate old password.
      * password: min 6
      * @return void
      */
@@ -66,7 +64,8 @@ class UserChangePassTest extends TestCase
     {
         $user = $this->getUserLogin();
         $this->put('/api/users/password', [
-                'password'   => '12345',
+                'old_password'   => '12345',
+                'new_password'   => '1234',
                 'token'      => $user->remember_token
             ])
              ->seeJson([
@@ -75,7 +74,9 @@ class UserChangePassTest extends TestCase
                         'code' => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
                         "messages" => array(
-                            array("message" => trans('validation.min.string',['attribute' => 'password', 'min' => 6])),
+                            array("message" => trans('validation.min.string',['attribute' => 'new password', 'min' => 6])),
+                            array("message" => trans('validation.min.string',['attribute' => 'old password', 'min' => 6])),
+                            array("message" => trans('validation.passcheck'))
                         )
                     )
              ]);
@@ -93,7 +94,8 @@ class UserChangePassTest extends TestCase
         $user = $this->getUserLogin();
         $this->put('/api/users/password',[
                 'token' => $user->remember_token,
-                'password' => '9876654321'
+                'old_password' => '123456',
+                'new_password' => '1234567'
             ])
              ->seeJson([
                  'data' => null,

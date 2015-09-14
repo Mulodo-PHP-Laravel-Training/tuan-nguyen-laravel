@@ -1,13 +1,10 @@
 <?php
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
 
 class UserGetInfoTest extends TestCase
 {
-
-    use DatabaseTransactions;
 
     /**
      * Test Validate Required.

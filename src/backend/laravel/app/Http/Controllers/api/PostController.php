@@ -16,9 +16,9 @@ class PostController extends ApiController
      * Get all posts in this blog.
      *
      * @return Response
-     */ 
+     */
     public function index(Request $request)
-    {		
+    {
 		$posts = Post::select('posts.id','posts.title','posts.created_at','users.first_name','users.last_name')
 					 ->leftJoin('users', function($join) {
 						$join->on('users.id', '=','posts.author_id');
@@ -29,7 +29,7 @@ class PostController extends ApiController
 			foreach ($posts as $post) {
 				$postData = $post->toArray();
 				$postsArr[] = array(
-					'id'	=> $postData['id'],					
+					'id'	=> $postData['id'],
 					'title' => $postData['title'],
 					'created_at' => date('m-d-Y H:i:s', $postData['created_at']),
 					'author'=> ($postData['first_name']) ? $postData['first_name'] . ' '. $postData['last_name'] :''
@@ -42,7 +42,7 @@ class PostController extends ApiController
 				trans('api.MSG_GET_SUCCESS',['attribute' => 'Posts']),
 				$postsArr
 			);
-			
+
 		}
         return response()->json($this->response);
     }
@@ -51,7 +51,7 @@ class PostController extends ApiController
      * Get all posts of an user.
      *
      * @return Response
-     */ 
+     */
     public function getUserPosts(Request $request, $author_id)
     {
 		$user = User::where('id',$author_id)->first();
@@ -62,19 +62,19 @@ class PostController extends ApiController
 				foreach ($posts as $post) {
 					$postData = $post->toArray();
 					$postsArr[] = array(
-						'id'	=> $postData['id'],					
+						'id'	=> $postData['id'],
 						'title' => $postData['title'],
 						'created_at' => date('m-d-Y H:i:s', $postData['created_at']),
 						'author'=> $user['first_name'] . ' '. $user['last_name']
 					);
-				}				
+				}
 				// Get all user posts successfully
 				$this->response = MessageUtility::getResponse(
 					trans('api.CODE_INPUT_SUCCESS'),
 					trans('api.DESCRIPTION_GET_SUCCESS'),
 					trans('api.MSG_GET_USER_POST_SUCCESS',['attribute' => $user->id]),
 					$postsArr
-				);				
+				);
 			}
 		} else {
 			// User not found
@@ -82,13 +82,13 @@ class PostController extends ApiController
 				trans('api.CODE_DB_NOT_FOUND'),
 				trans('api.DESCRIPTION_DB_NOT_FOUND'),
 				trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'User'])
-			);                                			
+			);
 		}
-		
-		
+
+
 		return response()->json($this->response);
 	}
-	
+
     /**
      * Show the form for creating a new resource.
      *
@@ -96,6 +96,7 @@ class PostController extends ApiController
      */
     public function create(Request $request)
     {
+        return $this->notFound();
     }
 
     /**
@@ -160,7 +161,7 @@ class PostController extends ApiController
      */
     public function show($id)
     {
-        //
+        $this->notFound();
     }
 
     /**
@@ -182,7 +183,9 @@ class PostController extends ApiController
      * @return Response
      */
     public function update(Request $request, $id)
-    {		
+    {
+        $putdata = fopen("php://input", "r");
+        dd($putdata);
         $auth = $this->authenticateToken($request->input('token'));
         if ($auth['success']) {
             $validator = $this->validator($request->all(), $request->method());
@@ -192,20 +195,20 @@ class PostController extends ApiController
                     trans('api.CODE_INPUT_FAILED'),
                     trans('api.DESCRIPTION_INPUT_FAILED'),
                     MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-                ); 
-  
+                );
+
                 return response()->json($this->response);
             } else {
 				// Get post & Check permission
 				$post = $this->checkPostAuthor($auth['user']->id, $id);
 				if ($post) {
-					$arrPost = $request->all();					
-					// Upload file               
+					$arrPost = $request->all();
+					// Upload file
 					if (Input::file('image')) {
 						$imageLink = $this->upload();
 						$arrPost['image'] = URL::to('/uploads/'. $imageLink);
-					}								
-					
+					}
+
 					if ($post->update($arrPost)) {
 						// Update post successfully
 						$this->response = MessageUtility::getResponse(
@@ -213,12 +216,12 @@ class PostController extends ApiController
 							trans('api.DESCRIPTION_UPDATE_SUCCESS'),
 							trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'Post', 'id' => $post->id]),
 							$post->toArray()
-						);						
+						);
 					} else {
 						// Update post failed
 						$this->dbError();
 					}
-					
+
 				}
             }
 
@@ -244,8 +247,8 @@ class PostController extends ApiController
 					$this->response = MessageUtility::getResponse(
 						trans('api.CODE_INPUT_SUCCESS'),
 						trans('api.DESCRIPTION_DELETE_SUCCESS'),
-						trans('api.MSG_DELETE_SUCCESS',['attribute' => 'Post','id' => $id])						
-					);											
+						trans('api.MSG_DELETE_SUCCESS',['attribute' => 'Post','id' => $id])
+					);
 				}
 			}
 		}
@@ -321,7 +324,7 @@ class PostController extends ApiController
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function checkPostAuthor($author_id, $post_id)
-    { 
+    {
         $post = Post::where('id', (int) $post_id)->first();
         if ($post) {
             if ($post->author_id == $author_id) {
@@ -338,7 +341,7 @@ class PostController extends ApiController
                 trans('api.CODE_DB_NOT_FOUND'),
                 trans('api.DESCRIPTION_DB_NOT_FOUND'),
                 trans('api.MSG_DB_NOT_FOUND',['attribute' => 'Post'])
-            );			
+            );
         }
         return false;
     }
@@ -367,14 +370,14 @@ class PostController extends ApiController
             case 'PATCH':
             {
 				return Validator::make($data, [
-					'title'   => 'max:255',					
+					'title'   => 'max:255',
 					'status'  => 'boolean',
 					'image'   => 'image|max:1000',
 				]);
             }
             default: return false;
         }
-		
+
 
     }
 

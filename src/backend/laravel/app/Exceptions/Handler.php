@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use App\MyClasses\MessageUtility;
 
@@ -55,8 +56,15 @@ class Handler extends ExceptionHandler
             );
             return response()->json($response);
         }
-        /*
-        // Code will be used in the future
+        if ($e instanceof MethodNotAllowedHttpException) {
+            $response = MessageUtility::getResponse(
+                trans('api.CODE_METHOD_NOT_ALLOWED'),
+                trans('api.DESCRIPTION_METHOD_NOT_ALLOWED'),
+                trans('api.MSG_METHOD_NOT_ALLOWED')
+            );
+            return response()->json($response);
+        }
+
         if ($e instanceof \Exception){
             $response = MessageUtility::getResponse(
                 trans('api.CODE_SERVER_ERROR'),
@@ -65,7 +73,6 @@ class Handler extends ExceptionHandler
             );
             return response()->json($response);
         }
-        */
         return parent::render($request, $e);
     }
 

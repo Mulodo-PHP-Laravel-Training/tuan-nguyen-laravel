@@ -45,7 +45,7 @@ class Post extends Model
     protected function getDateFormat()
     {
         // return Unix timestamp (10 numbers)
-        return 'U';
+        return 'Y-m-d H:i:s';
     }
 
 }

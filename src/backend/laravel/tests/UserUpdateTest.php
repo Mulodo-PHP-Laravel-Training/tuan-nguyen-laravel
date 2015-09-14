@@ -1,13 +1,10 @@
 <?php
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
 
 class UserUpdateTest extends TestCase
 {
-
-    use DatabaseTransactions;
 
     /**
      * Test Validate Token.
@@ -45,6 +42,31 @@ class UserUpdateTest extends TestCase
              ]);
 
     }
+
+
+    /**
+     * Test Required fields.
+     * Data params must have least one of fields: username,email,first_name, last_name
+     * @return void
+     */
+    public function testRequiredField()
+    {
+        $user = $this->getUserLogin();
+        $this->put('/api/users/'.$user->id, [
+                'token'      => $user->remember_token
+            ])
+             ->seeJson([
+                 'data' => null,
+                 'meta' => array(
+                        'code' => trans('api.CODE_INPUT_REQUIRED'),
+                        'description' => trans('api.DESCRIPTION_INPUT_REQUIRED'),
+                        "messages" => array(
+                            array("message" => trans('api.MSG_INPUT_REQUIRED',['attribute' => implode(', ', $user->getFillable())])),
+                        )
+                    )
+             ]);
+    }
+
 
     /**
      * Test Validate Min Character.
@@ -214,7 +236,7 @@ class UserUpdateTest extends TestCase
                         'code' => trans('api.CODE_INPUT_SUCCESS'),
                         'description' => trans('api.DESCRIPTION_UPDATE_SUCCESS'),
                         'messages' => array(
-                            array('message' => trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'User']) )
+                            array('message' => trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'User', 'id' => $user->id]) )
                         )
                     )
              ])

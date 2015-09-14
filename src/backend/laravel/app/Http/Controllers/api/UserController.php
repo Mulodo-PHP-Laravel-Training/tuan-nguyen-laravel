@@ -8,6 +8,7 @@ use Validator;
 use App\User;
 use App\Http\Requests;
 use App\MyClasses\MessageUtility;
+use App\MyClasses\Utility;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
@@ -73,31 +74,36 @@ class UserController extends ApiController
     }
 
     /**
-     * Get user info by ID     
+     * Get user info by ID
      *
      * @return Response
      */
     public function show(Request $request, $id)
     {
-        $auth = $this->authenticateToken($request->input('token'));
-        if ($auth['success']) {
-            $user = User::where('id', (int) $id)->first();
-            if ($user) {
-                // Get user info success
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_SUCCESS'),
-                    trans('api.DESCRIPTION_GET_INFO_SUCCESS'),
-                    trans('api.MSG_GET_INFO_SUCCESS', ['attribute' => 'User']),
-                    $user->toArray()
-                );                
-            } else {
-                // User not found
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_DB_NOT_FOUND'),
-                    trans('api.DESCRIPTION_DB_NOT_FOUND'),
-                    trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'User'])
-                );                                
+        if ($id > 0) {
+            $auth = $this->authenticateToken($request->input('token'));
+            if ($auth['success']) {
+                $user = User::where('id', (int) $id)->first();
+                if ($user) {
+                    // Get user info success
+                    $this->response = MessageUtility::getResponse(
+                        trans('api.CODE_INPUT_SUCCESS'),
+                        trans('api.DESCRIPTION_GET_INFO_SUCCESS'),
+                        trans('api.MSG_GET_INFO_SUCCESS', ['attribute' => 'User']),
+                        $user->toArray()
+                    );
+                } else {
+                    // User not found
+                    $this->response = MessageUtility::getResponse(
+                        trans('api.CODE_DB_NOT_FOUND'),
+                        trans('api.DESCRIPTION_DB_NOT_FOUND'),
+                        trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'User'])
+                    );
+                }
             }
+        } else {
+            // Not a valid user id
+            $this->notFound();
         }
         return response()->json($this->response);
     }
@@ -110,16 +116,26 @@ class UserController extends ApiController
     public function getSelf(Request $request)
     {
         $auth = $this->authenticateToken($request->input('token'));
-        if ($auth['success']) {                        
+        if ($auth['success']) {
 			// Get user info success
 			$this->response = MessageUtility::getResponse(
 				trans('api.CODE_INPUT_SUCCESS'),
 				trans('api.DESCRIPTION_GET_INFO_SUCCESS'),
 				trans('api.MSG_GET_INFO_SUCCESS', ['attribute' => 'User']),
 				$auth['user']->toArray()
-			);                
+			);
         }
         return response()->json($this->response);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function create(Request $request)
+    {
+        return $this->notFound();
     }
 
 
@@ -170,47 +186,65 @@ class UserController extends ApiController
      */
     public function update(Request $request,$id)
     {
-
-        $auth = $this->authenticateToken($request->input('token'));
-
-        if ($auth['success']) {
-            if ($auth['user']->id != $id) {
-                // You have not permission to perform the specified operation
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_PERMISSION_DENIED'),
-                    trans('api.DESCRIPTION_PERMISSION_DENIED'),
-                    trans('api.MSG_PERMISSION_DENIED')
-                );
-
-            } else {
-                // Validate parameters
-                $validator = $this->validator($request->all(), $request->method(), (int) $id);
-                // Validation fails
-                if ($validator->fails()) {
+        if ($id > 0) {
+            $auth = $this->authenticateToken($request->input('token'));
+            if ($auth['success']) {
+                if ($auth['user']->id != $id) {
+                    // You have not permission to perform the specified operation
                     $this->response = MessageUtility::getResponse(
-                        trans('api.CODE_INPUT_FAILED'),
-                        trans('api.DESCRIPTION_INPUT_FAILED'),
-                        MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
+                        trans('api.CODE_PERMISSION_DENIED'),
+                        trans('api.DESCRIPTION_PERMISSION_DENIED'),
+                        trans('api.MSG_PERMISSION_DENIED')
                     );
+
                 } else {
-                    // Updated successfully
-                    if ($auth['user']->update($request->all()) ) {
+                    // Check parameters have at least one field
+                    $userFillableField = $auth['user']->getFillable();
+                    if (! Utility::checkArrayHaveKey($auth['user']->getFillable(), array_keys($request->all() ) ) ) {
+                        return $this->emptyData($userFillableField);
+                    }
+
+                    // Validate parameters
+                    $validator = $this->validator($request->all(), $request->method(), (int) $id);
+                    // Validation fails
+                    if ($validator->fails()) {
                         $this->response = MessageUtility::getResponse(
-                            trans('api.CODE_INPUT_SUCCESS'),
-                            trans('api.DESCRIPTION_UPDATE_SUCCESS'),
-                            trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'User']),
-                            $auth['user']->toArray()
+                            trans('api.CODE_INPUT_FAILED'),
+                            trans('api.DESCRIPTION_INPUT_FAILED'),
+                            MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
                         );
                     } else {
-                        $this->dbError();
+                        // Updated successfully
+                        if ($auth['user']->update($request->all()) ) {
+                            $this->response = MessageUtility::getResponse(
+                                trans('api.CODE_INPUT_SUCCESS'),
+                                trans('api.DESCRIPTION_UPDATE_SUCCESS'),
+                                trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'User', 'id' => $auth['user']->id]),
+                                $auth['user']->toArray()
+                            );
+                        } else {
+                            $this->dbError();
+                        }
                     }
                 }
             }
+        } else {
+            // Not a valid user id
+            $this->notFound();
         }
-
         return response()->json($this->response);
     }
 
+    /**
+     * Not use this function
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy(Request $request,$id)
+    {
+        return $this->notFound();
+    }
 
     /**
      * Login API by passing username.
@@ -218,7 +252,7 @@ class UserController extends ApiController
      * @param  Request  $request
      * @return Response
      */
-    public function postLogin(Request $request)
+    public function putLogin(Request $request)
     {
         $validator =  Validator::make($request->all(), [
             'username' => 'required|min:3|max:50',
@@ -286,7 +320,7 @@ class UserController extends ApiController
      * @param  Request  $request
      * @return Response
      */
-    public function postLogout(Request $request)
+    public function putLogout(Request $request)
     {
         $auth = $this->authenticateToken($request->input('token'));
         if ($auth['success']) {
@@ -318,7 +352,8 @@ class UserController extends ApiController
         $auth = $this->authenticateToken($request->input('token'));
         if ($auth['success']) {
             $validator =  Validator::make($request->all(), [
-                'password' => 'required|min:6',
+                'old_password' => 'required|min:6|passcheck:password,123456',
+                'new_password' => 'required|min:6',
             ]);
             // Validation fails
             if ($validator->fails()) {
@@ -329,7 +364,7 @@ class UserController extends ApiController
                 );
             } else {
                 // Chang password success
-                $auth['user']->password = bcrypt($request->input('password') );
+                $auth['user']->password = bcrypt($request->input('new_password') );
                 if ($auth['user']->save()) {
                     $this->response = MessageUtility::getResponse(
                         trans('api.CODE_INPUT_SUCCESS'),
@@ -342,16 +377,6 @@ class UserController extends ApiController
             }
         }
         return response()->json($this->response);
-    }
-
-    /**
-     * Search user by name.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function postSearch(Request $request)
-    {
     }
 
 
@@ -400,13 +425,16 @@ class UserController extends ApiController
      */
     protected function createUser(array $data)
     {
-        return User::create([
+        $user = User::create([
             'username'   => $data['username'],
             'first_name' => $data['first_name'],
             'last_name'  => $data['last_name'],
             'email'      => $data['email'],
-            'password'   => bcrypt($data['password']),
         ]);
+        $user->password = bcrypt($data['password']);
+        $user->save();
+
+        return $user;
     }
 
 

@@ -32,6 +32,23 @@ class ApiController extends Controller
     }
 
     /**
+     * Empty Data Response.
+     *
+     * Require params have least one field
+     *
+     * @return Response
+     */
+    protected function emptyData($arrFields)
+    {
+        $this->response = MessageUtility::getResponse(
+            trans('api.CODE_INPUT_REQUIRED'),
+            trans('api.DESCRIPTION_INPUT_REQUIRED'),
+            trans('api.MSG_INPUT_REQUIRED', ['attribute' => implode(', ', $arrFields)])
+        );
+        return response()->json($this->response);
+    }
+
+    /**
      * Send msg response when database occur error.
      *
      * @return Response

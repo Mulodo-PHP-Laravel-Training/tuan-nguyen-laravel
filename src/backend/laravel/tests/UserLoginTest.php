@@ -1,13 +1,10 @@
 <?php
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
 
 class UserLoginTest extends TestCase
 {
-
-    //use DatabaseTransactions;
 
     /**
      * Test Validate Required.
@@ -16,7 +13,7 @@ class UserLoginTest extends TestCase
      */
     public function testValidateRequired()
     {
-        $this->post('/api/users/login', [
+        $this->put('/api/users/login', [
             ])
              ->seeJson([
                  'data' => null,
@@ -39,7 +36,7 @@ class UserLoginTest extends TestCase
     public function testValidateMin()
     {
 
-        $this->post('/api/users/login', [
+        $this->put('/api/users/login', [
                 'username' => 'ab',
                 'password' => '12345',
             ])
@@ -85,7 +82,7 @@ class UserLoginTest extends TestCase
             }
 
         }
-        $this->post('/api/users/login', [
+        $this->put('/api/users/login', [
                 'username' => 'anh.tuan',
                 'password' => '123456',
             ])
@@ -121,7 +118,7 @@ class UserLoginTest extends TestCase
 
         for ($i=0;$i<=5;$i++) {
             if ($i<5) {
-                $this->post('/api/users/login', [
+                $this->put('/api/users/login', [
                         'username' => 'anh.tuan',
                         'password' => '123456789',
                     ])
@@ -139,7 +136,7 @@ class UserLoginTest extends TestCase
                 );
             } else {
                 // too many attempt
-                $this->post('/api/users/login', [
+                $this->put('/api/users/login', [
                         'username' => 'anh.tuan',
                         'password' => '123456789',
                     ])

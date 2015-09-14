@@ -1,13 +1,10 @@
 <?php
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
 
 class UserLogoutTest extends TestCase
 {
-
-    use DatabaseTransactions;
 
     /**
      * Test Validate Required.
@@ -16,7 +13,7 @@ class UserLogoutTest extends TestCase
      */
     public function testValidateRequired()
     {
-        $this->post('/api/users/logout', [
+        $this->put('/api/users/logout', [
             ])
              ->seeJson([
                  'data' => null,
@@ -39,7 +36,7 @@ class UserLogoutTest extends TestCase
 
     public function testLogoutFailed()
     {
-        $this->post('/api/users/logout', [
+        $this->put('/api/users/logout', [
             'token' => 'f8IKRC6ookhF1DjKTsI0eLYlBnm4tYT9FiAAMtXzObCLApQe3joPI3Mrx3OK'
             ])
              ->seeJson([
@@ -64,7 +61,7 @@ class UserLogoutTest extends TestCase
     public function testLogoutSuccess()
     {
         $user = $this->getUserLogin();
-        $this->post('/api/users/logout', [
+        $this->put('/api/users/logout', [
             'token' => $user->remember_token
             ])
              ->seeJson([
