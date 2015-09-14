@@ -39,7 +39,7 @@ Mini Blog is small app written by Laravel 5.1. It's very simple app with 3 modul
       + email: anh.tuan@mulodo.com
 1.2 Login User:
 
-    Method: POST
+    Method: PUT
     Link: http://api.app/api/users/login
     Params:
       + username: anh.tuan
@@ -47,7 +47,7 @@ Mini Blog is small app written by Laravel 5.1. It's very simple app with 3 modul
 
 1.3 Logout User:
 
-    Method: POST
+    Method: PUT
     Link: http://api.app/api/users/logout
     Params: 
       token: Gb1AKNWBgkxLeiedPK4ktYKP9aQW8xi6iHJjmEsihNxjRBVpZ06P9N2eMGcn
