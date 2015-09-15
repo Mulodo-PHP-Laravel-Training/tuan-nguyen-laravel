@@ -90,8 +90,8 @@ class UserCreateTest extends TestCase
     }
 
     /**
-     * Test Validate Max Character.
-     * username,first_name,last_name,email: max 50, password: min 6
+     * Test Validate Email.
+     * 
      * @return void
      */
     public function testValidateEmail()
