@@ -111,13 +111,14 @@ Get other user info:
 
 2.3 Edit post:
 
-    Method: PUT
+    Method: POST
     Link: http://api.app/api/posts/{id}
     Params:
       + token: xxxx
       + title: 'Test post',
       + content: 'Edit post content',
       + status: 1
+      + image
       
 2.4 Delete post:
 
@@ -126,12 +127,17 @@ Get other user info:
     Params:
       + token: xxxxxx
       
-2.5 Get all post:
+2.5 Get all posts:
 
     Method: GET
     Link: http://api.app/api/posts
+
+2.6 Get posts detail:
+
+    Method: GET
+    Link: http://api.app/api/posts/{id}
     
-2.6 Get all posts for user:
+2.7 Get all posts for user:
 
     Method: GET
     Link: http://api.app/api/users/{id}/posts
