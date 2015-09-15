@@ -53,7 +53,7 @@ Mini Blog is small app written by Laravel 5.1. It's very simple app with 3 modul
       token: Gb1AKNWBgkxLeiedPK4ktYKP9aQW8xi6iHJjmEsihNxjRBVpZ06P9N2eMGcn
       
 1.4 Get User Info:
-Get user self info :
+Get self user info :
 
     Method: GET
     Link: http://api.app/api/users/self/?token=AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
@@ -76,11 +76,12 @@ Get other user info:
       
 1.6 Change password:
 
-    Method: POST
+    Method: PUT
     Link : http://api.app/api/users/password
     Params:
       + token: xxxxxx
-      + password: 123456789
+      + old_password: 123456
+      + new_password: 123456789
 
 1.7 Search user by name:
 
