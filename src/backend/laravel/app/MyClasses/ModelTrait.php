@@ -4,6 +4,26 @@ namespace App\MyClasses;
 
 trait ModelTrait
 {
+
+    /**
+     * Set date time format string
+     *
+     * @var string
+     */
+    protected $dateFormatStr = 'm/d/Y H:i:s';
+
+    /**
+     * Change time format to Unix timestamp
+     *
+     * @return string
+     */
+
+    protected function getDateFormat()
+    {
+        // return Unix timestamp (10 numbers)
+        return 'U';
+    }
+
     /**
      * Get the unique identifier for the user.
      *

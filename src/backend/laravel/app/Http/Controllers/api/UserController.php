@@ -34,113 +34,97 @@ class UserController extends ApiController
      */
     public  $response = array();
 
+
     /**
-     * Get user info.
+     * Search user by name
+     * URI: GET /api/users?name=abc&token=xxx
      *
      * @return Response
      */
     public function index(Request $request)
     {
-        $auth = $this->authenticateToken($request->input('token'));
-        if ($auth['success']) {
-            $validator =  Validator::make($request->all(), [
-                'name' => 'required',
-            ]);
-            // Validation fails
-            if ($validator->fails()) {
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_FAILED'),
-                    trans('api.DESCRIPTION_INPUT_FAILED'),
-                    MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-                );
-            } else {
-                $users = User::where('username','LIKE', '%'.$request->input('name').'%')
-                            ->orwhere('first_name','LIKE', '%'.$request->input('name').'%')
-                            ->orwhere('last_name','LIKE', '%'.$request->input('name').'%')
-                            ->get();
-                $usersArr = [];
-                foreach ($users as $userItem) {
-                    $usersArr[] = $userItem->toArray();
-                }
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_SUCCESS'),
-                    trans('api.DESCRIPTION_SEARCH_SUCCESS'),
-                    trans('api.MSG_SEARCH_SUCCESS', ['attribute' => 'User']),
-                    $usersArr
-                );
+        $validator =  Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        // Validation fails
+        if ($validator->fails()) {
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_FAILED'),
+                trans('api.DESCRIPTION_INPUT_FAILED'),
+                MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
+            );
+        } else {
+            $users = User::where('username','LIKE', '%'.$request->input('name').'%')
+                        ->orwhere('first_name','LIKE', '%'.$request->input('name').'%')
+                        ->orwhere('last_name','LIKE', '%'.$request->input('name').'%')
+                        ->get();
+            $usersArr = [];
+            foreach ($users as $userItem) {
+                $usersArr[] = $userItem->toArray();
             }
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.DESCRIPTION_SEARCH_SUCCESS'),
+                trans('api.MSG_SEARCH_SUCCESS', ['attribute' => 'User']),
+                $usersArr
+            );
         }
         return response()->json($this->response);
     }
 
     /**
-     * Get user info by ID
+     * Get other user info by ID
+     * URI : GET /api/users/{id}?token=xxx
      *
      * @return Response
      */
     public function show(Request $request, $id)
     {
-        if ($id > 0) {
-            $auth = $this->authenticateToken($request->input('token'));
-            if ($auth['success']) {
-                $user = User::where('id', (int) $id)->first();
-                if ($user) {
-                    // Get user info success
-                    $this->response = MessageUtility::getResponse(
-                        trans('api.CODE_INPUT_SUCCESS'),
-                        trans('api.DESCRIPTION_GET_INFO_SUCCESS'),
-                        trans('api.MSG_GET_INFO_SUCCESS', ['attribute' => 'User']),
-                        $user->toArray()
-                    );
-                } else {
-                    // User not found
-                    $this->response = MessageUtility::getResponse(
-                        trans('api.CODE_DB_NOT_FOUND'),
-                        trans('api.DESCRIPTION_DB_NOT_FOUND'),
-                        trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'User'])
-                    );
-                }
-            }
+        // Validate user id must be an integer
+        if (!$this->validateInteger($id,'User ID')) return response()->json($this->response);
+
+        $user = User::where('id', (int) $id)->first();
+        if ($user) {
+            // Get user info success
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.DESCRIPTION_GET_INFO_SUCCESS'),
+                trans('api.MSG_GET_INFO_SUCCESS', ['attribute' => 'User']),
+                $user->toArray()
+            );
         } else {
-            // Not a valid user id
-            $this->notFound();
+            // User not found
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_DB_NOT_FOUND'),
+                trans('api.DESCRIPTION_DB_NOT_FOUND'),
+                trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'User'])
+            );
         }
         return response()->json($this->response);
     }
 
 	/**
      * Get user info
+     * URI : /api/users/self?token=xxx
      *
      * @return Response
      */
     public function getSelf(Request $request)
     {
-        $auth = $this->authenticateToken($request->input('token'));
-        if ($auth['success']) {
-			// Get user info success
-			$this->response = MessageUtility::getResponse(
-				trans('api.CODE_INPUT_SUCCESS'),
-				trans('api.DESCRIPTION_GET_INFO_SUCCESS'),
-				trans('api.MSG_GET_INFO_SUCCESS', ['attribute' => 'User']),
-				$auth['user']->toArray()
-			);
-        }
+		// Get user info success
+		$this->response = MessageUtility::getResponse(
+			trans('api.CODE_INPUT_SUCCESS'),
+			trans('api.DESCRIPTION_GET_INFO_SUCCESS'),
+			trans('api.MSG_GET_INFO_SUCCESS', ['attribute' => 'User']),
+			Auth::user()->toArray()
+		);
         return response()->json($this->response);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create(Request $request)
-    {
-        return $this->notFound();
     }
 
 
     /**
      * Register a user by post method.
+     * URI: POST /api/users
      *
      * @param  Request  $request
      * @return Response
@@ -179,6 +163,7 @@ class UserController extends ApiController
 
     /**
      * Update user infomation.
+     * URI: PUT /api/users/{id}
      *
      * @param  Request  $request
      * @param  id  $id
@@ -186,68 +171,54 @@ class UserController extends ApiController
      */
     public function update(Request $request,$id)
     {
-        if ($id > 0) {
-            $auth = $this->authenticateToken($request->input('token'));
-            if ($auth['success']) {
-                if ($auth['user']->id != $id) {
-                    // You have not permission to perform the specified operation
+        // Validate user id must be an integer
+        if (!$this->validateInteger($id,'User ID')) return response()->json($this->response);
+        $user = Auth::user();
+        if ($user->id != $id) {
+            // You have not permission to perform the specified operation
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_PERMISSION_DENIED'),
+                trans('api.DESCRIPTION_PERMISSION_DENIED'),
+                trans('api.MSG_PERMISSION_DENIED')
+            );
+        } else {
+            // Check parameters have at least one field
+            $userFillableField = $user->getFillable();
+            if (! Utility::checkArrayHaveKey($user->getFillable(), array_keys($request->all() ) ) ) {
+                return $this->emptyData($userFillableField);
+            }
+
+            // Validate parameters
+            $validator = $this->validator($request->all(), $request->method(), (int) $id);
+            // Validation fails
+            if ($validator->fails()) {
+                $this->response = MessageUtility::getResponse(
+                    trans('api.CODE_INPUT_FAILED'),
+                    trans('api.DESCRIPTION_INPUT_FAILED'),
+                    MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
+                );
+            } else {
+                // Updated successfully
+                if ($user->update($request->all()) ) {
                     $this->response = MessageUtility::getResponse(
-                        trans('api.CODE_PERMISSION_DENIED'),
-                        trans('api.DESCRIPTION_PERMISSION_DENIED'),
-                        trans('api.MSG_PERMISSION_DENIED')
+                        trans('api.CODE_INPUT_SUCCESS'),
+                        trans('api.DESCRIPTION_UPDATE_SUCCESS'),
+                        trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'User', 'id' => $user->id]),
+                        $user->toArray()
                     );
-
                 } else {
-                    // Check parameters have at least one field
-                    $userFillableField = $auth['user']->getFillable();
-                    if (! Utility::checkArrayHaveKey($auth['user']->getFillable(), array_keys($request->all() ) ) ) {
-                        return $this->emptyData($userFillableField);
-                    }
-
-                    // Validate parameters
-                    $validator = $this->validator($request->all(), $request->method(), (int) $id);
-                    // Validation fails
-                    if ($validator->fails()) {
-                        $this->response = MessageUtility::getResponse(
-                            trans('api.CODE_INPUT_FAILED'),
-                            trans('api.DESCRIPTION_INPUT_FAILED'),
-                            MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-                        );
-                    } else {
-                        // Updated successfully
-                        if ($auth['user']->update($request->all()) ) {
-                            $this->response = MessageUtility::getResponse(
-                                trans('api.CODE_INPUT_SUCCESS'),
-                                trans('api.DESCRIPTION_UPDATE_SUCCESS'),
-                                trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'User', 'id' => $auth['user']->id]),
-                                $auth['user']->toArray()
-                            );
-                        } else {
-                            $this->dbError();
-                        }
-                    }
+                    $this->dbError();
                 }
             }
-        } else {
-            // Not a valid user id
-            $this->notFound();
         }
+
         return response()->json($this->response);
     }
 
-    /**
-     * Not use this function
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy(Request $request,$id)
-    {
-        return $this->notFound();
-    }
 
     /**
      * Login API by passing username.
+     * URI: PUT /users/login
      *
      * @param  Request  $request
      * @return Response
@@ -316,64 +287,58 @@ class UserController extends ApiController
 
     /**
      * Logout API .
+     * URI: PUT /api/users/logout
      *
      * @param  Request  $request
      * @return Response
      */
     public function putLogout(Request $request)
     {
-        $auth = $this->authenticateToken($request->input('token'));
-        if ($auth['success']) {
-            $auth['user']->remember_token = '';
-            if ($auth['user']->save()) {
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_SUCCESS'),
-                    trans('api.LOGOUT_SUCCESS'),
-                    trans('api.LOGOUT_SUCCESS')
-                );
-            } else {
-                $this->dbError();
-            }
-
+        $user = Auth::user();
+        $user->remember_token = '';
+        if ($user->save()) {
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.LOGOUT_SUCCESS'),
+                trans('api.LOGOUT_SUCCESS')
+            );
         }
-
         return response()->json($this->response);
     }
 
 
     /**
      * Change password.
+     * URI: PUT /users/password
      *
      * @param  Request  $request
      * @return Response
      */
     public function putChangePassword(Request $request)
     {
-        $auth = $this->authenticateToken($request->input('token'));
-        if ($auth['success']) {
-            $validator =  Validator::make($request->all(), [
-                'old_password' => 'required|min:6|passcheck:password,123456',
-                'new_password' => 'required|min:6',
-            ]);
-            // Validation fails
-            if ($validator->fails()) {
+        $validator =  Validator::make($request->all(), [
+            'old_password' => 'required|min:6|passcheck:password',
+            'new_password' => 'required|min:6',
+        ]);
+        // Validation fails
+        if ($validator->fails()) {
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_FAILED'),
+                trans('api.DESCRIPTION_INPUT_FAILED'),
+                MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
+            );
+        } else {
+            // Chang password success
+            $user = Auth::user();
+            $user->password = bcrypt($request->input('new_password') );
+            if ($user->save()) {
                 $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_FAILED'),
-                    trans('api.DESCRIPTION_INPUT_FAILED'),
-                    MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
+                    trans('api.CODE_INPUT_SUCCESS'),
+                    trans('api.DESCRIPTION_CHANGE_PASS_SUCCESS'),
+                    trans('api.DESCRIPTION_CHANGE_PASS_SUCCESS')
                 );
             } else {
-                // Chang password success
-                $auth['user']->password = bcrypt($request->input('new_password') );
-                if ($auth['user']->save()) {
-                    $this->response = MessageUtility::getResponse(
-                        trans('api.CODE_INPUT_SUCCESS'),
-                        trans('api.DESCRIPTION_CHANGE_PASS_SUCCESS'),
-                        trans('api.DESCRIPTION_CHANGE_PASS_SUCCESS')
-                    );
-                } else {
-                    $this->dbError();
-                }
+                $this->dbError();
             }
         }
         return response()->json($this->response);

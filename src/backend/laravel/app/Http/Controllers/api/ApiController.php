@@ -32,6 +32,22 @@ class ApiController extends Controller
     }
 
     /**
+     * Method is not allowed.
+     *
+     * @return Response
+     */
+    protected function methodNotAllowed()
+    {
+        $this->response = MessageUtility::getResponse(
+            trans('api.CODE_METHOD_NOT_ALLOWED'),
+            trans('api.DESCRIPTION_METHOD_NOT_ALLOWED'),
+            trans('api.MSG_METHOD_NOT_ALLOWED')
+        );
+        return response()->json($this->response);
+    }
+
+
+    /**
      * Empty Data Response.
      *
      * Require params have least one field
@@ -103,6 +119,23 @@ class ApiController extends Controller
 
         return $result;
     }
+
+    /**
+     * Validate string content must be an integer.
+     *
+     * @param  string  $strId
+     * @return mixed
+     */
+    protected function validateInteger($strId, $fieldName)
+    {
+        if (preg_match('/^[1-9]([0-9]+)?$/', $strId) ) {
+            return true;
+        }
+        // User id must be an integer
+        $this->response = MessageUtility::getResponseInteger($fieldName);
+        return false;
+    }
+
 
 
 }

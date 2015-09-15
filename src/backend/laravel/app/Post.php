@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\MyClasses\ModelTrait;
 
 class Post extends Model
 {
+    use ModelTrait;
    /**
      * The database table used by the model.
      *
@@ -29,11 +31,11 @@ class Post extends Model
     public $timestamps = true;
 
     /**
-     * Set date time format
+     * List date time fields
      *
      * @var string
      */
-    protected $dateFormat = 'U';
+    protected $dates = ['created_at', 'updated_at'];
 
 
     /**
@@ -41,11 +43,10 @@ class Post extends Model
      *
      * @return string
      */
-
     protected function getDateFormat()
     {
         // return Unix timestamp (10 numbers)
-        return 'Y-m-d H:i:s';
+        return 'U';
     }
 
 }

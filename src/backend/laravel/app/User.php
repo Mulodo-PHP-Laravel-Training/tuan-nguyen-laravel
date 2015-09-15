@@ -46,12 +46,6 @@ class User extends Model implements AuthenticatableContract,
      */
     public $timestamps = true;
 
-    /**
-     * Set date time format string
-     *
-     * @var string
-     */
-    protected $dateFormatStr = 'm/d/Y H:i:s';
 
     /**
      * List date time fields
@@ -60,22 +54,9 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $dates = ['created_at', 'updated_at', 'last_login'];
 
-
-    /**
-     * Change time format to Unix timestamp
-     *
-     * @return string
-     */
-
-    protected function getDateFormat()
-    {
-        // return Unix timestamp (10 numbers)
-        return 'U';
-    }
-
     public function getLastLoginAttribute($attr) {
         return ($this->attributes['last_login'] > 0)
-            ? date($this->dateFormatStr,$this->attributes['updated_at'])
+            ? date($this->dateFormatStr,$this->attributes['last_login'])
             : '';
     }
 

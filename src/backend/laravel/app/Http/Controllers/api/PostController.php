@@ -5,35 +5,34 @@ namespace App\Http\Controllers\Api;
 use Validator;
 use Input;
 use URL;
-use Illuminate\Http\Request;
+use DB;
 use App\MyClasses\MessageUtility;
 use App\Post;
 use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class PostController extends ApiController
 {
     /**
      * Get all posts in this blog.
+     * URI: GET api/users
      *
      * @return Response
      */
     public function index(Request $request)
     {
-		$posts = Post::select('posts.id','posts.title','posts.created_at','users.first_name','users.last_name')
-					 ->leftJoin('users', function($join) {
+		$posts = Post::select('posts.id','posts.title','posts.created_at','posts.updated_at','posts.author_id','posts.image',
+                        DB::raw('CONCAT(users.first_name," ", users.last_name) As author_name')
+                    )->leftJoin('users', function($join) {
 						$join->on('users.id', '=','posts.author_id');
-					 })
-					 ->get();
+					})->where('posts.status',1)
+                    ->get();
+
 		if ($posts) {
 			$postsArr = array();
 			foreach ($posts as $post) {
-				$postData = $post->toArray();
-				$postsArr[] = array(
-					'id'	=> $postData['id'],
-					'title' => $postData['title'],
-					'created_at' => date('m-d-Y H:i:s', $postData['created_at']),
-					'author'=> ($postData['first_name']) ? $postData['first_name'] . ' '. $postData['last_name'] :''
-				);
+				$postsArr[] = $post->toArray();
 			}
 			// Get all posts successfully
 			$this->response = MessageUtility::getResponse(
@@ -48,132 +47,143 @@ class PostController extends ApiController
     }
 
     /**
-     * Get all posts of an user.
+     * Get all posts of one user by user ID.
+     * URI: GET api/users/{id}/posts
      *
      * @return Response
      */
     public function getUserPosts(Request $request, $author_id)
     {
-		$user = User::where('id',$author_id)->first();
-		if ($user) {
-			$posts = Post::where('author_id', (int) $author_id)->get();
-			if ($posts) {
-				$postsArr = array();
-				foreach ($posts as $post) {
-					$postData = $post->toArray();
-					$postsArr[] = array(
-						'id'	=> $postData['id'],
-						'title' => $postData['title'],
-						'created_at' => date('m-d-Y H:i:s', $postData['created_at']),
-						'author'=> $user['first_name'] . ' '. $user['last_name']
-					);
-				}
-				// Get all user posts successfully
-				$this->response = MessageUtility::getResponse(
-					trans('api.CODE_INPUT_SUCCESS'),
-					trans('api.DESCRIPTION_GET_SUCCESS'),
-					trans('api.MSG_GET_USER_POST_SUCCESS',['attribute' => $user->id]),
-					$postsArr
-				);
-			}
-		} else {
-			// User not found
-			$this->response = MessageUtility::getResponse(
-				trans('api.CODE_DB_NOT_FOUND'),
-				trans('api.DESCRIPTION_DB_NOT_FOUND'),
-				trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'User'])
-			);
-		}
+        // Validate author id must be an integer
+        if (!$this->validateInteger($author_id,'Author ID')) return response()->json($this->response);
 
+        $user = User::where('id',$author_id)->first();
+        if ($user) {
+            $posts = Post::where('author_id', (int) $author_id)
+                        ->where('status',1)->get();
+            if ($posts) {
+                $postsArr = array();
+                foreach ($posts as $post) {
+                    $postData = $post->toArray();
+                    $postsArr[] = array(
+                        'id'          => $postData['id'],
+                        'title'       => $postData['title'],
+                        'author_id'   => $postData['author_id'],
+                        'author_name' => $user['first_name'] . ' '. $user['last_name'],
+                        'image'       => $postData['image'],
+                        'created_at'  => $postData['created_at'],
+                        'updated_at'  => $postData['updated_at'],
+                    );
+                }
+                // Get all user posts successfully
+                $this->response = MessageUtility::getResponse(
+                    trans('api.CODE_INPUT_SUCCESS'),
+                    trans('api.DESCRIPTION_GET_SUCCESS'),
+                    trans('api.MSG_GET_USER_POST_SUCCESS',['attribute' => $user->id]),
+                    $postsArr
+                );
+            }
+        } else {
+            // User not found
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_DB_NOT_FOUND'),
+                trans('api.DESCRIPTION_DB_NOT_FOUND'),
+                trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'User'])
+            );
+        }
 
 		return response()->json($this->response);
 	}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create(Request $request)
-    {
-        return $this->notFound();
-    }
 
     /**
-     * Store a newly created resource in storage.
+     * Create new post
+     * URI: POST /api/posts
      *
      * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
     {
-        $auth = $this->authenticateToken($request->input('token'));
-        if ($auth['success']) {
-            $validator = $this->validator($request->all(), $request->method());
-            // Validation fails
-            if ($validator->fails()) {
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_FAILED'),
-                    trans('api.DESCRIPTION_INPUT_FAILED'),
-                    MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-                );
+        $validator = $this->validator($request->all(), $request->method());
+        // Validation fails
+        if ($validator->fails()) {
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_FAILED'),
+                trans('api.DESCRIPTION_INPUT_FAILED'),
+                MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
+            );
 
-                return response()->json($this->response);
-            } else {
-                // Upload file
-                $image = '';
-                if (Input::file('image')) {
-                    $imageLink = $this->upload();
-                    $image = URL::to('/uploads/'. $imageLink);
-                }
-                // Validation success
-                $post = Post::create([
-                    'author_id' => $auth['user']->id,
-                    'title'     => $request->input('title'),
-                    'content'   => $request->input('content'),
-                    'status'    => $request->input('status'),
-                    'image'     => $image
-
-                ]);
-                if ($post) {
-                    // Create post successfully
-                    $this->response = MessageUtility::getResponse(
-                        trans('api.CODE_INPUT_SUCCESS'),
-                        trans('api.DESCRIPTION_CREATE_SUCCESS'),
-                        trans('api.MSG_CREATE_SUCCESS',['attribute' => 'Post']),
-                        $post->toArray()
-                    );
-                } else {
-                    // Create post failed
-                    $this->dbError();
-                }
+            return response()->json($this->response);
+        } else {
+            // Upload file
+            $image = '';
+            if (Input::file('image')) {
+                $imageLink = $this->upload();
+                $image = URL::to('/uploads/'. $imageLink);
             }
+            // Validation success
+            $post = Post::create([
+                'author_id' => Auth::user()->id,
+                'title'     => $request->input('title'),
+                'content'   => $request->input('content'),
+                'status'    => $request->input('status'),
+                'image'     => $image
 
+            ]);
+            if ($post) {
+                // Create post successfully
+                $this->response = MessageUtility::getResponse(
+                    trans('api.CODE_INPUT_SUCCESS'),
+                    trans('api.DESCRIPTION_CREATE_SUCCESS'),
+                    trans('api.MSG_CREATE_SUCCESS',['attribute' => 'Post']),
+                    $post->toArray()
+                );
+            } else {
+                // Create post failed
+                $this->dbError();
+            }
         }
+
         return response()->json($this->response);
     }
 
     /**
-     * Display the specified resource.
+     * Get all content of post.
      *
      * @param  int  $id
      * @return Response
      */
     public function show($id)
     {
-        $this->notFound();
+        // Validate post id must be an integer
+        if (!$this->validateInteger($id,'Post ID')) return response()->json($this->response);
+
+        $post = Post::select('posts.*', DB::raw('CONCAT(users.first_name," ", users.last_name) As author_name') )
+                    ->leftJoin('users', function($join) {
+                        $join->on('users.id', '=','posts.author_id');
+                    })->where('posts.id', $id)
+                    ->where('posts.status',1)->first();
+        if ($post) {
+            // Get post info success
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.DESCRIPTION_GET_INFO_SUCCESS'),
+                trans('api.MSG_GET_INFO_SUCCESS', ['attribute' => 'Post']),
+                $post->toArray()
+            );
+        } else {
+            // Post not found
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_DB_NOT_FOUND'),
+                trans('api.DESCRIPTION_DB_NOT_FOUND'),
+                trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'Post'])
+            );
+        }
+
+        return response()->json($this->response);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update post by id.
@@ -184,72 +194,72 @@ class PostController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        $putdata = fopen("php://input", "r");
-        dd($putdata);
-        $auth = $this->authenticateToken($request->input('token'));
-        if ($auth['success']) {
-            $validator = $this->validator($request->all(), $request->method());
-            // Validation fails
-            if ($validator->fails()) {
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_FAILED'),
-                    trans('api.DESCRIPTION_INPUT_FAILED'),
-                    MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-                );
 
-                return response()->json($this->response);
-            } else {
-				// Get post & Check permission
-				$post = $this->checkPostAuthor($auth['user']->id, $id);
-				if ($post) {
-					$arrPost = $request->all();
-					// Upload file
-					if (Input::file('image')) {
-						$imageLink = $this->upload();
-						$arrPost['image'] = URL::to('/uploads/'. $imageLink);
-					}
+        // Validate author id must be an integer
+        if (!$this->validateInteger($id,'Post ID')) return response()->json($this->response);
 
-					if ($post->update($arrPost)) {
-						// Update post successfully
-						$this->response = MessageUtility::getResponse(
-							trans('api.CODE_INPUT_SUCCESS'),
-							trans('api.DESCRIPTION_UPDATE_SUCCESS'),
-							trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'Post', 'id' => $post->id]),
-							$post->toArray()
-						);
-					} else {
-						// Update post failed
-						$this->dbError();
-					}
+        $validator = $this->validator($request->all(), 'PUT');
+        // Validation fails
+        if ($validator->fails()) {
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_FAILED'),
+                trans('api.DESCRIPTION_INPUT_FAILED'),
+                MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
+            );
 
+            return response()->json($this->response);
+        } else {
+			// Get post & Check permission
+			$post = $this->checkPostAuthor(Auth::user()->id, $id);
+			if ($post) {
+				$arrPost = $request->all();
+				// Upload file
+				if (Input::file('image')) {
+					$imageLink = $this->upload();
+					$arrPost['image'] = URL::to('/uploads/'. $imageLink);
 				}
-            }
 
+				if ($post->update($arrPost)) {
+					// Update post successfully
+					$this->response = MessageUtility::getResponse(
+						trans('api.CODE_INPUT_SUCCESS'),
+						trans('api.DESCRIPTION_UPDATE_SUCCESS'),
+						trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'Post', 'id' => $post->id]),
+						$post->toArray()
+					);
+				} else {
+					// Update post failed
+					$this->dbError();
+				}
+
+			}
         }
+
         return response()->json($this->response);
     }
 
     /**
      * Remove post by id.
+     * URI: DELETE /api/posts/{id}
      *
      * @param  int  $id
      * @return Response
      */
     public function destroy(Request $request,$id)
     {
-        $auth = $this->authenticateToken($request->input('token'));
-        if ($auth['success']) {
-			// Get post & Check permission
-			$post = $this->checkPostAuthor($auth['user']->id, (int) $id);
-			if ($post) {
-				if ($post->delete()) {
-					// Delete post successfully
-					$this->response = MessageUtility::getResponse(
-						trans('api.CODE_INPUT_SUCCESS'),
-						trans('api.DESCRIPTION_DELETE_SUCCESS'),
-						trans('api.MSG_DELETE_SUCCESS',['attribute' => 'Post','id' => $id])
-					);
-				}
+        // Validate author id must be an integer
+        if (!$this->validateInteger($id,'Post ID')) return response()->json($this->response);
+
+		// Get post & Check permission
+		$post = $this->checkPostAuthor(Auth::user()->id, (int) $id);
+		if ($post) {
+			if ($post->delete()) {
+				// Delete post successfully
+				$this->response = MessageUtility::getResponse(
+					trans('api.CODE_INPUT_SUCCESS'),
+					trans('api.DESCRIPTION_DELETE_SUCCESS'),
+					trans('api.MSG_DELETE_SUCCESS',['attribute' => 'Post','id' => $id])
+				);
 			}
 		}
 		return response()->json($this->response);
@@ -263,53 +273,55 @@ class PostController extends ApiController
      */
     public function putActive(Request $request, $id)
     {
-        $auth = $this->authenticateToken($request->input('token'));
-        if ($auth['success']) {
-            // Check post author
-            $post = $this->checkPostAuthor($auth['user']->id, $id);
-            if ($post) {
-                $post->status = 1;
-                if ($post->save()) {
-                    // Active post successfully
-                    $this->response = MessageUtility::getResponse(
-                        trans('api.CODE_INPUT_SUCCESS'),
-                        trans('api.DESCRIPTION_POST_ACTIVE_SUCCESS'),
-                        trans('api.MSG_POST_ACTIVE_SUCCESS',['attribute' => $post->id]),
-                        $post->toArray()
-                    );
-                } else {
-                    $this->dbError();
-                }
+        // Validate author id must be an integer
+        if (!$this->validateInteger($id,'Post ID')) return response()->json($this->response);
+
+        // Check post author
+        $user = Auth::user();
+        $post = $this->checkPostAuthor($user->id, $id);
+        if ($post) {
+            $post->status = 1;
+            if ($post->save()) {
+                // Active post successfully
+                $this->response = MessageUtility::getResponse(
+                    trans('api.CODE_INPUT_SUCCESS'),
+                    trans('api.DESCRIPTION_POST_ACTIVE_SUCCESS'),
+                    trans('api.MSG_POST_ACTIVE_SUCCESS',['attribute' => $post->id]),
+                    $post->toArray()
+                );
+            } else {
+                $this->dbError();
             }
         }
         return response()->json($this->response);
     }
 
     /**
-     * Set post active
+     * Set post deactive
      *
      * @param  int  $id
      * @return Response
      */
     public function putDeactive(Request $request, $id)
     {
-        $auth = $this->authenticateToken($request->input('token'));
-        if ($auth['success']) {
-            // Check post author
-            $post = $this->checkPostAuthor($auth['user']->id, $id);
-            if ($post) {
-                $post->status = 0;
-                if ($post->save()) {
-                    // Active post successfully
-                    $this->response = MessageUtility::getResponse(
-                        trans('api.CODE_INPUT_SUCCESS'),
-                        trans('api.DESCRIPTION_POST_DEACTIVE_SUCCESS'),
-                        trans('api.MSG_POST_DEACTIVE_SUCCESS',['attribute' => $post->id]),
-                        $post->toArray()
-                    );
-                } else {
-                    $this->dbError();
-                }
+        // Validate author id must be an integer
+        if (!$this->validateInteger($id,'Post ID')) return response()->json($this->response);
+
+        // Check post author
+        $user = Auth::user();
+        $post = $this->checkPostAuthor($user->id, $id);
+        if ($post) {
+            $post->status = 0;
+            if ($post->save()) {
+                // Active post successfully
+                $this->response = MessageUtility::getResponse(
+                    trans('api.CODE_INPUT_SUCCESS'),
+                    trans('api.DESCRIPTION_POST_DEACTIVE_SUCCESS'),
+                    trans('api.MSG_POST_DEACTIVE_SUCCESS',['attribute' => $post->id]),
+                    $post->toArray()
+                );
+            } else {
+                $this->dbError();
             }
         }
         return response()->json($this->response);
@@ -331,9 +343,9 @@ class PostController extends ApiController
                 return $post;
             } else {
                 $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_AUTHENTICATE_FAILED'),
-                    trans('api.DESCRIPTION_AUTHENTICATE_FAILED'),
-                    trans('api.DESCRIPTION_AUTHENTICATE_FAILED')
+                    trans('api.CODE_PERMISSION_DENIED'),
+                    trans('api.DESCRIPTION_PERMISSION_DENIED'),
+                    trans('api.MSG_PERMISSION_DENIED')
                 );
             }
         } else {

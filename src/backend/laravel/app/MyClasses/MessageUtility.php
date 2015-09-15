@@ -20,6 +20,7 @@ class MessageUtility
         }
         return $responseMessages;
     }
+
     /**
      * Process response array.
      *
@@ -55,6 +56,22 @@ class MessageUtility
             $response['data'] = $data;
         }
         return $response;
+    }
+
+    /**
+     * Response when validation integer failed.
+     *
+     * @param string $attribute
+     * @param array $data
+     *
+     * @return array $response
+     */
+    public static function getResponseInteger($attribute) {
+        return self::getResponse(
+            trans('api.CODE_INPUT_FAILED'),
+            trans('api.DESCRIPTION_INPUT_FAILED'),
+            trans('validation.integer', ['attribute' => $attribute])
+        );
     }
 }
 
