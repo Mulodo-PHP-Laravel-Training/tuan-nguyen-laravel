@@ -7,6 +7,7 @@ use Input;
 use URL;
 use DB;
 use App\MyClasses\MessageUtility;
+use App\MyClasses\Utility;
 use App\Post;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -197,6 +198,13 @@ class PostController extends ApiController
 
         // Validate author id must be an integer
         if (!$this->validateInteger($id,'Post ID')) return response()->json($this->response);
+
+        // Check parameters have at least one field
+        $post = new Post();
+        $fieldsList = Utility::removeArrayItem($post->getFillable(), 'author_id');
+        if (! Utility::checkArrayHaveKey($fieldsList, array_keys($request->all() ) ) ) {
+            return $this->emptyData($fieldsList);
+        }
 
         $validator = $this->validator($request->all(), 'PUT');
         // Validation fails
