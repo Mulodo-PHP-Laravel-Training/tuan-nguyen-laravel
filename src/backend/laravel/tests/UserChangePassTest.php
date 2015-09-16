@@ -71,9 +71,9 @@ class UserChangePassTest extends TestCase
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code' => trans('api.CODE_INPUT_FAILED'),
+                        'code'        => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages" => array(
+                        "messages"    => array(
                             array("message" => trans('validation.min.string',['attribute' => 'new password', 'min' => 6])),
                             array("message" => trans('validation.min.string',['attribute' => 'old password', 'min' => 6])),
                             array("message" => trans('validation.passcheck'))

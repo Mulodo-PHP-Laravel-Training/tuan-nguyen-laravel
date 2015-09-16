@@ -76,7 +76,7 @@ class UserLogoutTest extends TestCase
              ])
             ->seeInDatabase('users',
                 [
-                    'username' => 'anh.tuan',
+                    'username' => $user->username,
                     'remember_token' => '',
                 ]
             );

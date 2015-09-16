@@ -29,8 +29,9 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         return $app;
     }
 
+
     /**
-     * Test Login Successfully.
+     * Get user login Successfully.
      *
      * @return Auth
      */
@@ -67,11 +68,11 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     }
 
     /**
-     * Create sub user.
+     * Create an other user.
      *
      * Using in testing unique
      *
-     * @return User
+     * @return App\User $user
      */
     protected function getSubUser()
     {
@@ -83,20 +84,25 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
             'password'   => bcrypt('123456'),
         ];
         // Check username in database
-        $user = User::where('username', 'anh.tuan2')
-                    ->where('email', 'anh.tuan2@mulodo.com' )->first();
+        $user = User::where('username', 'anh.tuan2')->first();
         if (!$user) {
             $user = User::create($subUser);
         }
         return $user;
     }
 
+    /**
+     * Create a sample post.
+     *
+     * @param Int   $author_id
+     * @return App\Post $post
+     */
 	protected function createPost($author_id) {
 		$post = Post::create([
-			'title'	=> 'Test post',
-			'content' => 'This is content post',
-			'status' => 1,
-			'author_id' => $author_id
+            'title'     => 'Test post',
+            'content'   => 'This is content post',
+            'status'    => 1,
+            'author_id' => $author_id
 		]);
 		return $post;
 	}

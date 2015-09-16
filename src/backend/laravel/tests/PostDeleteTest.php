@@ -4,7 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use App\User;
 use App\Post;
 
-class PostActiveTest extends TestCase
+class PostDeleteTest extends TestCase
 {
 
     /**
@@ -14,19 +14,20 @@ class PostActiveTest extends TestCase
      */
     public function testValidateToken()
     {
-        $this->put('/api/posts/1/active', [
-            ])
-             ->seeJson([
-                 'data' => null,
-                 'meta' => array(
-                        'code' => trans('api.CODE_INPUT_FAILED'),
-                        'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages" => array(
-                            array("message" => trans('validation.required', ['attribute' => 'token']) ),
-                        )
+        $user = $this->getUserLogin();
+        $post = $this->createPost($user->id);
+        $this->delete('/api/posts/'. $post->id)
+            ->seeJson([
+                'data' => null,
+                'meta' => array(
+                    'code'        => trans('api.CODE_INPUT_FAILED'),
+                    'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
+                    "messages"    => array(
+                        array("message" => trans('validation.required', ['attribute' => 'token']) ),
                     )
+                )
              ]);
-        $this->put('/api/posts/1/active', [
+        $this->delete('/api/posts/'. $post->id, [
                 'token' => 'P35sFhMkBv5Xg9vEvyWPLunIF9EnfReHsPyxwoGI6V9bi1clmlxLE0o8YTrJ1'
             ])
              ->seeJson([
@@ -52,9 +53,9 @@ class PostActiveTest extends TestCase
     public function testPermissionDenied()
     {
         $user = $this->getUserLogin();
-		$subUser = $this->getSubUser();
-		$post = $this->createPost($subUser->id);
-        $this->put('/api/posts/'. $post->id.'/active', [
+        $subUser = $this->getSubUser();
+        $post = $this->createPost($subUser->id);
+        $this->delete('/api/posts/'. $post->id, [
                 'token' => $user->remember_token
             ])
              ->seeJson([
@@ -79,16 +80,15 @@ class PostActiveTest extends TestCase
         $user = $this->getUserLogin();
 
         // test integer
-        $this->put('/api/posts/1.3/active', [
-                'token' => $user->remember_token,
-                'status' => 1
+        $this->delete('/api/posts/1.3', [
+                'token' => $user->remember_token
             ])
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code' => trans('api.CODE_INPUT_FAILED'),
+                        'code'        => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages" => array(
+                        "messages"    => array(
                             array("message" => trans('validation.integer', ['attribute' => 'Post ID']) ),
                         )
                     )
@@ -99,16 +99,15 @@ class PostActiveTest extends TestCase
         $postId = $post->id;
         $post->delete();
 
-        $this->put('/api/posts/'. $postId .'/active', [
+        $this->delete('/api/posts/'. $postId, [
                 'token' => $user->remember_token,
-                'status' => 1
             ])
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code' => trans('api.CODE_DB_NOT_FOUND'),
+                        'code'        => trans('api.CODE_DB_NOT_FOUND'),
                         'description' => trans('api.DESCRIPTION_DB_NOT_FOUND'),
-                        "messages" => array(
+                        "messages"    => array(
                             array("message" => trans('api.MSG_DB_NOT_FOUND',['attribute' => 'Post']) ),
                         )
                     )
@@ -119,31 +118,29 @@ class PostActiveTest extends TestCase
 
 
     /**
-     * Test success active user.
+     * Test success delete user.
      * @return void
      */
-    public function testSuccess()
+    public function testDeleteSuccess()
     {
         $user = $this->getUserLogin();
-		$post = $this->createPost($user->id);
-        $this->put('/api/posts/'. $post->id.'/active', [
+        $post = $this->createPost($user->id);
+        $this->delete('/api/posts/'. $post->id, [
                 'token' => $user->remember_token
             ])
              ->seeJson([
                  'meta' => array(
-                        'code' => trans('api.CODE_INPUT_SUCCESS'),
-                        'description' => trans('api.DESCRIPTION_POST_ACTIVE_SUCCESS'),
-                        "messages" => array(
-                            array("message" => trans('api.MSG_POST_ACTIVE_SUCCESS',['attribute' => $post->id]) ),
+                        'code'        => trans('api.CODE_INPUT_SUCCESS'),
+                        'description' => trans('api.DESCRIPTION_DELETE_SUCCESS'),
+                        "messages"    => array(
+                            array("message" => trans('api.MSG_DELETE_SUCCESS',['attribute' => 'Post','id' => $post->id]) ),
                         )
                     )
-             ])->seeInDatabase('posts',
+             ])->notSeeInDatabase('posts',
                 [
-                    'id' => $post->id,
-                    'status' => 1,
+                    'id' => $post->id
                 ]
             );
-;
     }
 
 }
