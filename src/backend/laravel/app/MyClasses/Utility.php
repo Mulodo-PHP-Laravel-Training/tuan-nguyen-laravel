@@ -12,7 +12,7 @@ class Utility
         return false;
     }
 
-    public static function removeArrayItem( $array, $item ) {
+    public static function removeArrayElement( $array, $item ) {
         $index = array_search($item, $array);
         if ( $index !== false ) {
             unset( $array[$index] );

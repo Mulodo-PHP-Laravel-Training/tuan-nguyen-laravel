@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Post;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
@@ -90,4 +91,13 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         return $user;
     }
 
+	protected function createPost($author_id) {
+		$post = Post::create([
+			'title'	=> 'Test post',
+			'content' => 'This is content post',
+			'status' => 1,
+			'author_id' => $author_id
+		]);
+		return $post;
+	}
 }

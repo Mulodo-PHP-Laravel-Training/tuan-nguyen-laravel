@@ -200,10 +200,18 @@ class PostController extends ApiController
         if (!$this->validateInteger($id,'Post ID')) return response()->json($this->response);
 
         // Check parameters have at least one field
+<<<<<<< HEAD
         $post = new Post();
         $fieldsList = Utility::removeArrayItem($post->getFillable(), 'author_id');
         if (! Utility::checkArrayHaveKey($fieldsList, array_keys($request->all() ) ) ) {
             return $this->emptyData($fieldsList);
+=======
+        $post = new  Post();
+        $fillableField = Utility::removeArrayElement($post->getFillable(),'author_id');
+
+        if (! Utility::checkArrayHaveKey($fillableField, array_keys($request->all() ) ) ) {
+            return $this->emptyData($fillableField);
+>>>>>>> branchPost
         }
 
         $validator = $this->validator($request->all(), 'PUT');
@@ -221,6 +229,7 @@ class PostController extends ApiController
 			$post = $this->checkPostAuthor(Auth::user()->id, $id);
 			if ($post) {
 				$arrPost = $request->all();
+                unset($arrPost['author_id']);
 				// Upload file
 				if (Input::file('image')) {
 					$imageLink = $this->upload();
