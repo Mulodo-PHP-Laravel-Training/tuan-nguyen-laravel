@@ -58,9 +58,9 @@ class UserUpdateTest extends TestCase
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code' => trans('api.CODE_INPUT_REQUIRED'),
+                        'code'        => trans('api.CODE_INPUT_REQUIRED'),
                         'description' => trans('api.DESCRIPTION_INPUT_REQUIRED'),
-                        "messages" => array(
+                        "messages"    => array(
                             array("message" => trans('api.MSG_INPUT_REQUIRED',['attribute' => implode(', ', $user->getFillable())])),
                         )
                     )
@@ -77,18 +77,15 @@ class UserUpdateTest extends TestCase
     {
         $user = $this->getUserLogin();
         $this->put('/api/users/'.$user->id, [
-                'username' => 'ab',
-                'first_name' => 'Ronan',
-                'last_name'  => 'Tuan',
-                'email'      => 'anh.tuan3snv@mulodo.com',
+                'username'   => 'ab',
                 'token'      => $user->remember_token
             ])
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code' => trans('api.CODE_INPUT_FAILED'),
+                        'code'        => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages" => array(
+                        "messages"    => array(
                             array("message" => trans('validation.min.string',['attribute' => 'username', 'min' => 3])),
                         )
                     )
@@ -113,9 +110,9 @@ class UserUpdateTest extends TestCase
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code' => trans('api.CODE_INPUT_FAILED'),
+                        'code'        => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages" => array(
+                        "messages"    => array(
                             array("message" => trans('validation.max.string',['attribute' => 'first name', 'max' => 50])),
                             array("message" => trans('validation.max.string',['attribute' => 'last name', 'max' => 50])),
                             array("message" => trans('validation.max.string',['attribute' => 'username', 'max' => 50])),
@@ -140,9 +137,9 @@ class UserUpdateTest extends TestCase
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code' => trans('api.CODE_INPUT_FAILED'),
+                        'code'        => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages" => array(
+                        "messages"    => array(
                             array("message" => trans('validation.email', ['attribute' => 'email']) )
                         )
                     )
@@ -161,17 +158,15 @@ class UserUpdateTest extends TestCase
 
         $this->put('/api/users/'. $user->id, [
                 'username'   => $subUser->username,
-                'first_name' => 'Ronan',
-                'last_name'  => 'Tuan',
                 'email'      => $subUser->email,
                 'token'      => $user->remember_token
             ])
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code' => trans('api.CODE_INPUT_FAILED'),
+                        'code'        => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages" => array(
+                        "messages"    => array(
                             array("message" => trans('validation.unique', ['attribute' => 'email']) ),
                             array("message" => trans('validation.unique', ['attribute' => 'username']) ),
                         )
@@ -180,6 +175,33 @@ class UserUpdateTest extends TestCase
         );
 
     }
+
+
+    /**
+     * Test User ID must be an integer
+     *
+     * @return void
+     */
+    public function testUserID()
+    {
+        $user = $this->getUserLogin();
+
+        // test integer
+        $this->put('/api/users/1.3', [
+                'token' => $user->remember_token,
+            ])
+             ->seeJson([
+                 'data' => null,
+                 'meta' => array(
+                        'code'        => trans('api.CODE_INPUT_FAILED'),
+                        'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
+                        "messages"    => array(
+                            array("message" => trans('validation.integer', ['attribute' => 'User ID']) ),
+                        )
+                    )
+             ]);
+    }
+
 
     /**
      * Test Permission Denied.
@@ -199,9 +221,9 @@ class UserUpdateTest extends TestCase
              ->seeJson([
                  'data' => null,
                  'meta' => array(
-                        'code' => trans('api.CODE_PERMISSION_DENIED'),
+                        'code'        => trans('api.CODE_PERMISSION_DENIED'),
                         'description' => trans('api.DESCRIPTION_PERMISSION_DENIED'),
-                        "messages" => array(
+                        "messages"    => array(
                             array("message" => trans('api.MSG_PERMISSION_DENIED') ),
                         )
                     )
@@ -218,34 +240,37 @@ class UserUpdateTest extends TestCase
     {
         $user = $this->getUserLogin();
 
+        // Check user: anh.tuan2 exist
         $subUsers = User::where('username', 'anh.tuan2')
                         ->orwhere('email','anh.tuan2@mulodo.com');
         if ($subUsers) {
             $subUsers->delete();
         }
 
-        $this->put('/api/users/'. $user->id, [
-                'username'   => 'anh.tuan2',
-                'first_name' => 'Ronan',
-                'last_name'  => 'Tuan',
-                'email'      => 'anh.tuan2@mulodo.com',
-                'token'      => $user->remember_token
-            ])
+        $updUser = [
+            'username'   => 'anh.tuan2',
+            'first_name' => 'Ronan',
+            'last_name'  => 'Tuan',
+            'email'      => 'anh.tuan2@mulodo.com',
+            'token'      => $user->remember_token
+        ];
+
+        $this->put('/api/users/'. $user->id, $updUser)
              ->seeJson([
                  'meta' => array(
-                        'code' => trans('api.CODE_INPUT_SUCCESS'),
+                        'code'        => trans('api.CODE_INPUT_SUCCESS'),
                         'description' => trans('api.DESCRIPTION_UPDATE_SUCCESS'),
-                        'messages' => array(
+                        'messages'    => array(
                             array('message' => trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'User', 'id' => $user->id]) )
                         )
                     )
              ])
              ->seeInDatabase('users',
                 [
-                    'username' => 'anh.tuan2',
-                    'email' => 'anh.tuan2@mulodo.com',
-                    'first_name' => 'Ronan',
-                    'last_name' => 'Tuan',
+                    'username'   => $updUser['username'],
+                    'email'      => $updUser['email'],
+                    'first_name' => $updUser['first_name'],
+                    'last_name'  => $updUser['last_name'],
                 ]
             );
     }
