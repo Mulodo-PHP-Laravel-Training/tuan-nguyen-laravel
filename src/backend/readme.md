@@ -68,6 +68,7 @@ Get other user info:
     Method: PUT
     Link: http://api.app/api/users/{$id}
     Params:
+      + token: AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
       + username: anh.tuan2
       + password: 123456
       + first_name: Tung
@@ -79,14 +80,14 @@ Get other user info:
     Method: PUT
     Link : http://api.app/api/users/password
     Params:
-      + token: xxxxxx
+      + token: AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
       + old_password: 123456
       + new_password: 123456789
 
 1.7 Search user by name:
 
     Method: GET
-    Link: http://api.app/api/users?name=abc
+    Link: http://api.app/api/users?name=abc&token=AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
 
 2. Post Module:
 
@@ -95,7 +96,7 @@ Get other user info:
     Method: POST
     Link: http://api.app/api/posts
     Params: 
-      + token: xxxxx
+      + token: AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
       + title: 'Test post',
       + content: 'This is post content',
       + status: 1,
@@ -107,14 +108,14 @@ Get other user info:
     Link active post: http://api.app/api/posts/{id}/active
     Link deative post: http://api.app/api/posts/{id}/deactive
     Params:
-      + token: xxxx
+      + token: AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
 
 2.3 Edit post:
 
     Method: POST
     Link: http://api.app/api/posts/{id}
     Params:
-      + token: xxxx
+      + token: AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
       + title: 'Test post',
       + content: 'Edit post content',
       + status: 1
@@ -125,7 +126,7 @@ Get other user info:
     Method: DELETE
     Link: http://api.app/api/posts/{id}
     Params:
-      + token: xxxxxx
+      + token: AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
       
 2.5 Get all posts:
 
