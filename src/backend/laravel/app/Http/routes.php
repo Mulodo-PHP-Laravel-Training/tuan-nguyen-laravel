@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::group(['namespace' => 'api', 'middleware' => 'auth.token'], function(){
-
+    /* User route */
 	Route::get('api/users/self', 'UserController@getSelf');
     Route::put('api/users/logout', 'UserController@putLogout');
     Route::put('api/users/login', 'UserController@putLogin');
@@ -26,11 +26,17 @@ Route::group(['namespace' => 'api', 'middleware' => 'auth.token'], function(){
          ['except' => ['create', 'edit', 'destroy']]
     );
 
+    /* Post route*/
     Route::post('api/posts', 'PostController@store');
     Route::post('api/posts/{id}', 'PostController@update');
     Route::put('api/posts/{id}/active', 'PostController@putActive');
     Route::put('api/posts/{id}/deactive', 'PostController@putDeactive');
     Route::delete('api/posts/{id}', 'PostController@destroy');
+
+    /* COmment route */
+    Route::post('api/posts/{postId}/comments','CommentController@postCreate');
+    Route::post('api/posts/{postId}/comments/{commentId}','CommentController@putUpdate');
+
 });
 
 // Route with not required token
