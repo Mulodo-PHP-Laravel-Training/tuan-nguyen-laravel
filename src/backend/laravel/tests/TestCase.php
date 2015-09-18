@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Post;
+use App\Comment;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
@@ -97,13 +98,30 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
      * @param Int   $author_id
      * @return App\Post $post
      */
-	protected function createPost($author_id) {
+	protected function createPost($authorId) {
 		$post = Post::create([
             'title'     => 'Test post',
             'content'   => 'This is content post',
             'status'    => 1,
-            'author_id' => $author_id
+            'author_id' => $authorId
 		]);
 		return $post;
 	}
+
+    /**
+     * Create a sample comment.
+     *
+     * @param Int   $authorId
+     * @param Int   $postId
+     * @return App\Comment $comment
+     */
+    protected function createComment($authorId, $postId) {
+        $comment = Comment::create([
+            'content'   => 'This is content post',
+            'author_id' => $authorId,
+            'post_id'   => $postId
+        ]);
+        return $comment;
+    }
+
 }

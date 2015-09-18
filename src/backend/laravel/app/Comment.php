@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\MyClasses\ModelTrait;
 
-class Post extends Model
+class Comment extends Model
 {
     use ModelTrait;
    /**
@@ -13,14 +13,14 @@ class Post extends Model
      *
      * @var string
      */
-    protected $table = 'posts';
+    protected $table = 'comments';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['author_id','title','content', 'status','image'];
+    protected $fillable = ['author_id','post_id','content'];
 
 
     /**
@@ -37,25 +37,6 @@ class Post extends Model
      */
     protected $dates = ['created_at', 'updated_at'];
 
-
-    /**
-     * Change time format to Unix timestamp
-     *
-     * @return string
-     */
-    public function comments()
-    {
-        return $this->hasMany('App\Comment');
-    }
-
-    public function delete()
-    {
-        // delete all related comments
-        $this->comments()->delete();
-
-        // delete the post
-        return parent::delete();
-    }
 
     /**
      * Change time format to Unix timestamp

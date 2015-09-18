@@ -24,8 +24,8 @@ class AuthTokenMiddleware
         );
 
         // Validate token
-        if (is_string($token) ) {
-            $user = User::where('remember_token',$token)->first();
+        if (!empty($token) ) {
+            $user = User::where('remember_token', $token)->first();
             // authentication
             if (!$user)
             {

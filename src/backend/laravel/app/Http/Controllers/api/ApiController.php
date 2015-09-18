@@ -80,44 +80,14 @@ class ApiController extends Controller
     }
 
     /**
-     * Authenticate token.
+     * Get user info by token.
      *
      * @param  string  $token
-     * @return array   $result
+     * @return mixed   $user
      */
-    protected function authenticateToken($token)
+    protected function getUser($token)
     {
-
-        $result = array(
-            'success'  => false,
-            'user'    => [],
-        );
-
-        // Validate token
-        if (is_string($token) ) {
-            $user = User::where('remember_token',$token)->first();
-            // authentication
-            if ($user) {
-                $result['success'] = true;
-                $result['user'] = $user;
-            } else {
-                // authentication failed
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_TOKEN_INVALID'),
-                    trans('api.DESCRIPTION_TOKEN_INVALID'),
-                    trans('api.DESCRIPTION_TOKEN_INVALID')
-                );
-            }
-        } else {
-            // Required token
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_INPUT_FAILED'),
-                trans('api.DESCRIPTION_INPUT_FAILED'),
-                trans('validation.required', ['attribute' => 'token'])
-            );
-        }
-
-        return $result;
+        return User::where('remember_token',$token)->first();
     }
 
     /**

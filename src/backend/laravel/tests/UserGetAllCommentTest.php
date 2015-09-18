@@ -4,7 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use App\User;
 use App\Post;
 
-class UserGetAllPostTest extends TestCase
+class UserGetAllCommentTest extends TestCase
 {
 
     /**
@@ -16,22 +16,21 @@ class UserGetAllPostTest extends TestCase
     {
         $user = $this->getUserLogin();
 
-        $this->get('/api/users/invalidInteger/posts')
+        $this->get('/api/users/invalidInteger/comments')
              ->seeJson([
                  'data' => null,
                  'meta' => array(
                         'code'        => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
                         "messages"    => array(
-                            array("message" => trans('validation.integer', ['attribute' => 'Author ID']) ),
+                            array("message" => trans('validation.integer', ['attribute' => 'User ID']) ),
                         )
                     )
              ]);
         // not found in database
         $subUser = $this->getSubUser();
-        $userId  = $subUser->id;
         $subUser->delete();
-        $this->get('/api/users/'. $userId.'/posts')
+        $this->get('/api/users/'. $subUser->id.'/comments')
              ->seeJson([
                  'meta' => array(
                         'code'        => trans('api.CODE_DB_NOT_FOUND'),
@@ -47,19 +46,19 @@ class UserGetAllPostTest extends TestCase
 
 
     /**
-     * Test get all posts successfully.
+     * Test get all comments of user successfully.
      * @return void
      */
     public function testSuccess()
     {
         $user = $this->getUserLogin();
-        $this->get('/api/users/'.$user->id. '/posts')
+        $this->get('/api/users/'.$user->id. '/comments')
              ->seeJson([
                  'meta' => array(
                         'code' => trans('api.CODE_INPUT_SUCCESS'),
                         'description' => trans('api.DESCRIPTION_GET_SUCCESS'),
                         "messages" => array(
-                            array("message" => trans('api.MSG_GET_USER_POST_SUCCESS',['attribute' => $user->id]) ),
+                            array("message" => trans('api.MSG_GET_USER_COMMENT_SUCCESS',['attribute' => $user->id]) ),
                         )
                     )
              ]);
