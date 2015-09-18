@@ -10,7 +10,7 @@ Mini Blog is small app written by Laravel 5.1. It's very simple app with 3 modul
 
     sites:
     - map: api.app
-    to: /home/vagrant/Code/miniblog/src/backend/laravel/public
+    to: /home/vagrant/Code/tuan-nguyen-laravel/src/backend/laravel/public
 
 3.Create db : blog with below information:
 
@@ -18,10 +18,23 @@ Mini Blog is small app written by Laravel 5.1. It's very simple app with 3 modul
     User : homestead
     Pass : secret
 
-4.Run cmd migrate to create and insert databse:
+4.Install Laravel Package:
+
+    $ php composer.phar install
+    
+5.Create app key:
+
+    $ php artisan key:generate
+
+6.Run cmd migrate to create and insert databse:
 
     $ php artisan migrate
     $ php artisan db:seed
+
+7.If you didn't use homestead environment, change chmod these folders:
+
+    $ chmod -R 777 storage/
+    $ chmod -R 777 bootstrap/cache
 
 ## Usage
 
@@ -89,7 +102,7 @@ Get other user info:
     Method: GET
     Link: http://api.app/api/users?name=abc&token=AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
 
-2. Post Module:
+2.Post Module:
 
 2.1 Create Post:
 
@@ -142,10 +155,45 @@ Get other user info:
 
     Method: GET
     Link: http://api.app/api/users/{id}/posts
+
+3.Comment Module:
+
+3.1 Create Comment:
+
+    Method: POST
+    Link: http://api.app/api/posts/{postId}/comments
+    Params: 
+      + token: AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
+      + content: 'This is comment content',
+
+3.2 Edit comment:
+
+    Method: PUT
+    Link: http://api.app/api/posts/{postId}/comments/{commentId}
+    Params:
+      + token: AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
+      + content: 'Edit comment content',
+
+3.3 Delete comments:
+
+    Method: DELETE
+    Link: http://api.app/api/posts/{postId}/comments/{commentId}
+    Params:
+      + token: AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
+      
+3.4 Get all comments of a post:
+
+    Method: GET
+    Link: http://api.app/api/posts/{postId}/comments
+
+3.5 Get all comments of a user:
+
+    Method: GET
+    Link: http://api.app/api/users/{userid}/comments
     
 
 ## Contributing
 
 ## History
 
-Version 1.10
+Version 1.0
