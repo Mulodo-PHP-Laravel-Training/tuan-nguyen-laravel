@@ -116,7 +116,7 @@ class UserController extends ApiController
 			trans('api.CODE_INPUT_SUCCESS'),
 			trans('api.DESCRIPTION_GET_INFO_SUCCESS'),
 			trans('api.MSG_GET_INFO_SUCCESS', ['attribute' => 'User']),
-			Auth::user()->toArray()
+			$this->getUser($request->input('token'))->toArray()
 		);
         return response()->json($this->response);
     }
@@ -173,7 +173,7 @@ class UserController extends ApiController
     {
         // Validate user id must be an integer
         if (!$this->validateInteger($id,'User ID')) return response()->json($this->response);
-        $user = Auth::user();
+        $user = $this->getUser($request->input('token'));
         if ($user->id != $id) {
             // You have not permission to perform the specified operation
             $this->response = MessageUtility::getResponse(
@@ -294,7 +294,7 @@ class UserController extends ApiController
      */
     public function putLogout(Request $request)
     {
-        $user = Auth::user();
+        $user = $this->getUser($request->input('token'));
         $user->remember_token = '';
         if ($user->save()) {
             $this->response = MessageUtility::getResponse(
@@ -328,8 +328,8 @@ class UserController extends ApiController
                 MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
             );
         } else {
-            // Chang password success
-            $user = Auth::user();
+            // Change password success
+            $user = $this->getUser($request->input('token'));
             $user->password = bcrypt($request->input('new_password') );
             if ($user->save()) {
                 $this->response = MessageUtility::getResponse(
@@ -369,10 +369,10 @@ class UserController extends ApiController
             case 'PATCH':
             {
                 return Validator::make($data, [
-                    'username'   => 'min:3|max:50|unique:users,username,'. $id,
-                    'first_name' => 'max:50',
-                    'last_name'  => 'max:50',
-                    'email'      => 'email|max:50|unique:users,email,'. $id,
+                    'username'   => 'sometimes|required|min:3|max:50|unique:users,username,'. $id,
+                    'first_name' => 'sometimes|required|max:50',
+                    'last_name'  => 'sometimes|required|max:50',
+                    'email'      => 'sometimes|required|email|max:50|unique:users,email,'. $id,
                 ]);
             }
             default: break;

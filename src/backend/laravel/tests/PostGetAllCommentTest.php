@@ -4,11 +4,11 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use App\User;
 use App\Post;
 
-class UserGetAllPostTest extends TestCase
+class PostGetAllCommentTest extends TestCase
 {
 
     /**
-     * Test User ID is an integer and not found in database
+     * Test Post ID is an integer and not found in database
      *
      * @return void
      */
@@ -16,28 +16,27 @@ class UserGetAllPostTest extends TestCase
     {
         $user = $this->getUserLogin();
 
-        $this->get('/api/users/invalidInteger/posts')
+        $this->get('/api/posts/invalidInteger/comments')
              ->seeJson([
                  'data' => null,
                  'meta' => array(
                         'code'        => trans('api.CODE_INPUT_FAILED'),
                         'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
                         "messages"    => array(
-                            array("message" => trans('validation.integer', ['attribute' => 'Author ID']) ),
+                            array("message" => trans('validation.integer', ['attribute' => 'Post ID']) ),
                         )
                     )
              ]);
         // not found in database
-        $subUser = $this->getSubUser();
-        $userId  = $subUser->id;
-        $subUser->delete();
-        $this->get('/api/users/'. $userId.'/posts')
+        $post = $this->createPost($user->id);
+        $post->delete();
+        $this->get('/api/posts/'. $post->id.'/comments')
              ->seeJson([
                  'meta' => array(
                         'code'        => trans('api.CODE_DB_NOT_FOUND'),
                         'description' => trans('api.DESCRIPTION_DB_NOT_FOUND'),
                         "messages"    => array(
-                            array("message" => trans('api.MSG_DB_NOT_FOUND',['attribute' => 'User']) ),
+                            array("message" => trans('api.MSG_DB_NOT_FOUND',['attribute' => 'Post']) ),
                         )
                     )
             ]);
@@ -47,19 +46,20 @@ class UserGetAllPostTest extends TestCase
 
 
     /**
-     * Test get all posts successfully.
+     * Test get all comments of post successfully.
      * @return void
      */
     public function testSuccess()
     {
         $user = $this->getUserLogin();
-        $this->get('/api/users/'.$user->id. '/posts')
+        $post = $this->createPost($user->id);
+        $this->get('/api/posts/'.$post->id. '/comments')
              ->seeJson([
                  'meta' => array(
                         'code' => trans('api.CODE_INPUT_SUCCESS'),
                         'description' => trans('api.DESCRIPTION_GET_SUCCESS'),
                         "messages" => array(
-                            array("message" => trans('api.MSG_GET_USER_POST_SUCCESS',['attribute' => $user->id]) ),
+                            array("message" => trans('api.MSG_GET_POST_COMMENT_SUCCESS',['attribute' => $post->id]) ),
                         )
                     )
              ]);

@@ -32,7 +32,9 @@ return [
 	'MSG_DELETE_SUCCESS'			  => ':attribute #:id was deleted successfully.',
 	'DESCRIPTION_GET_SUCCESS'		  => 'Get infomation successfully.',
 	'MSG_GET_SUCCESS'				  => 'Get :attribute successfully.',
-	'MSG_GET_USER_POST_SUCCESS'		  => 'Get all posts of user #:attribute successfully',
+	'MSG_GET_USER_POST_SUCCESS'		  => 'Get all posts for user #:attribute successfully',
+    'MSG_GET_USER_COMMENT_SUCCESS'    => 'Get all comments for user #:attribute successfully',
+    'MSG_GET_POST_COMMENT_SUCCESS'    => 'Get all comments for post #:attribute successfully',
 
 
     'CODE_NOT_FOUND'                  => '404',

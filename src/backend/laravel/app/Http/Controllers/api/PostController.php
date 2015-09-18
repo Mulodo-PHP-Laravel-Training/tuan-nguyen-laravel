@@ -125,7 +125,7 @@ class PostController extends ApiController
             }
             // Validation success
             $post = Post::create([
-                'author_id' => Auth::user()->id,
+                'author_id' => $this->getUser($request->input('token'))->id,
                 'title'     => $request->input('title'),
                 'content'   => $request->input('content'),
                 'status'    => $request->input('status'),
@@ -219,7 +219,7 @@ class PostController extends ApiController
             return response()->json($this->response);
         } else {
 			// Get post & Check permission
-			$post = $this->checkPostAuthor(Auth::user()->id, $id);
+			$post = $this->checkPostAuthor($this->getUser($request->input('token'))->id, $id);
 			if ($post) {
 				$arrPost = $request->all();
                 unset($arrPost['author_id']);
@@ -261,7 +261,7 @@ class PostController extends ApiController
         if (!$this->validateInteger($id,'Post ID')) return response()->json($this->response);
 
 		// Get post & Check permission
-		$post = $this->checkPostAuthor(Auth::user()->id, (int) $id);
+		$post = $this->checkPostAuthor($this->getUser($request->input('token'))->id, (int) $id);
 		if ($post) {
 			if ($post->delete()) {
 				// Delete post successfully
@@ -287,7 +287,7 @@ class PostController extends ApiController
         if (!$this->validateInteger($id,'Post ID')) return response()->json($this->response);
 
         // Check post author
-        $user = Auth::user();
+        $user = $this->getUser($request->input('token'));
         $post = $this->checkPostAuthor($user->id, $id);
         if ($post) {
             $post->status = 1;
@@ -318,7 +318,7 @@ class PostController extends ApiController
         if (!$this->validateInteger($id,'Post ID')) return response()->json($this->response);
 
         // Check post author
-        $user = Auth::user();
+        $user = $this->getUser($request->input('token'));
         $post = $this->checkPostAuthor($user->id, $id);
         if ($post) {
             $post->status = 0;
@@ -392,9 +392,10 @@ class PostController extends ApiController
             case 'PATCH':
             {
 				return Validator::make($data, [
-					'title'   => 'max:255',
-					'status'  => 'boolean',
-					'image'   => 'image|max:1000',
+                    'title'   => 'sometimes|required|max:255',
+                    'content' => 'sometimes|required',
+                    'status'  => 'sometimes|required|boolean',
+                    'image'   => 'sometimes|image|max:1000',
 				]);
             }
             default: return false;

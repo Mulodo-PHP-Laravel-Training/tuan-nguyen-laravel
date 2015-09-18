@@ -43,6 +43,25 @@ class Post extends Model
      *
      * @return string
      */
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
+
+    public function delete()
+    {
+        // delete all related comments
+        $this->comments()->delete();
+
+        // delete the post
+        return parent::delete();
+    }
+
+    /**
+     * Change time format to Unix timestamp
+     *
+     * @return string
+     */
     protected function getDateFormat()
     {
         // return Unix timestamp (10 numbers)
