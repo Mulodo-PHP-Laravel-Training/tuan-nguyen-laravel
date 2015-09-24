@@ -27,6 +27,7 @@ Route::group([
     Route::get('admin', 'HomeController@index');
     Route::get('admin/users', 'UserController@index');
     Route::get('admin/users/collection', 'UserController@getCollection');
+	Route::put('admin/users/{id}', 'UserController@update');
 });
 
 Route::group(['namespace' => 'api', 'middleware' => 'auth.token'], function(){

@@ -11,6 +11,8 @@ var defaults = {
 
 var userModel = Backbone.Model.extend({
     urlRoot : urlBase+"/api/users",
+	urlInsert : urlBase+"/api/users",
+	urlUpdate: urlBase + "/admin/users",
     defaults:defaults,
     idAttribute : "id",
     state: {
@@ -37,12 +39,12 @@ var userModel = Backbone.Model.extend({
             pattern: 'email'
         },
         password: {
-            required: true,
+            required: false,
             minLength: 6,
             maxLength:20
         },
         password_confirmation: {
-            required: true,
+            required: false,
             equalTo: 'password',
             msg: 'The passwords does not match'
         },

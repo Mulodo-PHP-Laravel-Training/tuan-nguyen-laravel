@@ -152,8 +152,7 @@ userGrid = Backbone.zecGrid.extend({
 userForm = Backbone.View.extend({
     template : _.template($('#frmUsersTpl').html()),
     initialize : function() {
-        //this.model.bind("change", this.render, this);
-        Backbone.Validation.bind(this);
+        //this.model.bind("change", this.render, this);        
     },
     events : {
         'click #userBtn' : 'createUser',
@@ -163,17 +162,6 @@ userForm = Backbone.View.extend({
     render : function() {
         // Render select
         $(this.el).html(this.template(this.model.toJSON()));
-
-        // When there have data
-        /*
-        if (this.model.toJSON().id > 0) {
-            $('input[name=username]', this.$el).val(this.model.get('username'));
-            $('input[name=password]', this.$el).val('');
-            $('input[name=password_confirmation]', this.$el).val('');
-            $('input[name=first_name]', this.$el).val(this.model.get('first_name'));
-            $('input[name=last_name]', this.$el).val(this.model.get('last_name'));
-            $('input[name=email]', this.$el).val(this.model.get('email'));
-        }*/
         return this;
     },
 
@@ -187,23 +175,35 @@ userForm = Backbone.View.extend({
     },
 
     createUser: function(e) {
+		Backbone.Validation.bind(this);
         var $btn = $(e.currentTarget);
         var self =this;
         var id = $('#idInput').val();
         var isNew = (id != "") ? false : true;
 
         $('#errMessages').html('');
-        console.log(isNew);
-        var data = {
-            username: $('input[name=username]', this.$el).val(),
-            password: $('input[name=password]', this.$el).val(),
-            password_confirmation: $('input[name=password_confirmation]', this.$el).val(),
-            email: $('input[name=email]', this.$el).val(),
-            first_name: $('input[name=first_name]', this.$el).val(),
-            last_name: $('input[name=last_name]', this.$el).val(),
-        };
-        this.model.set(data);
-
+		var data = {
+			username: $('input[name=username]', this.$el).val(),
+			email: $('input[name=email]', this.$el).val(),
+			first_name: $('input[name=first_name]', this.$el).val(),
+			last_name: $('input[name=last_name]', this.$el).val(),
+		};			
+		
+        if (isNew) {
+			this.model.urlRoot = this.model.urlInsert;
+			data.password = $('input[name=password]', this.$el).val();
+			data.password_confirmation = $('input[name=password_confirmation]', this.$el).val();
+			
+		} else {
+			this.model.urlRoot = this.model.urlUpdate;
+			console.log($('input[name=password]', this.$el).val());
+			if (!_.isEmpty($('input[name=password]', this.$el).val())) {
+				data.password = $('input[name=password]', this.$el).val();
+				data.password_confirmation = $('input[name=password_confirmation]', this.$el).val();				
+			}
+			data._token = token;
+		}		
+        this.model.set(data);				
         // Check if the model is valid before saving
         if(this.model.isValid(true)){
             var self = this;
@@ -214,12 +214,13 @@ userForm = Backbone.View.extend({
                         app.userCollection.fetch({reset : true});
                         //self.model.set(self.model.defaults);
                         self.$el.html(self.template(self.model.defaults));
+						self.model.set(self.model.defaults);
                         $message = $('<span class="text-success"></span>');
                         $message.html(result.meta.messages[0].message);
                         $('#errMessages').append($message);
 
                     } else {
-                        $('#errMessages').parent().addClass('has-error');
+                        $('#errMessages').addClass('has-error');
                         _.each(result.meta.messages, function (message) {
                             $message = $('<span class="help-block"></span>');
                             $message.html(message.message);
