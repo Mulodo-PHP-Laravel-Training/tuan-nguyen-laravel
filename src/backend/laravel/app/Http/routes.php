@@ -11,8 +11,22 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', 'HomeController@index');
+Route::get('home', '\Bestmomo\Scafold\Http\Controllers\HomeController@index');
+
+Route::controllers([
+    'auth' => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController',
+]);
+
+// Admin Routes
+Route::group([
+    'namespace' => 'Admin',
+    'middleware' => 'auth'
+], function() {
+    Route::get('admin', 'HomeController@index');
+    Route::get('admin/users', 'UserController@index');
+    Route::get('admin/users/collection', 'UserController@getCollection');
 });
 
 Route::group(['namespace' => 'api', 'middleware' => 'auth.token'], function(){

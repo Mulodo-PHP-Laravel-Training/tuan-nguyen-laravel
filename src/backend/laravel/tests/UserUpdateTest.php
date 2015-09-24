@@ -100,13 +100,14 @@ class UserUpdateTest extends TestCase
     public function testValidateMax()
     {
         $user = $this->getUserLogin();
-        $this->put('/api/users/'.$user->id, [
-                'username' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-                'first_name' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-                'last_name'  => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-                'email'      => 'abaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@mulodo.com',
-                'token'      => $user->remember_token
-            ])
+        $userInput = [
+            'username' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+            'first_name' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+            'last_name'  => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+            'email'      => 'abaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@mulodo.com',
+            'token'      => $user->remember_token
+        ];
+        $this->put('/api/users/'.$user->id, $userInput)
              ->seeJson([
                  'data' => null,
                  'meta' => array(
@@ -212,12 +213,13 @@ class UserUpdateTest extends TestCase
     {
         $user = $this->getUserLogin();
         $subUser = $this->getSubUser();
+        $userInput = [
+            'first_name' => 'Ronan',
+            'last_name'  => 'Tuan',
+            'token'      => $user->remember_token
+        ];
 
-        $this->put('/api/users/'. $subUser->id, [
-                'first_name' => 'Ronan',
-                'last_name'  => 'Tuan',
-                'token'      => $user->remember_token
-            ])
+        $this->put('/api/users/'. $subUser->id, $userInput)
              ->seeJson([
                  'data' => null,
                  'meta' => array(
@@ -240,20 +242,21 @@ class UserUpdateTest extends TestCase
     {
         $user = $this->getUserLogin();
 
+        $updUser = [
+            'username'   => 'anh.tuan'.mt_rand(),
+            'first_name' => 'Ronan',
+            'last_name'  => 'Tuan',
+            'email'      => 'anh.tuan'.mt_rand().'@mulodo.com',
+            'token'      => $user->remember_token
+        ];
+
         // Check user: anh.tuan2 exist
-        $subUsers = User::where('username', 'anh.tuan2')
-                        ->orwhere('email','anh.tuan2@mulodo.com');
+        $subUsers = User::where('username', $updUser['username'])
+                        ->orwhere('email', $updUser['email']);
         if ($subUsers) {
             $subUsers->delete();
         }
 
-        $updUser = [
-            'username'   => 'anh.tuan2',
-            'first_name' => 'Ronan',
-            'last_name'  => 'Tuan',
-            'email'      => 'anh.tuan2@mulodo.com',
-            'token'      => $user->remember_token
-        ];
 
         $this->put('/api/users/'. $user->id, $updUser)
              ->seeJson([

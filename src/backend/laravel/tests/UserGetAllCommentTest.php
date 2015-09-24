@@ -29,8 +29,9 @@ class UserGetAllCommentTest extends TestCase
              ]);
         // not found in database
         $subUser = $this->getSubUser();
+        $delUserId = $subUser->id;
         $subUser->delete();
-        $this->get('/api/users/'. $subUser->id.'/comments')
+        $this->get('/api/users/'. $delUserId.'/comments')
              ->seeJson([
                  'meta' => array(
                         'code'        => trans('api.CODE_DB_NOT_FOUND'),

@@ -39,6 +39,13 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     protected function getUserLogin()
     {
         // Check username in database
+        $userInput = [
+            'username'   => 'anh.tuan'. mt_rand(),
+            'firs_name' => 'Tuan',
+            'last_name'  => 'Nguyen',
+            'email'      => 'anh.tuan'.mt_rand().'@mulodo.com',
+            'password'   => bcrypt('123456'),
+        ];
         $user = User::where('username', 'anh.tuan')
                     ->where('password', bcrypt('123456') )->first();
         if (!$user) {
@@ -49,13 +56,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
                 $user->password = bcrypt('123456');
                 $user->save();
             } else {
-                User::create([
-                    'username'   => 'anh.tuan',
-                    'first_name' => 'Tuan',
-                    'last_name'  => 'Nguyen',
-                    'email'      => 'anh.tuan@mulodo.com',
-                    'password'   => bcrypt('123456'),
-                ]);
+                User::create($userInput);
             }
         }
 
@@ -78,14 +79,14 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     protected function getSubUser()
     {
         $subUser = [
-            'username'   => 'anh.tuan2',
+            'username'   => 'anh.tuan'.mt_rand(),
             'first_name' => 'Tuan',
             'last_name'  => 'Nguyen',
-            'email'      => 'anh.tuan2@mulodo.com',
+            'email'      => 'anh.tuan'.mt_rand().'@mulodo.com',
             'password'   => bcrypt('123456'),
         ];
         // Check username in database
-        $user = User::where('username', 'anh.tuan2')->first();
+        $user = User::where('username', $subUser['username'])->first();
         if (!$user) {
             $user = User::create($subUser);
         }

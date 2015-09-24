@@ -6231,3 +6231,7 @@ label,
 .checkbox label {
   font-weight: 300;
 }
+
+.container-full {
+  width:95%;
+}

@@ -227,7 +227,7 @@ class UserController extends ApiController
     {
         $validator =  Validator::make($request->all(), [
             'username' => 'required|min:3|max:50',
-            'password' => 'required|min:6',
+            'password' => 'required|min:6|max:20',
         ]);
         // Validation fails
         if ($validator->fails()) {
@@ -317,8 +317,9 @@ class UserController extends ApiController
     public function putChangePassword(Request $request)
     {
         $validator =  Validator::make($request->all(), [
-            'old_password' => 'required|min:6|passcheck:password',
-            'new_password' => 'required|min:6',
+            'old_password' => 'required|min:6|max:20|passcheck:password',
+            'new_password' => 'required|min:6|max:20|confirmed',
+            'new_password_confirmation' => 'required|min:6|max:20',
         ]);
         // Validation fails
         if ($validator->fails()) {
@@ -362,7 +363,8 @@ class UserController extends ApiController
                     'first_name' => 'required|max:50',
                     'last_name'  => 'required|max:50',
                     'email'      => 'required|email|max:50|unique:users',
-                    'password'   => 'required|min:6',
+                    'password'   => 'required|min:6|max:20|confirmed',
+                    'password_confirmation'   => 'required|min:6|max:20',
                 ]);
             }
             case 'PUT':

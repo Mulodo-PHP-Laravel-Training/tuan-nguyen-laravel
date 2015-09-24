@@ -54,10 +54,47 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $dates = ['created_at', 'updated_at', 'last_login'];
 
+    /**
+     * Get login time with date time format
+     *
+     * @return string
+     */
     public function getLastLoginAttribute($attr) {
         return ($this->attributes['last_login'] > 0)
             ? date($this->dateFormatStr,$this->attributes['last_login'])
             : '';
     }
+
+    /**
+     * Relationship with comments tables
+     *
+     * @return string
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Comment', 'author_id', 'id');
+    }
+
+    /**
+     * Relationship with posts tables
+     *
+     * @return string
+     */
+    public function posts()
+    {
+        return $this->hasMany('App\Post', 'author_id', 'id');
+    }
+
+    public function delete()
+    {
+        // delete all related comments
+        $this->comments()->delete();
+        // delete all related posts
+        $this->posts()->delete();
+
+        // delete the user
+        return parent::delete();
+    }
+
 
 }

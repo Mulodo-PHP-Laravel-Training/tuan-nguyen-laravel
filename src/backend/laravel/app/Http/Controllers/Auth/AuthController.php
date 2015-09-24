@@ -24,6 +24,16 @@ class AuthController extends Controller
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
     /**
+     * Set the login field
+     *
+     * Potential values are 'username', 'email'
+     *
+     * @var string
+     */
+    protected $username = 'username';
+
+
+    /**
      * Create a new authentication controller instance.
      *
      * @return void

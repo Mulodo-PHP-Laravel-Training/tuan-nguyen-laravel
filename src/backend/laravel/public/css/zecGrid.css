@@ -1,0 +1,136 @@
+.zecGrid{
+    /*min-height: 510px; */
+}
+.zecGrid table {
+/*  float: left; */
+}
+.zecGrid table {
+    margin-bottom: 0px;
+    table-layout:fixed;
+}
+
+.zecGrid thead th {
+    cursor:pointer;
+}
+
+.zecGrid tbody td {
+    overflow:hidden;
+}
+
+.zecGrid .tbar {
+    width: 100%;
+    /*float: left;*/
+    margin: 10px 0px;
+    clear: both;
+}
+
+.zecGrid tfoot td {
+    padding : 8px 0px !important;
+}
+
+.zecGrid .pagination li {
+    cursor: pointer;
+}
+
+.alphabet {
+  color: #428bca;
+  cursor: pointer;
+  float: left;
+  font-weight: 600;
+  padding: 0 15px;
+}
+
+.alphabetFilter .active, .alphabet:hover {
+    color: #D43F3A;
+}
+
+.filterRow input {
+    padding: 4px;
+}
+
+.filterRow div {
+    padding: 0px;
+}
+
+.zecGrid .unsortable {
+    cursor: default;
+}
+
+.zecGrid .viewDetailItem {
+    cursor: pointer;
+}
+
+.zecGrid .pagination {
+    margin:0px !important;
+}
+
+.zecGrid select.form-control {
+    width:auto;
+    display:inline-block;
+    height:32px;
+    padding:2px;
+}
+.zecGrid .currentPage {
+    width: 40px !important;
+    background-color: #428BCA;
+    border-color: #428BCA;
+    color: #FFFFFF;
+    cursor: default;
+    z-index: 2;
+    float: left;
+}
+
+.zecGrid .currentPageInput {
+    float: left;
+    width: 128px;
+    margin-right: 10px;
+}
+
+.zecGrid .currentPageInput label {
+    float: left;
+    display:block;
+    padding: 6px 4px;
+}
+.zecGrid .currentPageInput input {height:32px;}
+.zecGrid .currentPageInput button {
+    padding: 5px 10px;
+}
+.selNumberPage {
+  margin-left: 5px;
+}
+.zecGrid .filterRow select {
+    width: 100%;
+}
+
+.zecView table {
+    margin-bottom: 0px;
+}
+
+ul.gallery li {
+    margin: 0% 1.5%;
+    float: left;
+    display: block;
+    width: 184px;
+}
+
+.zecGrid .btn-xs {
+    padding: 0px 5px !important;
+}
+
+.zecGrid .table-btn td{
+    line-height: 1.62;
+}
+
+.zecGrid .reveal-closed {
+    overflow: hidden;
+    max-height: 85px;
+}
+
+.zecGrid .reveal-open {
+    overflow: auto;
+    max-height: auto;
+}
+
+.zecGrid .read-more {
+    text-decoration: none;
+}

@@ -39,13 +39,13 @@ class Post extends Model
 
 
     /**
-     * Change time format to Unix timestamp
+     * Relationship with comments tables
      *
      * @return string
      */
     public function comments()
     {
-        return $this->hasMany('App\Comment');
+        return $this->hasMany('App\Comment', 'post_id', 'id');
     }
 
     public function delete()

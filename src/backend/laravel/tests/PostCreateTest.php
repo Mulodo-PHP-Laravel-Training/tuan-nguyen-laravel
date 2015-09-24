@@ -42,6 +42,54 @@ class PostCreateTest extends TestCase
     }
 
     /**
+     * Test Validate Required.
+     *
+     * @return void
+     */
+    public function testValidateRequired()
+    {
+        $user = $this->getUserLogin();
+        $this->post('/api/posts', [
+                'token' => $user->remember_token
+            ])
+             ->seeJson([
+                 'data' => null,
+                 'meta' => array(
+                        'code' => trans('api.CODE_INPUT_FAILED'),
+                        'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
+                        "messages" => array(
+                            array("message" => trans('validation.required', ['attribute' => 'status']) ),
+                            array("message" => trans('validation.required', ['attribute' => 'title']) ),
+                            array("message" => trans('validation.required', ['attribute' => 'content']) ),
+                        )
+                    )
+             ]);
+        $postInput = [
+            'title' => '',
+            'content' => '',
+            'status' => '',
+            'token' => $user->remember_token
+        ];
+        $this->post('/api/posts', $postInput)
+             ->seeJson([
+                 'data' => null,
+                 'meta' => array(
+                        'code' => trans('api.CODE_INPUT_FAILED'),
+                        'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
+                        "messages" => array(
+                            array("message" => trans('validation.required', ['attribute' => 'status']) ),
+                            array("message" => trans('validation.required', ['attribute' => 'title']) ),
+                            array("message" => trans('validation.required', ['attribute' => 'content']) ),
+                        )
+                    )
+             ]);
+
+
+    }
+
+
+
+    /**
      * Test Validate Max Character.
      * title: max 255
      * @return void
@@ -93,33 +141,6 @@ class PostCreateTest extends TestCase
                     )
              ]);
     }
-
-
-    /**
-     * Test Validate Required.
-     *
-     * @return void
-     */
-    public function testValidateRequired()
-    {
-        $user = $this->getUserLogin();
-        $this->post('/api/posts', [
-                'token' => $user->remember_token
-            ])
-             ->seeJson([
-                 'data' => null,
-                 'meta' => array(
-                        'code' => trans('api.CODE_INPUT_FAILED'),
-                        'description' => trans('api.DESCRIPTION_INPUT_FAILED'),
-                        "messages" => array(
-                            array("message" => trans('validation.required', ['attribute' => 'status']) ),
-                            array("message" => trans('validation.required', ['attribute' => 'title']) ),
-                            array("message" => trans('validation.required', ['attribute' => 'content']) ),
-                        )
-                    )
-             ]);
-    }
-
 
 
     /**
