@@ -86,11 +86,7 @@ class PostController extends ApiController
             }
         } else {
             // User not found
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_DB_NOT_FOUND'),
-                trans('api.DESCRIPTION_DB_NOT_FOUND'),
-                trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'User'])
-            );
+            $this->itemNotFound('User');
         }
 
 		return response()->json($this->response);
@@ -109,13 +105,7 @@ class PostController extends ApiController
         $validator = $this->validator($request->all(), $request->method());
         // Validation fails
         if ($validator->fails()) {
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_INPUT_FAILED'),
-                trans('api.DESCRIPTION_INPUT_FAILED'),
-                MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-            );
-
-            return response()->json($this->response);
+            $this->validationFails($validator);
         } else {
             // Upload file
             $image = '';
@@ -175,11 +165,7 @@ class PostController extends ApiController
             );
         } else {
             // Post not found
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_DB_NOT_FOUND'),
-                trans('api.DESCRIPTION_DB_NOT_FOUND'),
-                trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'Post'])
-            );
+            $this->itemNotFound('Post');
         }
 
         return response()->json($this->response);
@@ -210,13 +196,7 @@ class PostController extends ApiController
         $validator = $this->validator($request->all(), 'PUT');
         // Validation fails
         if ($validator->fails()) {
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_INPUT_FAILED'),
-                trans('api.DESCRIPTION_INPUT_FAILED'),
-                MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-            );
-
-            return response()->json($this->response);
+            $this->validationFails($validator);
         } else {
 			// Get post & Check permission
 			$post = $this->checkPostAuthor($this->getUser($request->input('token'))->id, $id);
@@ -352,18 +332,10 @@ class PostController extends ApiController
             if ($post->author_id == $author_id) {
                 return $post;
             } else {
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_PERMISSION_DENIED'),
-                    trans('api.DESCRIPTION_PERMISSION_DENIED'),
-                    trans('api.MSG_PERMISSION_DENIED')
-                );
+                $this->permissionDenied();
             }
         } else {
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_DB_NOT_FOUND'),
-                trans('api.DESCRIPTION_DB_NOT_FOUND'),
-                trans('api.MSG_DB_NOT_FOUND',['attribute' => 'Post'])
-            );
+            $this->itemNotFound('Post');
         }
         return false;
     }

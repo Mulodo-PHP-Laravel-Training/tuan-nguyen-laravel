@@ -48,11 +48,7 @@ class UserController extends ApiController
         ]);
         // Validation fails
         if ($validator->fails()) {
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_INPUT_FAILED'),
-                trans('api.DESCRIPTION_INPUT_FAILED'),
-                MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-            );
+            $this->validationFails($validator);
         } else {
             $users = User::where('username','LIKE', '%'.$request->input('name').'%')
                         ->orwhere('first_name','LIKE', '%'.$request->input('name').'%')
@@ -83,7 +79,7 @@ class UserController extends ApiController
         // Validate user id must be an integer
         if (!$this->validateInteger($id,'User ID')) return response()->json($this->response);
 
-        $user = User::where('id', (int) $id)->first();
+        $user = User::find($id);
         if ($user) {
             // Get user info success
             $this->response = MessageUtility::getResponse(
@@ -94,11 +90,7 @@ class UserController extends ApiController
             );
         } else {
             // User not found
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_DB_NOT_FOUND'),
-                trans('api.DESCRIPTION_DB_NOT_FOUND'),
-                trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'User'])
-            );
+            $this->itemNotFound('User');
         }
         return response()->json($this->response);
     }
@@ -134,13 +126,7 @@ class UserController extends ApiController
         $validator = $this->validator($request->all(), $request->method());
         // Validation fails
         if ($validator->fails()) {
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_INPUT_FAILED'),
-                trans('api.DESCRIPTION_INPUT_FAILED'),
-                MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-            );
-
-            return response()->json($this->response);
+            $this->validationFails($validator);
         } else {
             // Validation success
             $user = $this->createUser($request->all());
@@ -176,43 +162,43 @@ class UserController extends ApiController
         $user = $this->getUser($request->input('token'));
         if ($user->id != $id) {
             // You have not permission to perform the specified operation
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_PERMISSION_DENIED'),
-                trans('api.DESCRIPTION_PERMISSION_DENIED'),
-                trans('api.MSG_PERMISSION_DENIED')
-            );
+            $this->permissionDenied();
         } else {
-            // Check parameters have at least one field
-            $userFillableField = $user->getFillable();
-            if (! Utility::checkArrayHaveKey($user->getFillable(), array_keys($request->all() ) ) ) {
-                return $this->emptyData($userFillableField);
-            }
-
-            // Validate parameters
-            $validator = $this->validator($request->all(), $request->method(), (int) $id);
-            // Validation fails
-            if ($validator->fails()) {
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_FAILED'),
-                    trans('api.DESCRIPTION_INPUT_FAILED'),
-                    MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-                );
-            } else {
-                // Updated successfully
-                if ($user->update($request->all()) ) {
-                    $this->response = MessageUtility::getResponse(
-                        trans('api.CODE_INPUT_SUCCESS'),
-                        trans('api.DESCRIPTION_UPDATE_SUCCESS'),
-                        trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'User', 'id' => $user->id]),
-                        $user->toArray()
-                    );
-                } else {
-                    $this->dbError();
-                }
-            }
+            $this->processUpdate($user, $request, $id);
         }
 
         return response()->json($this->response);
+    }
+
+    /**
+     * Process update data.
+     *
+     * @param  User  $user
+     * @param  Request $request
+     * @param  Int $id
+     * @return void
+     */
+    private function processUpdate($user, $request, $id) {
+        // Check parameters have at least one field
+        $userFillableField = $user->getFillable();
+        $checkArrHaveKey = Utility::checkArrayHaveKey($user->getFillable(), array_keys($request->all() ) );
+        if (!$checkArrHaveKey) {
+            return $this->emptyData($userFillableField);
+        }
+
+        // Validate parameters
+        $validator = $this->validator($request->all(), $request->method(), (int) $id);
+        // Validation fails
+        if ($validator->fails()) {
+            $this->validationFails($validator);
+        } else {
+            // Updated successfully
+            if ($user->update($request->all()) ) {
+                $this->responseUpdateSuccess($user);
+            } else {
+                $this->dbError();
+            }
+        }
     }
 
 
@@ -231,58 +217,61 @@ class UserController extends ApiController
         ]);
         // Validation fails
         if ($validator->fails()) {
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_INPUT_FAILED'),
-                trans('api.DESCRIPTION_INPUT_FAILED'),
-                MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-            );
+            $this->validationFails($validator);
         } else {
-
-            $throttles = $this->isUsingThrottlesLoginsTrait();
-
-            // Too many login failed attempts
-            if ($throttles && $this->hasTooManyLoginAttempts($request)) {
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_ATTEMPT_LOGIN'),
-                    trans('api.DESCRIPTION_ATTEMPT_LOGIN'),
-                    $this->sendLockoutResponse($request)
-                );
-
-                return response()->json($this->response);
-            }
-
-            $credentials = $this->getCredentials($request);
-
-            // login succesffully
-            if (Auth::attempt($credentials, $remember_token = true )) {
-                $this->clearLoginAttempts($request);
-                $user = Auth::user();
-                $user->last_login = time();
-                $user->save();
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_SUCCESS'),
-                    trans('api.LOGIN_SUCCESS'),
-                    trans('api.MSG_LOGIN_SUCCESS', ['attribute' => $user->first_name . ' ' . $user->last_name ]),
-                    array('token' => $user->remember_token)
-                );
-
-            } else {
-                // login failed:username or password is invalid
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_AUTHENTICATE_FAILED'),
-                    trans('api.DESCRIPTION_AUTHENTICATE_FAILED'),
-                    trans('api.MSG_AUTHENTICATE_FAILED')
-                );
-            }
-
-            // increase login attempts
-            if ($throttles) {
-                $this->incrementLoginAttempts($request);
-            }
-
+            $this->processLoginAction($request);
         }
 
         return response()->json($this->response);
+    }
+
+    /**
+     * Process login action
+     *
+     * @param  Request  $request
+     * @return void
+     */
+    private function processLoginAction($request) {
+        $throttles = $this->isUsingThrottlesLoginsTrait();
+        // Too many login failed attempts
+        if ($throttles && $this->hasTooManyLoginAttempts($request)) {
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_ATTEMPT_LOGIN'),
+                trans('api.DESCRIPTION_ATTEMPT_LOGIN'),
+                $this->sendLockoutResponse($request)
+            );
+
+            return response()->json($this->response);
+        }
+
+        $credentials = $this->getCredentials($request);
+
+        // login succesffully
+        if (Auth::attempt($credentials, $remember_token = true )) {
+            $this->clearLoginAttempts($request);
+            $user = Auth::user();
+            $user->last_login = time();
+            $user->save();
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.LOGIN_SUCCESS'),
+                trans('api.MSG_LOGIN_SUCCESS', ['attribute' => $user->first_name . ' ' . $user->last_name ]),
+                array('token' => $user->remember_token)
+            );
+
+        } else {
+            // login failed:username or password is invalid
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_AUTHENTICATE_FAILED'),
+                trans('api.DESCRIPTION_AUTHENTICATE_FAILED'),
+                trans('api.MSG_AUTHENTICATE_FAILED')
+            );
+        }
+
+        // increase login attempts
+        if ($throttles) {
+            $this->incrementLoginAttempts($request);
+        }
     }
 
     /**
@@ -306,7 +295,6 @@ class UserController extends ApiController
         return response()->json($this->response);
     }
 
-
     /**
      * Change password.
      * URI: PUT /users/password
@@ -323,11 +311,7 @@ class UserController extends ApiController
         ]);
         // Validation fails
         if ($validator->fails()) {
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_INPUT_FAILED'),
-                trans('api.DESCRIPTION_INPUT_FAILED'),
-                MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-            );
+            $this->validationFails($validator);
         } else {
             // Change password success
             $user = $this->getUser($request->input('token'));
@@ -379,8 +363,6 @@ class UserController extends ApiController
             }
             default: break;
         }
-
-
     }
 
 
@@ -417,6 +399,22 @@ class UserController extends ApiController
             $request->input($this->loginUsername()).$request->ip()
         );
         return trans('api.MSG_ATTEMPT_LOGIN', ['attribute' =>$seconds]);
+    }
+
+    /**
+     * Get response update User success.
+     *
+     * @param  User  $user
+     * @return void
+     */
+    protected function responseUpdateSuccess($user)
+    {
+        $this->response = MessageUtility::getResponse(
+            trans('api.CODE_INPUT_SUCCESS'),
+            trans('api.DESCRIPTION_UPDATE_SUCCESS'),
+            trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'User', 'id' => $user->id]),
+            $user->toArray()
+        );
     }
 
 

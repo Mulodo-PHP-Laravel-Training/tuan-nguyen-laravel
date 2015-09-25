@@ -134,3 +134,14 @@ ul.gallery li {
 .zecGrid .read-more {
     text-decoration: none;
 }
+
+.loading-indicator-overlay {
+  background-color: #FFFFFF;
+  opacity: 0.6;
+  filter: alpha(opacity = 60);
+}
+
+/* Loading */
+.imgLoading {
+  background: url( 'images/loading.gif' );
+}

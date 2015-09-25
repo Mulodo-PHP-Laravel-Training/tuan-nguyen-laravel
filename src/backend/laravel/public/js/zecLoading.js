@@ -52,9 +52,6 @@ jQuery.fn.zecLoading = function(config) {
                         $div.css({"z-index" : config.zoIndex, "position" : "absolute", "width" : width, "height" : height,
                                   "top" : top, "left" : left});
                         jQuery(document.body).append($div);
-
-                } else {
-                    console.log('here');
                 }
             }
             // add Loading zone

@@ -46,7 +46,6 @@ class User extends Model implements AuthenticatableContract,
      */
     public $timestamps = true;
 
-
     /**
      * List date time fields
      *
@@ -85,6 +84,12 @@ class User extends Model implements AuthenticatableContract,
         return $this->hasMany('App\Post', 'author_id', 'id');
     }
 
+    /**
+     * Delete users
+     * Delete posts before delete user
+     *
+     * @return string
+     */
     public function delete()
     {
         // delete all related comments
@@ -95,6 +100,5 @@ class User extends Model implements AuthenticatableContract,
         // delete the user
         return parent::delete();
     }
-
 
 }

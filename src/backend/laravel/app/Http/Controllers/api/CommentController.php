@@ -82,11 +82,7 @@ class CommentController extends ApiController
 
         } else {
             // User not found
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_DB_NOT_FOUND'),
-                trans('api.DESCRIPTION_DB_NOT_FOUND'),
-                trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'User'])
-            );
+            $this->itemNotFound('User');
 
         }
         return response()->json($this->response);
@@ -116,13 +112,7 @@ class CommentController extends ApiController
 
             if ($validator->fails()) {
                 // Validation fails
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_FAILED'),
-                    trans('api.DESCRIPTION_INPUT_FAILED'),
-                    MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-                );
-
-                return response()->json($this->response);
+                $this->validationFails($validator);
             } else {
                 // Validate success.
                 // Insert new comment
@@ -180,13 +170,7 @@ class CommentController extends ApiController
         ]);
         if ($validator->fails()) {
             // Validation fails
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_INPUT_FAILED'),
-                trans('api.DESCRIPTION_INPUT_FAILED'),
-                MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-            );
-
-            return response()->json($this->response);
+            $this->validationFails($validator);
         } else {
             // Find comment
             $comment = Comment::where('id', (int) $commentId)
@@ -288,11 +272,7 @@ class CommentController extends ApiController
             $post = Post::where('id',$comment->post_id)->first();
             if ($userId != $post->author_id) {
                 // User is not author of post
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_PERMISSION_DENIED'),
-                    trans('api.DESCRIPTION_PERMISSION_DENIED'),
-                    trans('api.MSG_PERMISSION_DENIED')
-                );
+                $this->permissionDenied();
                 return false;
             }
         }

@@ -37,6 +37,13 @@ class Post extends Model
      */
     protected $dates = ['created_at', 'updated_at'];
 
+    /**
+     * List additional fields.
+     *
+     * @var array
+     */
+    protected $appends = array('statusName');
+
 
     /**
      * Relationship with comments tables
@@ -66,6 +73,11 @@ class Post extends Model
     {
         // return Unix timestamp (10 numbers)
         return 'U';
+    }
+
+    public function getStatusNameAttribute()
+    {
+        return (1 == $this->status) ? 'Active' : 'Deactive';
     }
 
 }

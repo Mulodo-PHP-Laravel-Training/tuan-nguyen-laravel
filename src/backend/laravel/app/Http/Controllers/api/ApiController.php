@@ -32,6 +32,21 @@ class ApiController extends Controller
     }
 
     /**
+     * Display item not found.
+     *
+     * @param String $item
+     * @return void
+     */
+    protected function itemNotFound($item)
+    {
+        $this->response = MessageUtility::getResponse(
+            trans('api.CODE_DB_NOT_FOUND'),
+            trans('api.DESCRIPTION_DB_NOT_FOUND'),
+            trans('api.MSG_DB_NOT_FOUND', ['attribute' => $item])
+        );
+    }
+
+    /**
      * Method is not allowed.
      *
      * @return Response
@@ -106,6 +121,34 @@ class ApiController extends Controller
         return false;
     }
 
+    /**
+     * Permission denied response
+     * You have not permission to perform the specified operation
+     *
+     * @return void
+     */
+    public function permissionDenied()
+    {
+        $this->response = MessageUtility::getResponse(
+            trans('api.CODE_PERMISSION_DENIED'),
+            trans('api.DESCRIPTION_PERMISSION_DENIED'),
+            trans('api.MSG_PERMISSION_DENIED')
+        );
+    }
 
+    /**
+     * Valadation fails response
+     *
+     * @param Validator $validator
+     * @return Response
+     */
+    public function validationFails($validator)
+    {
+        $this->response = MessageUtility::getResponse(
+            trans('api.CODE_INPUT_FAILED'),
+            trans('api.DESCRIPTION_INPUT_FAILED'),
+            MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
+        );
+    }
 
 }

@@ -523,7 +523,8 @@ function formatMoney(money) {
                                     $td.append(formatMoney(model.get(col.field)));
                                 } else if (col.xtype == 'template') {
                                     $td.append(col.tpl({
-                                        field: model.get(col.field)
+                                        field: model.get(col.field),
+                                        model: model.toJSON()
                                     }));
                                     if (!_.isEmpty(col.field)) {
                                         $('select', $td).val(model.get(col.field));
@@ -869,7 +870,7 @@ function formatMoney(money) {
         fetchCollection: function() {
             this.$el.zecLoading({
                 load: true,
-                zone: '.slimScrollDiv'
+                zone: '.table-bordered'
             });
             var self = this;
             this.collection.fetch({
@@ -883,7 +884,7 @@ function formatMoney(money) {
                     self.$el.zecLoading({
                         hide: true
                     });
-                    alertify.alert(lang.errorSystem);
+                    //alertify.alert('System error');
                 }
             });
         },

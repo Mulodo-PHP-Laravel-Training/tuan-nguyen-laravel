@@ -24,15 +24,27 @@ Route::group([
     'namespace' => 'Admin',
     'middleware' => 'auth'
 ], function() {
+    // User route
     Route::get('admin', 'HomeController@index');
     Route::get('admin/users', 'UserController@index');
     Route::get('admin/users/collection', 'UserController@getCollection');
-	Route::put('admin/users/{id}', 'UserController@update');
+    Route::put('admin/users/{id}', 'UserController@update');
+
+    // Post route
+    Route::get('admin/posts', 'PostController@index');
+    Route::get('admin/posts/collection', 'PostController@getCollection');
+    Route::delete('admin/posts/{id}', 'PostController@destroy');
+
+    // Comment route
+    Route::get('admin/comments', 'CommentController@index');
+    Route::get('admin/comments/collection', 'CommentController@getCollection');
+    Route::put('admin/comments/{comment_id}', 'CommentController@update');
+    Route::delete('admin/comments/{comment_id}', 'CommentController@destroy');
 });
 
 Route::group(['namespace' => 'api', 'middleware' => 'auth.token'], function(){
-    /* User route */
-	Route::get('api/users/self', 'UserController@getSelf');
+    // User route
+    Route::get('api/users/self', 'UserController@getSelf');
     Route::put('api/users/logout', 'UserController@putLogout');
     Route::put('api/users/login', 'UserController@putLogin');
     Route::put('api/users/password', 'UserController@putChangePassword');
@@ -41,14 +53,14 @@ Route::group(['namespace' => 'api', 'middleware' => 'auth.token'], function(){
          ['except' => ['create', 'edit', 'destroy']]
     );
 
-    /* Post route*/
+    // Post route
     Route::post('api/posts', 'PostController@store');
     Route::post('api/posts/{id}', 'PostController@update');
     Route::put('api/posts/{id}/active', 'PostController@putActive');
     Route::put('api/posts/{id}/deactive', 'PostController@putDeactive');
     Route::delete('api/posts/{id}', 'PostController@destroy');
 
-    /* COmment route */
+    // Comment route
     Route::post('api/posts/{postId}/comments','CommentController@postCreate');
     Route::put('api/posts/{postId}/comments/{commentId}','CommentController@putUpdate');
     Route::delete('api/posts/{postId}/comments/{commentId}','CommentController@delete');

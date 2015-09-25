@@ -11,8 +11,8 @@ var defaults = {
 
 var userModel = Backbone.Model.extend({
     urlRoot : urlBase+"/api/users",
-	urlInsert : urlBase+"/api/users",
-	urlUpdate: urlBase + "/admin/users",
+    urlInsert : urlBase+"/api/users",
+    urlUpdate: urlBase + "/admin/users",
     defaults:defaults,
     idAttribute : "id",
     state: {
@@ -33,18 +33,17 @@ var userModel = Backbone.Model.extend({
         last_name: {
             required: true
         },
-
         email: {
             required: true,
             pattern: 'email'
         },
         password: {
-            required: false,
+            required: true,
             minLength: 6,
             maxLength:20
         },
         password_confirmation: {
-            required: false,
+            required: true,
             equalTo: 'password',
             msg: 'The passwords does not match'
         },
@@ -69,5 +68,4 @@ userCollection = Backbone.PageableCollection.extend({
     },
     queryParams : {
     }
-
 });

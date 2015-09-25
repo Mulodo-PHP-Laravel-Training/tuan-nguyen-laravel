@@ -8,6 +8,7 @@
 
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/zecGrid.css') }}" rel="stylesheet">
+    @yield('styles')
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
@@ -65,17 +66,19 @@
     <!-- Scripts -->
     <script type="text/javascript">
         var urlBase = '{{ url('/') }}';
-		var token = '{{ csrf_token() }}';
+        var token = '{{ csrf_token() }}';
+        var userToken = '{{ Auth::user()->remember_token }}';
     </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/backbone-pageable/1.4.8/backbone-pageable.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.validation/0.11.5/backbone-validation-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.validation/0.11.5/backbone-validation-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/alertify.js/0.5.0/alertify.min.js"></script>
     <script src="{{ asset('js/zecLoading.js') }}"></script>
-    <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('js/backbone/zecGrid.js') }}"></script>
+    <script src="{{ asset('js/function.js') }}"></script>
     @yield('scripts')
 </body>
 </html>

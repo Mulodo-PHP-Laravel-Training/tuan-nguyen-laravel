@@ -1,21 +1,3 @@
-_.extend(Backbone.Validation.callbacks, {
-    valid: function (view, attr, selector) {
-        var $el = view.$('[name=' + attr + ']'),
-            $group = $el.closest('.form-group');
-
-        $group.removeClass('has-error');
-        $group.find('.help-block').html('').addClass('hidden');
-    },
-    invalid: function (view, attr, error, selector) {
-        var $el = view.$('[name=' + attr + ']'),
-            $group = $el.closest('.form-group');
-
-        $group.addClass('has-error');
-        $group.find('.help-block').html(error).removeClass('hidden');
-    }
-});
-
-
 // Create user grid
 userGrid = Backbone.zecGrid.extend({
     options : {
@@ -101,47 +83,6 @@ userGrid = Backbone.zecGrid.extend({
                 }, error : function() { alertify.alert(lang.errorSystem)}});
 
             }
-            // Confirm delete
-            /*
-            var selectItem = this.options.selected;
-            var self= this;
-            if (!_.isEmpty(selectItem)) {
-                var flag = true;
-                _.each(selectItem, function(item) {
-                    model = self.collection.get(item);
-                    if (parseInt(model.get('userStatus')) != 0) {
-                        flag =false;
-                        $('tr[data-id='+item+'] input',self.$el).prop('checked',false);
-                        self.options.selected.splice(self.options.selected.indexOf(item),1);
-                    }
-                });
-                if (flag) {
-                    _.each(selectItem,function (item) {
-                        var model = self.collection.get(item);
-                        // delete row
-                        model.destroy({success : function(model, result) {
-                            if (result.response == "failed") {
-                                var msg = (result.msg) ? result.msg : lang.errorSystem;
-                                alertify.alert(msg);
-                            } else {
-                                // send notify
-                                alertify.success(lang.successDeleteUser);
-                            }
-                        }, error : function() { alertify.alert(lang.errorSystem)}});
-                        self.collection.remove(self.collection.get(item));
-                    });
-                    // reset selected
-                    self.options.selected = [];
-                    // reload grid
-                    self.collection.fetch({reset: true});
-                    delete self;
-                } else {
-                    alertify.alert(lang.errorDeleteUnActiveUser);
-                }
-
-            }
-            */
-
         }
     },
 
@@ -152,7 +93,7 @@ userGrid = Backbone.zecGrid.extend({
 userForm = Backbone.View.extend({
     template : _.template($('#frmUsersTpl').html()),
     initialize : function() {
-        //this.model.bind("change", this.render, this);        
+        //this.model.bind("change", this.render, this);
     },
     events : {
         'click #userBtn' : 'createUser',
@@ -175,114 +116,81 @@ userForm = Backbone.View.extend({
     },
 
     createUser: function(e) {
-		Backbone.Validation.bind(this);
         var $btn = $(e.currentTarget);
         var self =this;
         var id = $('#idInput').val();
         var isNew = (id != "") ? false : true;
 
         $('#errMessages').html('');
-		var data = {
-			username: $('input[name=username]', this.$el).val(),
-			email: $('input[name=email]', this.$el).val(),
-			first_name: $('input[name=first_name]', this.$el).val(),
-			last_name: $('input[name=last_name]', this.$el).val(),
-		};			
-		
+        var data = {
+            username: $('input[name=username]', this.$el).val(),
+            email: $('input[name=email]', this.$el).val(),
+            first_name: $('input[name=first_name]', this.$el).val(),
+            last_name: $('input[name=last_name]', this.$el).val(),
+        };
+
         if (isNew) {
-			this.model.urlRoot = this.model.urlInsert;
-			data.password = $('input[name=password]', this.$el).val();
-			data.password_confirmation = $('input[name=password_confirmation]', this.$el).val();
-			
-		} else {
-			this.model.urlRoot = this.model.urlUpdate;
-			console.log($('input[name=password]', this.$el).val());
-			if (!_.isEmpty($('input[name=password]', this.$el).val())) {
-				data.password = $('input[name=password]', this.$el).val();
-				data.password_confirmation = $('input[name=password_confirmation]', this.$el).val();				
-			}
-			data._token = token;
-		}		
-        this.model.set(data);				
+
+            // Create new user
+            Backbone.Validation.bind(this);
+            this.model.urlRoot = this.model.urlInsert;
+            data.password = $('input[name=password]', this.$el).val();
+            data.password_confirmation = $('input[name=password_confirmation]', this.$el).val();
+        } else {
+            // Update user
+            Backbone.Validation.bind(this, {
+                attributes: function(view) {
+                    // only name and age will be validated
+                    return ['username', 'first_name', 'last_name', 'email'];
+                }
+            });
+            this.model.urlRoot = this.model.urlUpdate;
+            if (!_.isEmpty($('input[name=password]', this.$el).val())) {
+                data.password = $('input[name=password]', this.$el).val();
+                data.password_confirmation = $('input[name=password_confirmation]', this.$el).val();
+            }
+            data._token = token;
+        }
+        this.model.set(data);
         // Check if the model is valid before saving
         if(this.model.isValid(true)){
-            var self = this;
-            $btn.button('loading');
-            this.model.save(data, {
-                success: function(model, result) {
-                    if (200 == result.meta.code) {
-                        app.userCollection.fetch({reset : true});
-                        //self.model.set(self.model.defaults);
-                        self.$el.html(self.template(self.model.defaults));
-						self.model.set(self.model.defaults);
-                        $message = $('<span class="text-success"></span>');
-                        $message.html(result.meta.messages[0].message);
-                        $('#errMessages').append($message);
-
-                    } else {
-                        $('#errMessages').addClass('has-error');
-                        _.each(result.meta.messages, function (message) {
-                            $message = $('<span class="help-block"></span>');
-                            $message.html(message.message);
-                            $('#errMessages').append($message);
-                        });
-                    }
-                    $btn.button('reset');
-                }, error: function() {
-                    $btn.button('reset');
-                }
-            });
-
+            this.processSaveUser(data, $btn);
         }
     },
-    createUser3 : function(e) {
-        var self =this;
-        var id = $('#idInput').val();
-        var isNew = (id != "") ? false : true;
-        //validate form
-        var isValid = this.model.isValid();
-        console.log(isValid);
-        if (result) {
-            this.model.save({
-                username :_.escape($(this.id + ' #userNameInput').val()),
-                password : _.escape($(this.id + ' #passwordInput').val()),
-                userFullName : _.escape($(this.id + ' #userFullNameInput').val()),
-                userEmail : _.escape($(this.id +' #userEmailInput').val()),
-                isMember : ($(this.id + ' #isMember:checked').length > 0) ? 1 : 0,
-            }, {success : function(model,result) {
-                if (result.response == 'success') {
-                    alertify.success(lang.successUser);
-                    if (isNew) {
-                        // fire event insert in backgrid to reload page
-                        app.usersCollection.fetch({reset : true});
-                        //self.model.set(self.model.defaults);
-                        $('#createUser').html(self.template(self.model.defaults));
-                    } else {
-                        //window.location.href="";
-                        app.usersCollection.fetch({reset : true});
-                    }
-                    app.usersGrid.setActiveRow(id);
-                    $('#modalUsers').modal('hide');
+
+    processSaveUser: function(data, $btn) {
+        var self = this;
+        $btn.button('loading');
+        this.model.save(data, {
+            success: function(model, result) {
+                if (200 == result.meta.code) {
+                    app.userCollection.fetch({reset : true});
+                    //self.model.set(self.model.defaults);
+                    self.$el.html(self.template(self.model.defaults));
+                    self.model.set(self.model.defaults);
+                    $message = $('<span class="text-success"></span>');
+                    $message.html(result.meta.messages[0].message);
+                    $('#errMessages').append($message);
+
                 } else {
-                    alertify.alert(result.msg);
+                    $('#errMessages').addClass('has-error');
+                    _.each(result.meta.messages, function (message) {
+                        $message = $('<span class="help-block"></span>');
+                        $message.html(message.message);
+                        $('#errMessages').append($message);
+                    });
                 }
-                //addLoadingState('#contactBtn');
-
-            }, error : function() {
-                alertify.alert(lang.failed);
-                addLoadingState('#contactBtn');
+                $btn.button('reset');
+            }, error: function() {
+                $btn.button('reset');
             }
-            });
+        });
 
-        }
-        e.preventDefault();
-        return false;
     },
 
     resetForm: function() {
         this.model.set(this.model.defaults);
         this.render();
-        console.log('here');
     }
 });
 

@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use DB;
 use Validator;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ApiController;
 use App\User;
+use App\Post;
 use App\MyClasses\MessageUtility;
 use App\MyClasses\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class PostController extends ApiController
 {
     /**
      * Create a new controller instance.
@@ -23,13 +24,13 @@ class UserController extends Controller
         //
     }
     /**
-     * Show the application dashboard to the user.
+     * Show the application dashboard to the post.
      *
      * @return Response
      */
     public function index()
     {
-        return view('admin/user');
+        return view('admin/post');
     }
 
     /**
@@ -79,7 +80,7 @@ class UserController extends Controller
     }
 
     /**
-     * Get list users.
+     * Get list posts.
      *
      * @param Request $request
      * @return Response
@@ -88,12 +89,12 @@ class UserController extends Controller
         // Pagination
         $perPage      = ($request->input('per_page') > 0) ? (int) $request->input('per_page') : 10;
         $page         = ($request->input('page')) ? (int) $request->input('page') : 1;
-        $totalEntries = User::get()->count();
+        $totalEntries = Post::get()->count();
         $totalPages   = ceil($totalEntries/$perPage);
         $sortby       = ($request->input('sort_by')) ? : 'id';
         $order        = ($request->input('order') == 'asc') ? 'asc' : 'desc';
 
-        $data = User::orderBy($sortby, $order)
+        $data = Post::orderBy($sortby, $order)
                     ->take($perPage)
                     ->skip($perPage * ($page-1) )
                     ->get()
@@ -110,6 +111,36 @@ class UserController extends Controller
             $data
         );
         return response()->json($return);
+    }
+
+    /**
+     * Delet a post
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function destroy(Request $request, $id) {
+        // Validate author id must be an integer
+        if (!$this->validateInteger($id,'Post ID')) return response()->json($this->response);
+        $post = Post::find((int) $id);
+        if ($post) {
+            $post->delete();
+            // Delete post successfully
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.DESCRIPTION_DELETE_SUCCESS'),
+                trans('api.MSG_DELETE_SUCCESS',['attribute' => 'Post','id' => $id])
+            );
+        } else {
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_DB_NOT_FOUND'),
+                trans('api.DESCRIPTION_DB_NOT_FOUND'),
+                trans('api.MSG_DB_NOT_FOUND',['attribute' => 'Post'])
+            );
+        }
+
+        return response()->json($this->response);
+
     }
 
     /**
