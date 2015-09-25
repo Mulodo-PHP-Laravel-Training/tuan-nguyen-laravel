@@ -1,11 +1,11 @@
 // Get full account info
 var defaults = {
-        id : null,
-        author_id : null,
-        title: null,
-        content: null,
-        status: 1
-   }
+    id : null,
+    author_id : null,
+    title: null,
+    content: null,
+    status: 1
+}
 
 var postModel = Backbone.Model.extend({
     urlRoot : urlBase + '/api/posts',

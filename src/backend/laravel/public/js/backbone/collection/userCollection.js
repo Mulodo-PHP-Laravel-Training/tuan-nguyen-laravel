@@ -1,13 +1,13 @@
 // Get full account info
 var defaults = {
-        id : null,
-        username : null,
-        email : null,
-        first_name: null,
-        last_name: null,
-        password: null,
-        password_confirmation:null
-    }
+    id : null,
+    username : null,
+    email : null,
+    first_name: null,
+    last_name: null,
+    password: null,
+    password_confirmation:null
+}
 
 var userModel = Backbone.Model.extend({
     urlRoot : urlBase+"/api/users",

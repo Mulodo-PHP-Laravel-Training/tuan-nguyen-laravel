@@ -66,7 +66,7 @@ postForm = Backbone.View.extend({
     },
     editor: null,
     render : function() {
-        // Render select
+        // Render grid
         $(this.el).html(this.template(this.model.toJSON()));
         this.editor = new TINY.editor.edit('editor',{
             id:'content',

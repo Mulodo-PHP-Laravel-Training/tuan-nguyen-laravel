@@ -55,37 +55,7 @@ userGrid = Backbone.zecGrid.extend({
         var userId = parseInt($row.data("id"));
         app.userForm.model = app.userCollection.get(userId);
         app.userForm.render();
-        /*
-        app.accountModel.fetch({data :  $.param({id : companyId}), success : function(model,response){
-                app.accountForm.render();
-                app.accountForm.selectCountry();
-            }, error : function() {
-                alertify.alert(lang.errorSystem);
-        }});*/
     },
-    delUser : function() {
-        if (_.isEmpty(this.options.selected) || this.options.selected.length !=1) {
-            // empty row
-            // Notify message
-            alertify.alert(lang.errorDeleteSelect);
-        } else {
-            var model = this.collection.get(this.options.selected[0]);
-            if (parseInt(model.get('userStatus')) != 0) {
-                alertify.alert(lang.errorDeleteUnActiveUser);
-            } else {
-                $('#modalDeleteUser').modal('show');
-                // Create user form
-                if (!app.deleteUserForm) {
-                    app.deleteUserForm = new DeleteUserForm({model : new DeleteUsersModel()});
-                }
-                app.deleteUserForm.model.fetch({data : $.param({ id : parseInt(this.options.selected[0])}), success : function(model){
-                    app.deleteUserForm.render();
-                }, error : function() { alertify.alert(lang.errorSystem)}});
-
-            }
-        }
-    },
-
 });
 
 

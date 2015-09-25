@@ -33,11 +33,11 @@
 }
 
 .alphabet {
-  color: #428bca;
-  cursor: pointer;
-  float: left;
-  font-weight: 600;
-  padding: 0 15px;
+    color: #428bca;
+    cursor: pointer;
+    float: left;
+    font-weight: 600;
+    padding: 0 15px;
 }
 
 .alphabetFilter .active, .alphabet:hover {
@@ -96,7 +96,7 @@
     padding: 5px 10px;
 }
 .selNumberPage {
-  margin-left: 5px;
+    margin-left: 5px;
 }
 .zecGrid .filterRow select {
     width: 100%;
@@ -136,12 +136,12 @@ ul.gallery li {
 }
 
 .loading-indicator-overlay {
-  background-color: #FFFFFF;
-  opacity: 0.6;
-  filter: alpha(opacity = 60);
+    background-color: #FFFFFF;
+    opacity: 0.6;
+    filter: alpha(opacity = 60);
 }
 
 /* Loading */
 .imgLoading {
-  background: url( 'images/loading.gif' );
+    background: url( 'images/loading.gif' );
 }

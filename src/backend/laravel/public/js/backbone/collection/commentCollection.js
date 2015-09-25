@@ -1,10 +1,10 @@
 // Get full account info
 var defaults = {
-        id : null,
-        author_id : null,
-        title: null,
-        content: null,
-   }
+    id : null,
+    author_id : null,
+    title: null,
+    content: null,
+}
 
 var commentModel = Backbone.Model.extend({
     urlRoot : urlBase + '/api/comments',

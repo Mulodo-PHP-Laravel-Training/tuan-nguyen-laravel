@@ -95,7 +95,7 @@ class UserController extends ApiController
         return response()->json($this->response);
     }
 
-	/**
+    /**
      * Get user info
      * URI : /api/users/self?token=xxx
      *
@@ -103,13 +103,13 @@ class UserController extends ApiController
      */
     public function getSelf(Request $request)
     {
-		// Get user info success
-		$this->response = MessageUtility::getResponse(
-			trans('api.CODE_INPUT_SUCCESS'),
-			trans('api.DESCRIPTION_GET_INFO_SUCCESS'),
-			trans('api.MSG_GET_INFO_SUCCESS', ['attribute' => 'User']),
-			$this->getUser($request->input('token'))->toArray()
-		);
+        // Get user info success
+        $this->response = MessageUtility::getResponse(
+            trans('api.CODE_INPUT_SUCCESS'),
+            trans('api.DESCRIPTION_GET_INFO_SUCCESS'),
+            trans('api.MSG_GET_INFO_SUCCESS', ['attribute' => 'User']),
+            $this->getUser($request->input('token'))->toArray()
+        );
         return response()->json($this->response);
     }
 

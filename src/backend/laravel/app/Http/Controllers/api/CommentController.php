@@ -136,6 +136,7 @@ class CommentController extends ApiController
             }
         } else {
             // Post not found
+            $this->itemNotFound('Post');
             $this->response = MessageUtility::getResponse(
                 trans('api.CODE_DB_NOT_FOUND'),
                 trans('api.DESCRIPTION_DB_NOT_FOUND'),
@@ -196,11 +197,7 @@ class CommentController extends ApiController
                 }
             } else {
                 // Comment not found
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_DB_NOT_FOUND'),
-                    trans('api.DESCRIPTION_DB_NOT_FOUND'),
-                    trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'Comment'])
-                );
+                $this->itemNotFound('Comment');
             }
         }
         return response()->json($this->response);
@@ -246,11 +243,7 @@ class CommentController extends ApiController
             }
         } else {
             // Comment not found
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_DB_NOT_FOUND'),
-                trans('api.DESCRIPTION_DB_NOT_FOUND'),
-                trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'Comment'])
-            );
+            $this->itemNotFound('Comment');
         }
         return response()->json($this->response);
     }
@@ -278,6 +271,5 @@ class CommentController extends ApiController
         }
         return true;
     }
-
 
 }
