@@ -42,6 +42,12 @@
         <span class="help-block hidden"></span>
     </div>
     <div class="form-group">
+        <label>Image:</label>
+        <br /><img id="imgPreview" src="<% if (!_.isEmpty(image)) { print(image); } else { %>{{ asset('images/no-image.png') }} <% } %>" width="100px" height="100px" />
+        <input type="file" class="form-control image" name="image" value="">
+        <span class="help-block hidden"></span>
+    </div>    
+    <div class="form-group">
         <label>Content:</label>
         <textarea class="form-control" name="content" id="content"><%= content %></textarea>
         <span class="help-block hidden"></span>

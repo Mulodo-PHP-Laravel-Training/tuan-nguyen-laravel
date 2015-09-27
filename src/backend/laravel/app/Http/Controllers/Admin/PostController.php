@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use DB;
 use Validator;
-use App\Http\Controllers\Api\ApiController;
+use App\Http\Controllers\Api\PostController as ApiController;
 use App\User;
 use App\Post;
 use App\MyClasses\MessageUtility;
@@ -26,57 +26,28 @@ class PostController extends ApiController
     /**
      * Show the application dashboard to the post.
      *
+     * @param Request $request
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return view('admin/post');
     }
 
     /**
-     * Update user inforamation.
+     * Bypass check user permission.
      *
-     * @return Response
+     * @param  Request  $request
+     * @param  int  $id
+     * @return void
      */
-    public function update(Request $request, $id)
+    protected function checkPermission($request, $id)
     {
-        $user = User::find($id);
-        if ($user) {
-            // Check parameters have at least one field
-            $userFillableField = $user->getFillable();
-            if (! Utility::checkArrayHaveKey($user->getFillable(), array_keys($request->all() ) ) ) {
-                return $this->emptyData($userFillableField);
-            }
-
-            // Validate parameters
-            $validator = $this->validator($request->all(), $request->method(), (int) $id);
-            // Validation fails
-            if ($validator->fails()) {
-                $response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_FAILED'),
-                    trans('api.DESCRIPTION_INPUT_FAILED'),
-                    MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-                );
-            } else {
-                // Updated successfully
-                if ($request->input('password')) {
-                    $user->password = bcrypt($request->input('password'));
-                }
-                if ($user->update($request->all()) ) {
-                    $response = MessageUtility::getResponse(
-                        trans('api.CODE_INPUT_SUCCESS'),
-                        trans('api.DESCRIPTION_UPDATE_SUCCESS'),
-                        trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'User', 'id' => $user->id]),
-                        $user->toArray()
-                    );
-                }
-            }
-        } else {
-
-        }
-
-        return response()->json($response);
-
+        // Get post & Check permission
+        $post = Post::find($id);
+        if ($post) {
+            $this->processUpdate($request, $post);
+        }        
     }
 
     /**
@@ -87,30 +58,19 @@ class PostController extends ApiController
      */
     public function getCollection(Request $request) {
         // Pagination
-        $perPage      = ($request->input('per_page') > 0) ? (int) $request->input('per_page') : 10;
-        $page         = ($request->input('page')) ? (int) $request->input('page') : 1;
         $totalEntries = Post::get()->count();
-        $totalPages   = ceil($totalEntries/$perPage);
+        // Pagination
+        $pagination = Utility::Pagination($request, $totalEntries);
+
         $sortby       = ($request->input('sort_by')) ? : 'id';
         $order        = ($request->input('order') == 'asc') ? 'asc' : 'desc';
 
         $data = Post::orderBy($sortby, $order)
-                    ->take($perPage)
-                    ->skip($perPage * ($page-1) )
+                    ->take($pagination['per_page'])
+                    ->skip($pagination['per_page'] * ($pagination['page']-1) )
                     ->get()
                     ->toArray();
-
-        $return = array(
-            array(
-                'per_page'      => $perPage,
-                'total_entries' => $totalEntries,
-                'total_pages'   => $totalPages,
-                'page'          => $page,
-
-            ),
-            $data
-        );
-        return response()->json($return);
+        return response()->json(array($pagination, $data));
     }
 
     /**
@@ -140,34 +100,6 @@ class PostController extends ApiController
         }
 
         return response()->json($this->response);
-
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data, $method, $id = null)
-    {
-        switch($method)
-        {
-            case 'PUT':
-            case 'PATCH':
-            {
-                return Validator::make($data, [
-                    'username'   => 'sometimes|required|min:3|max:50|unique:users,username,'. $id,
-                    'first_name' => 'sometimes|required|max:50',
-                    'last_name'  => 'sometimes|required|max:50',
-                    'email'      => 'sometimes|required|email|max:50|unique:users,email,'. $id,
-                    'password'   => 'min:6|max:20|confirmed',
-                    'password_confirmation'   => 'min:6|max:20',
-
-                ]);
-            }
-            default: break;
-        }
 
     }
 

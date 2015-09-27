@@ -6,13 +6,12 @@ var defaults = {
     first_name: null,
     last_name: null,
     password: null,
-    password_confirmation:null
+    password_confirmation:null,
+    is_admin : 0
 }
 
 var userModel = Backbone.Model.extend({
-    urlRoot : urlBase+"/api/users",
-    urlInsert : urlBase+"/api/users",
-    urlUpdate: urlBase + "/admin/users",
+    urlRoot : urlBase+"/admin/users",
     defaults:defaults,
     idAttribute : "id",
     state: {
@@ -56,9 +55,9 @@ userCollection = Backbone.PageableCollection.extend({
     url : urlBase + "/admin/users/collection",
     // Initial pagination states
     state: {
-      pageSize: 10,
-      sortKey: "id",
-      order: 1,
+        pageSize: 10,
+        sortKey: "id",
+        order: 1,
     },
     defaultState : {
         currentPage : 1,

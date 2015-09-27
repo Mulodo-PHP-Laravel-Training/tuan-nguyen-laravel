@@ -32,36 +32,46 @@
 
 <script type="text/template" id="frmUsersTpl">
 <form id="frmUser">
-    <div class="form-group">
-        <label>Username:</label>
-        <input type="hidden" id="idInput" value="<%=id %>" name="id">
-        <input type="text" class="form-control" name="username" value="<%=username%>">
-        <span class="help-block hidden"></span>
-    </div>
-    <div class="form-group">
-        <label>Password:</label>
-        <input class="form-control" name="password" type="password" value="">
-        <span class="help-block hidden"></span>
-    </div>
-    <div class="form-group">
-        <label>Confirm password:</label>
-        <input class="form-control" name="password_confirmation" type="password" value="">
-        <span class="help-block hidden"></span>
-    </div>
-    <div class="form-group">
-        <label>First name:</label>
-        <input class="form-control" name="first_name" value="<%=first_name%>">
-        <span class="help-block hidden"></span>
-    </div>
-    <div class="form-group">
-        <label>Last name:</label>
-        <input class="form-control" name="last_name" value="<%=last_name%>">
-        <span class="help-block hidden"></span>
-    </div>
-    <div class="form-group">
-        <label>Email:</label>
-        <input type="email" class="form-control" name="email" value="<%=email%>">
-        <span class="help-block hidden"></span>
+    <div class="form-inputs">
+        <div class="form-group">
+            <label>Username:</label>
+            <input type="hidden" id="idInput" value="<%=id %>" name="id">
+            <input type="text" class="form-control" name="username" value="<%=username%>">
+            <span class="help-block hidden"></span>
+        </div>
+        <div class="form-group">
+            <label>Role:</label>
+            <select class="form-control" name="is_admin">
+                <option value="0">Member</option>
+                <option value="1">Admin</option>
+            </select>
+            <span class="help-block hidden"></span>
+        </div>    
+        <div class="form-group">
+            <label>Password:</label>
+            <input class="form-control" name="password" type="password" value="">
+            <span class="help-block hidden"></span>
+        </div>
+        <div class="form-group">
+            <label>Confirm password:</label>
+            <input class="form-control" name="password_confirmation" type="password" value="">
+            <span class="help-block hidden"></span>
+        </div>
+        <div class="form-group">
+            <label>First name:</label>
+            <input class="form-control" name="first_name" value="<%=first_name%>">
+            <span class="help-block hidden"></span>
+        </div>
+        <div class="form-group">
+            <label>Last name:</label>
+            <input class="form-control" name="last_name" value="<%=last_name%>">
+            <span class="help-block hidden"></span>
+        </div>
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" class="form-control" name="email" value="<%=email%>">
+            <span class="help-block hidden"></span>
+        </div>
     </div>
     <div class="form-group pull-right">
         <div class="btn-group">

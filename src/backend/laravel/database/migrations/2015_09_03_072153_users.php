@@ -19,6 +19,7 @@ class Users extends Migration
             $table->string('first_name', 50);
             $table->string('last_name', 50);
             $table->string('email', 50)->unique();
+            $table->boolean('is_admin')->default(0);
             $table->integer('last_login')->unsigned()->nullable();
             $table->string('remember_token', 100)->nullable();
             $table->integer('created_at')->unsigned();

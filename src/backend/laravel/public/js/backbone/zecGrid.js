@@ -127,6 +127,7 @@ function formatMoney(money) {
             'click input[type=checkbox]': 'selectModel', // click check box
             'click li.page': 'selectPage',
             'keyup input#filterInput': 'filterGrid',
+            'click .btnSearch': 'filterGrid',
             'change .filterRow select': 'selectFilter', // filter row by changing select
             'keyup .addRow input': 'createOnEnter',
             'keyup .editTable tbody input': 'updateOnEnter',
@@ -180,6 +181,31 @@ function formatMoney(money) {
 
         renderTbar: function() {
             var $tbar = $('<div class="tbar"></div>');
+            // Search bar
+            if (!_.isEmpty(this.options.tbar.search)) {
+                var search = this.options.tbar.search;
+                $filter = $('<div class="gridFilter col-sm-2 input-group"></div>');
+                if (search.align == 'left') {
+
+                } else {
+                    $filter.addClass('pull-right');
+                }
+                //$searchLabel = $('<span class="searchLabel">'+lang.search+'</span>');
+                $input = $('<input type="search" id="searchInput" />');
+                if (!_.isEmpty(this.collection.queryParams.q)) {
+                    $input.val(this.collection.queryParams.q);
+                }
+                // add className
+                if (_.isEmpty(search.inputClassName)) {
+                    $input.addClass("form-control");
+                } else {
+                    $input.addClass(search.inputClassName);
+                }
+                $filter.append($input);
+                $filter.append('<span class="input-group-btn"><button class="btn btn-default btnSearch"><span class="glyphicon glyphicon-search"></span></button></span>');
+                $tbar.append($filter);
+
+            }            
             // Filter
             if (!_.isEmpty(this.options.tbar.filter)) {
                 var filter = this.options.tbar.filter;
@@ -296,6 +322,8 @@ function formatMoney(money) {
                 } else {
                     $th.append(col.name);
                     $th.attr("data-field", col.field);
+                    var sortField = (col.sortField) ? col.sortField : col.field;
+                    $th.attr('data-sort-field', sortField);
                     if (col.unsortable) {
                         $th.addClass("unsortable");
                     } else {
@@ -845,7 +873,7 @@ function formatMoney(money) {
 
         // Sort Grid
         sortPage: function(th) {
-            var field = $(th.currentTarget).data("field");
+            var field = $(th.currentTarget).data("sort-field");
             direction = this.collection.state.order;
             sortKey = this.collection.state.sortKey;
             //change direction
@@ -991,15 +1019,32 @@ function formatMoney(money) {
         },
 
         filterGrid: function(e) {
-            if (e.keyCode == 13) {
-                var key = $(e.currentTarget).val();
+            $input = $(e.currentTarget);
+            if ($input.hasClass('btnSearch')) {
+                key = $('#searchInput').val();
                 this.collection.queryParams.q = key;
                 this.collection.state.currentPage = 1;
-                /*
-            if (!_.isEmpty(this.collection.models)) {
                 this.fetchCollection();
-            }  */
-                this.fetchCollection();
+
+            } else {
+                keyArr = [8,46];
+                //console.log($.inArray(e.keyCode, keyArr));
+                var key = $(e.currentTarget).val();
+                if ( (e.keyCode >=48 && e.keyCode <= 90)
+                    || (e.keyCode >=96 && e.keyCode <= 105)
+                    || ($.inArray(e.keyCode, keyArr) >= 0) )
+                {
+                    this.collection.queryParams.q = key;
+                    this.collection.state.currentPage = 1;
+                    this.fetchCollection();
+                    $input.focus().putCursorAtEnd();
+                }
+                // Press Esc
+                if (e.keyCode == 27) {
+                    this.collection.queryParams.q = null;
+                    $input.val('');
+                    this.fetchCollection();
+                }
             }
         },
 

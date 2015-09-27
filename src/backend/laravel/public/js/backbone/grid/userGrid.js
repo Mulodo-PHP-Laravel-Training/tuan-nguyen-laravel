@@ -13,42 +13,22 @@ userGrid = Backbone.zecGrid.extend({
             {field : "first_name",name : "First name"},
             {field : "last_name",name : "Last name"},
             {field : "email", width: 180, name : "Email"},
+            {field : "role_name", sortField: 'is_admin', name : "Role"},
             {field : "id", name : "Action", width : '100px', xtype : 'template',unsortable : true,
              tpl : _.template($('#actionButtonTpl').html()) }
         ],
+        tbar : {
+            search : {
+                align : 'right'
+            }
+        }        
     },
     initialize : function() {
         Backbone.zecGrid.prototype.initialize.call(this,this.options);
     },
     events : _.extend({
-        'click button#btnAddUser' : 'addUser',
-        'click button#btnDelUser' : 'delUsers',
-        'click .detailBtn' : 'viewDetail',
         'click .updRow ' : 'updUser',
-        'click .removeRow':'delUser',
     } , Backbone.zecGrid.prototype.events),
-
-    selectedRow : function(e) {
-        var userId = parseInt($(e.currentTarget).parents("tr").data("id"));
-        var redirect = "#view/"+userId;
-
-        redirect += "/page/"+this.collection.state.currentPage;
-        var hash = location.hash;
-        if (hash == redirect) {
-            app.usersModel.trigger("change");
-        } else {
-            window.location.href = redirect;
-        }
-        this.reRenderFooter();
-    },
-
-    addUser : function() {
-        if (_.isEmpty(app.userForm)) {
-            app.userForm = new UsersForm({model : app.usersModel});
-        }
-        app.usersModel.set(app.usersModel.defaults);
-        app.userForm.render();
-    },
 
     updUser : function (e) {
         $row = $(e.currentTarget);
@@ -66,18 +46,21 @@ userForm = Backbone.View.extend({
         //this.model.bind("change", this.render, this);
     },
     events : {
-        'click #userBtn' : 'createUser',
+        'click #userBtn' : 'saveUser',
         'click #resetBtn' : 'resetForm',
-        "keyup input": "createOnEnter",
+        'keyup input': 'saveOnEnter',
     },
     render : function() {
         // Render select
-        $(this.el).html(this.template(this.model.toJSON()));
+        var userData = this.model.toJSON();
+        $(this.el).html(this.template(userData));
+        $('select[name=is_admin]').val(userData.is_admin);
+
         return this;
     },
 
     // submit form when press enter
-    createOnEnter: function (e) {
+    saveOnEnter: function (e) {
         if (e.keyCode == 13) {
             e.preventDefault();
             $(e.currentTarget).blur();
@@ -85,7 +68,7 @@ userForm = Backbone.View.extend({
         }
     },
 
-    createUser: function(e) {
+    saveUser: function(e) {
         var $btn = $(e.currentTarget);
         var self =this;
         var id = $('#idInput').val();
@@ -97,29 +80,17 @@ userForm = Backbone.View.extend({
             email: $('input[name=email]', this.$el).val(),
             first_name: $('input[name=first_name]', this.$el).val(),
             last_name: $('input[name=last_name]', this.$el).val(),
+            is_admin: $('select[name=is_admin]', this.$el).val(),
+            _token : token
         };
-
         if (isNew) {
-
             // Create new user
             Backbone.Validation.bind(this);
-            this.model.urlRoot = this.model.urlInsert;
             data.password = $('input[name=password]', this.$el).val();
             data.password_confirmation = $('input[name=password_confirmation]', this.$el).val();
         } else {
             // Update user
-            Backbone.Validation.bind(this, {
-                attributes: function(view) {
-                    // only name and age will be validated
-                    return ['username', 'first_name', 'last_name', 'email'];
-                }
-            });
-            this.model.urlRoot = this.model.urlUpdate;
-            if (!_.isEmpty($('input[name=password]', this.$el).val())) {
-                data.password = $('input[name=password]', this.$el).val();
-                data.password_confirmation = $('input[name=password_confirmation]', this.$el).val();
-            }
-            data._token = token;
+            data = this.processUpdateUserData(data);
         }
         this.model.set(data);
         // Check if the model is valid before saving
@@ -128,9 +99,31 @@ userForm = Backbone.View.extend({
         }
     },
 
+    processUpdateUserData: function(data) {
+        if (!_.isEmpty($('input[name=password]', this.$el).val())) {
+            // Change password
+            data.password = $('input[name=password]', this.$el).val();
+            data.password_confirmation = $('input[name=password_confirmation]', this.$el).val();
+            Backbone.Validation.bind(this);
+        } else {
+            Backbone.Validation.bind(this, {
+                attributes: function(view) {
+                    // not required password
+                    return ['username', 'first_name', 'last_name', 'email'];
+                }
+            });                
+        }
+        data._token = token;
+        return data;
+    },
+
     processSaveUser: function(data, $btn) {
         var self = this;
         $btn.button('loading');
+        this.$el.zecLoading({
+            load: true,
+            zone: '.form-inputs'
+        });
         this.model.save(data, {
             success: function(model, result) {
                 if (200 == result.meta.code) {
@@ -151,8 +144,14 @@ userForm = Backbone.View.extend({
                     });
                 }
                 $btn.button('reset');
+                self.$el.zecLoading({
+                    hide: true
+                });                
             }, error: function() {
                 $btn.button('reset');
+                self.$el.zecLoading({
+                    hide: true
+                });                
             }
         });
 

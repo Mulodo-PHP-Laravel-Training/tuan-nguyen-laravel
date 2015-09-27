@@ -44,12 +44,7 @@ class CommentController extends ApiController
 
         } else {
             // Post not found
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_DB_NOT_FOUND'),
-                trans('api.DESCRIPTION_DB_NOT_FOUND'),
-                trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'Post'])
-            );
-
+            $this->itemNotFound('Post');
         }
         return response()->json($this->response);
     }
@@ -106,45 +101,65 @@ class CommentController extends ApiController
         if ($post) {
             // Post found
             // Validate content comment
-            $validator =  Validator::make($request->all(), [
-                'content' => 'required',
-            ]);
-
-            if ($validator->fails()) {
-                // Validation fails
-                $this->validationFails($validator);
-            } else {
-                // Validate success.
-                // Insert new comment
-                $comment = Comment::create([
-                    'author_id' => $this->getUser($request->input('token'))->id,
-                    'post_id'   => $post->id,
-                    'content'   => $request->input('content')
-                ]);
-                if ($comment) {
-                    // Create post successfully
-                    $this->response = MessageUtility::getResponse(
-                        trans('api.CODE_INPUT_SUCCESS'),
-                        trans('api.DESCRIPTION_CREATE_SUCCESS'),
-                        trans('api.MSG_CREATE_SUCCESS',['attribute' => 'Comment']),
-                        $comment->toArray()
-                    );
-                } else {
-                    // Create post failed
-                    $this->dbError();
-                }
-            }
+            $this->validateComment($request, $post);
         } else {
             // Post not found
             $this->itemNotFound('Post');
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_DB_NOT_FOUND'),
-                trans('api.DESCRIPTION_DB_NOT_FOUND'),
-                trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'Post'])
-            );
-
         }
         return response()->json($this->response);
+    }
+
+
+    /**
+     * Validate comment
+     *
+     * @param  Request  $request
+     * @param  Post $post
+     * @return void
+     */
+    protected function validateComment($request, $post)
+    {
+        $validator =  Validator::make($request->all(), [
+            'content' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            // Validation fails
+            $this->validationFails($validator);
+        } else {
+            // Validate success.
+            $this->processCreateComment($request, $post);
+        }        
+    }
+
+
+    /**
+     * Process create comment
+     *
+     * @param  Request  $request
+     * @param  Post $post
+     * @return void
+     */
+    protected function processCreateComment($request, $post)
+    {
+        // Insert new comment
+        $comment = Comment::create([
+            'author_id' => $this->getUser($request->input('token'))->id,
+            'post_id'   => $post->id,
+            'content'   => $request->input('content')
+        ]);
+        if ($comment) {
+            // Create post successfully
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.DESCRIPTION_CREATE_SUCCESS'),
+                trans('api.MSG_CREATE_SUCCESS',['attribute' => 'Comment']),
+                $comment->toArray()
+            );
+        } else {
+            // Create post failed
+            $this->dbError();
+        }        
     }
 
 
@@ -174,35 +189,67 @@ class CommentController extends ApiController
             $this->validationFails($validator);
         } else {
             // Find comment
-            $comment = Comment::where('id', (int) $commentId)
-                        ->where('post_id', (int) $postId)->first();
-            if ($comment) {
-                // Comment found
-                // Check permission: comment author or post author can update comment
-                if ($this->checkCommentPermission($comment, $request) ) {
-                    // Update comment
-                    $comment->content = $request->input('content');
-                    if ($comment->save()) {
-                        // Update post successfully
-                        $this->response = MessageUtility::getResponse(
-                            trans('api.CODE_INPUT_SUCCESS'),
-                            trans('api.DESCRIPTION_UPDATE_SUCCESS'),
-                            trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'Comment', 'id' => $comment->id]),
-                            $comment->toArray()
-                        );
-                    } else {
-                        // Update post failed
-                        $this->dbError();
-                    }
-                }
-            } else {
-                // Comment not found
-                $this->itemNotFound('Comment');
-            }
+            $this->findComment($request, $postId, $commentId);
         }
         return response()->json($this->response);
     }
 
+    /**
+     * Find comment in database
+     *
+     * @param  Request  $request
+     * @param  Int  $postId
+     * @param  Int  $commentId
+     * @return Response
+     */
+    protected function findComment($request, $postId, $commentId) {
+        $comment = Comment::where('id', (int) $commentId)
+                    ->where('post_id', (int) $postId)->first();
+        if ($comment) {
+            // Comment found
+            // Check permission: comment author or post author can update comment
+            $this->checkPermission($request, $comment);
+        } else {
+            // Comment not found
+            $this->itemNotFound('Comment');
+        }        
+    }
+
+    /**
+     * Check permission: comment author or post author can update comment
+     *
+     * @param  Request  $request
+     * @param  Comment  $comment
+     * @return void
+     */
+    protected function checkPermission($request, $comment) {
+        if ($this->checkCommentPermission($comment, $request) ) {
+            // Update comment
+            $comment->content = $request->input('content');
+            $this->processUpdate($comment);
+        }        
+    }
+
+    /**
+     * Process update comment
+     *
+     * @param  Comment  $comment
+     * @return void
+     */
+    protected function processUpdate($comment) {
+        if ($comment->save()) {
+            // Update post successfully
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.DESCRIPTION_UPDATE_SUCCESS'),
+                trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'Comment', 'id' => $comment->id]),
+                $comment->toArray()
+            );
+        } else {
+            // Update commnet failed
+            $this->dbError();
+        }
+    }
 
     /**
      * Delete comment in a post
@@ -226,26 +273,36 @@ class CommentController extends ApiController
                             ->where('post_id', (int) $postId)->first();
         if ($comment) {
             // Comment found
-            // Check permission: comment author or post author can update comment
+            // Check permission: comment author or post author can delete comment
             if ($this->checkCommentPermission($comment, $request) ) {
                 // Check permission success
-                if ($comment->delete()) {
-                    // Update post successfully
-                    $this->response = MessageUtility::getResponse(
-                        trans('api.CODE_INPUT_SUCCESS'),
-                        trans('api.DESCRIPTION_DELETE_SUCCESS'),
-                        trans('api.MSG_DELETE_SUCCESS', ['attribute' => 'Comment', 'id' => $comment->id])
-                    );
-                } else {
-                    // delete Comment failed
-                    $this->dbError();
-                }
+                $this->processDelete($comment);
             }
         } else {
             // Comment not found
             $this->itemNotFound('Comment');
         }
         return response()->json($this->response);
+    }
+
+    /**
+     * Process delete comment
+     *
+     * @param  Comment  $comment
+     * @return void
+     */
+    protected function processDelete($comment) {
+        if ($comment->delete()) {
+            // Delete comment successfully
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.DESCRIPTION_DELETE_SUCCESS'),
+                trans('api.MSG_DELETE_SUCCESS', ['attribute' => 'Comment', 'id' => $comment->id])
+            );
+        } else {
+            // delete Comment failed
+            $this->dbError();
+        }
     }
 
 

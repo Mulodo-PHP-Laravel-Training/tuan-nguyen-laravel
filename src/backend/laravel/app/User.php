@@ -30,7 +30,7 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['first_name','last_name','username', 'email'];
+    protected $fillable = ['first_name','last_name','username', 'email', 'is_admin'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -38,6 +38,14 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password','remember_token'];
+
+    /**
+     * List additional fields.
+     *
+     * @var array
+     */
+    protected $appends = array('role_name');
+
 
     /**
      * Indicates if the model should be timestamped.
@@ -99,6 +107,11 @@ class User extends Model implements AuthenticatableContract,
 
         // delete the user
         return parent::delete();
+    }
+
+    public function getRoleNameAttribute()
+    {
+        return (1 == $this->is_admin) ? 'Admin' : 'Member';
     }
 
 }

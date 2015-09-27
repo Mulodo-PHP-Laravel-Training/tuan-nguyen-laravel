@@ -40,6 +40,12 @@ class Authenticate
             } else {
                 return redirect()->guest('auth/login');
             }
+        } elseif (0 == $this->auth->user()->is_admin) {
+            if ($request->ajax()) {
+                return response('Unauthorized.', 401);
+            } else {
+                return redirect()->guest('/');
+            }            
         }
 
         return $next($request);

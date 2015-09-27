@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use DB;
 use Validator;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\UserController as ApiController;
 use App\User;
 use App\MyClasses\MessageUtility;
 use App\MyClasses\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     /**
      * Create a new controller instance.
@@ -27,54 +27,54 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return view('admin/user');
     }
 
     /**
+     * Process create user
+     *
+     * @param  Request  $request
+     * @return void
+     */
+    protected function processCreateUser($request)
+    {
+        $is_admin = (1 == (int) $request->is_admin) ? 1 : 0;
+        $user = $this->createUser($request->all(), $is_admin);
+        if ($user) {
+            // Create user successfully
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.DESCRIPTION_CREATE_SUCCESS'),
+                trans('api.MSG_CREATE_SUCCESS',['attribute' => 'User']),
+                $user->toArray()
+            );
+        } else {
+            // Create user failed
+            $this->dbError();
+        }        
+    }
+
+
+    /**
      * Update user inforamation.
      *
+     * @param Request $request
+     * @param Int $id
      * @return Response
      */
     public function update(Request $request, $id)
     {
         $user = User::find($id);
         if ($user) {
-            // Check parameters have at least one field
-            $userFillableField = $user->getFillable();
-            if (! Utility::checkArrayHaveKey($user->getFillable(), array_keys($request->all() ) ) ) {
-                return $this->emptyData($userFillableField);
-            }
-
-            // Validate parameters
-            $validator = $this->validator($request->all(), $request->method(), (int) $id);
-            // Validation fails
-            if ($validator->fails()) {
-                $response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_FAILED'),
-                    trans('api.DESCRIPTION_INPUT_FAILED'),
-                    MessageUtility::getErrorMessageForResponse($validator->errors()->getMessages())
-                );
-            } else {
-                // Updated successfully
-                if ($request->input('password')) {
-                    $user->password = bcrypt($request->input('password'));
-                }
-                if ($user->update($request->all()) ) {
-                    $response = MessageUtility::getResponse(
-                        trans('api.CODE_INPUT_SUCCESS'),
-                        trans('api.DESCRIPTION_UPDATE_SUCCESS'),
-                        trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'User', 'id' => $user->id]),
-                        $user->toArray()
-                    );
-                }
-            }
+            $is_admin = ("1" == $request->is_admin) ? 1 : 0;
+            $password = (!empty($request->input('password'))) ? $request->input('password') : '';
+            $this->processUpdate($user, $request, $id, $is_admin, $password);
         } else {
-
+            $this->itemNotFound('User');
         }
-
-        return response()->json($response);
+        return response()->json($this->response);
 
     }
 
@@ -85,59 +85,28 @@ class UserController extends Controller
      * @return Response
      */
     public function getCollection(Request $request) {
+        // Search user by name
+        if ($request->input('q')) {
+            $keySearch = $request->input('q');
+            $users = User::where('username','LIKE', '%'.$keySearch.'%')
+                        ->orwhere('first_name','LIKE', '%'.$keySearch.'%')
+                        ->orwhere('last_name','LIKE', '%'.$keySearch.'%');
+        } else {
+            $users = new User();
+        }
+        $totalEntries = $users->get()->count();
         // Pagination
-        $perPage      = ($request->input('per_page') > 0) ? (int) $request->input('per_page') : 10;
-        $page         = ($request->input('page')) ? (int) $request->input('page') : 1;
-        $totalEntries = User::get()->count();
-        $totalPages   = ceil($totalEntries/$perPage);
+        $pagination = Utility::Pagination($request, $totalEntries);
+        
         $sortby       = ($request->input('sort_by')) ? : 'id';
         $order        = ($request->input('order') == 'asc') ? 'asc' : 'desc';
 
-        $data = User::orderBy($sortby, $order)
-                    ->take($perPage)
-                    ->skip($perPage * ($page-1) )
+        $data = $users->orderBy($sortby, $order)
+                    ->take($pagination['per_page'])
+                    ->skip($pagination['per_page'] * ($pagination['page']-1) )
                     ->get()
                     ->toArray();
-
-        $return = array(
-            array(
-                'per_page'      => $perPage,
-                'total_entries' => $totalEntries,
-                'total_pages'   => $totalPages,
-                'page'          => $page,
-
-            ),
-            $data
-        );
+        $return = array($pagination, $data);
         return response()->json($return);
     }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data, $method, $id = null)
-    {
-        switch($method)
-        {
-            case 'PUT':
-            case 'PATCH':
-            {
-                return Validator::make($data, [
-                    'username'   => 'sometimes|required|min:3|max:50|unique:users,username,'. $id,
-                    'first_name' => 'sometimes|required|max:50',
-                    'last_name'  => 'sometimes|required|max:50',
-                    'email'      => 'sometimes|required|email|max:50|unique:users,email,'. $id,
-                    'password'   => 'min:6|max:20|confirmed',
-                    'password_confirmation'   => 'min:6|max:20',
-
-                ]);
-            }
-            default: break;
-        }
-
-    }
-
 }

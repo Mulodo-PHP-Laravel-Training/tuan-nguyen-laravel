@@ -9,7 +9,7 @@ postGrid = Backbone.zecGrid.extend({
         columns : [
             {field : "id", name : "ID", width: 50},
             {field : "title", selectedField : true,name : "Title"},
-            {field : "statusName", name: "Status",width: 90},
+            {field : "statusName", sortField: "status", name: "Status",width: 90},
             {field : "id", name : "Action", width : '100px', xtype : 'template',unsortable : true,
              tpl : _.template($('#actionButtonTpl').html()) }
         ],
@@ -30,14 +30,15 @@ postGrid = Backbone.zecGrid.extend({
         app.postForm.model = app.postCollection.get(postId);
         app.postForm.render();
     },
+
     delpost : function(e) {
         $row = $(e.currentTarget);
         var postId = parseInt($row.data("id"));
         var self = this;
         var delPostModel = this.collection.get(postId);
         delPostModel.url = delPostModel.urlDelete + '/' + postId;
-        var ok = confirm("Are you sure want to delete this post!");
-        if (ok) {
+        var confirmMsg = confirm("Are you sure want to delete this post!");
+        if (confirmMsg) {
             delPostModel.destroy({
                 data : { _token : token },
                 processData: true,
@@ -60,9 +61,10 @@ postForm = Backbone.View.extend({
         //this.model.bind("change", this.render, this);
     },
     events : {
-        'click #postBtn' : 'createPost',
+        'click #postBtn' : 'savePost',
         'click #resetBtn' : 'resetForm',
-        "keyup input": "createOnEnter",
+        'keydown input': 'createOnEnter',
+        'change .image': 'selectImage'
     },
     editor: null,
     render : function() {
@@ -70,7 +72,6 @@ postForm = Backbone.View.extend({
         $(this.el).html(this.template(this.model.toJSON()));
         this.editor = new TINY.editor.edit('editor',{
             id:'content',
-            width:600,
             height:175,
             cssclass:'te',
             controlclass:'tecontrol',
@@ -98,11 +99,11 @@ postForm = Backbone.View.extend({
         if (e.keyCode == 13) {
             e.preventDefault();
             $(e.currentTarget).blur();
-            $('#postBtn').trigger('click');
+            $('#postBtn').trigger('click');            
         }
     },
 
-    createPost: function(e) {
+    savePost: function(e) {
         Backbone.Validation.bind(this);
         var $btn = $(e.currentTarget);
         var self =this;
@@ -115,29 +116,40 @@ postForm = Backbone.View.extend({
             title: $('input[name=title]', this.$el).val(),
             content: $('textarea[name=content]', this.$el).val(),
             status: $('input[name=status]:checked', this.$el).val(),
-            token: userToken
         };
+        var picture = $('input[name="image"]')[0].files[0]; 
+        var dataForm = new FormData();
+        if (picture) {
+            dataForm.append('image', picture);    
+        }    
+        dataForm.append('title', data.title);
+        dataForm.append('content', data.content);
+        dataForm.append('status', data.status);
+        dataForm.append('_token', token);
+        dataForm.append('token', userToken);
 
-        if (isNew) {
-            this.model.urlRoot = this.model.urlInsert;
-        } else {
-            this.model.urlRoot = this.model.urlUpdate;
-        }
         this.model.set(data);
         // Check if the model is valid before saving
         if(this.model.isValid(true)){
             if (isNew) {
-                this.processCreatePost(data, $btn);
+                this.processCreatePost(dataForm, $btn);
             } else {
-                this.processUpdatePost(data,$btn);
+                this.processUpdatePost(dataForm,$btn);
             }
         }
     },
 
     processCreatePost: function(data, $btn) {
         var self = this;
-        this.model.save(data, {
-            success: function(model, result) {
+        $btn.button('loading');
+        $.ajax({
+            url: urlBase + '/api/posts',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: data,
+            type: 'POST',
+            success: function(result){
                 if (200 == result.meta.code) {
                     app.postCollection.fetch({reset : true});
                     self.model.set(self.model.defaults);
@@ -145,30 +157,30 @@ postForm = Backbone.View.extend({
                     $message = $('<span class="text-success"></span>');
                     $message.html(result.meta.messages[0].message);
                     $('#errMessages').append($message);
-
+                    $btn.button('reset');
                 } else {
-                    $('#errMessages').addClass('has-error');
-                    _.each(result.meta.messages, function (message) {
-                        $message = $('<span class="help-block"></span>');
-                        $message.html(message.message);
-                        $('#errMessages').append($message);
-                    });
-                }
-                $btn.button('reset');
-            }, error: function() {
+                    alert(result.meta.messages[0].message);
+                    $btn.button('reset');
+                }                
+            },
+            error: function(data){
+                alert('System error.');
                 $btn.button('reset');
             }
-        });
+          });        
     },
 
     processUpdatePost: function(data, $btn) {
         var self = this;
         $btn.button('loading');
         $.ajax({
-            url : this.model.urlUpdate + '/' + this.model.get('id'),
-            type: 'POST',
+            url : urlBase + '/admin/posts/' + this.model.get('id'),
+            cache: false,
+            contentType: false,
+            processData: false,
             data: data,
-            success: function(result) {
+            type: 'POST',
+                 success: function(result) {
                 if (200 == result.meta.code) {
                     app.postCollection.fetch({reset : true});
                     self.model.set(self.model.defaults);
@@ -188,6 +200,24 @@ postForm = Backbone.View.extend({
                 $btn.button('reset');
             }
         });
+    },
+
+    selectImage: function(e) {
+        var input = e.target; // FileList object
+        // Max image file size 1 MB
+        var maxsize = 1000000; 
+        
+        if (input.files && input.files[0] 
+            && (input.files[0].size < maxsize) 
+            && (input.files[0].type.indexOf('image/') == 0)) {
+            
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#imgPreview').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
     },
 
     resetForm: function() {

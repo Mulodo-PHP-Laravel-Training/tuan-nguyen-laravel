@@ -42,7 +42,11 @@
 						<li><a href="{{ url('/auth/register') }}">Register</a></li>
 					@else
 						<li><a>Welcome {{Auth::user()->first_name}} {{Auth::user()->last_name}}</a></li>
+						@if (1 == Auth::user()->is_admin)
 						<li><a href="{{ url('admin') }}">Admin</a></li>
+						@else
+						<li><a href="{{ url('profile') }}">Profile</a></li>
+						@endif
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">

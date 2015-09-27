@@ -129,22 +129,34 @@ class UserController extends ApiController
             $this->validationFails($validator);
         } else {
             // Validation success
-            $user = $this->createUser($request->all());
-            if ($user) {
-                // Create user successfully
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_SUCCESS'),
-                    trans('api.DESCRIPTION_CREATE_SUCCESS'),
-                    trans('api.MSG_CREATE_SUCCESS',['attribute' => 'User']),
-                    $user->toArray()
-                );
-            } else {
-                // Create user failed
-                $this->dbError();
-            }
+            $this->processCreateUser($request);            
         }
         return response()->json($this->response);
     }
+
+    /**
+     * Process create user
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    protected function processCreateUser($request)
+    {
+        $user = $this->createUser($request->all());
+        if ($user) {
+            // Create user successfully
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.DESCRIPTION_CREATE_SUCCESS'),
+                trans('api.MSG_CREATE_SUCCESS',['attribute' => 'User']),
+                $user->toArray()
+            );
+        } else {
+            // Create user failed
+            $this->dbError();
+        }        
+    }
+
 
 
     /**
@@ -176,9 +188,11 @@ class UserController extends ApiController
      * @param  User  $user
      * @param  Request $request
      * @param  Int $id
+     * @param  Boolean $is_admin | 0: member, 1: admin
+     * @param  String $password
      * @return void
      */
-    private function processUpdate($user, $request, $id) {
+    protected function processUpdate($user, $request, $id, $is_admin = 0, $password = '') {
         // Check parameters have at least one field
         $userFillableField = $user->getFillable();
         $checkArrHaveKey = Utility::checkArrayHaveKey($user->getFillable(), array_keys($request->all() ) );
@@ -192,15 +206,33 @@ class UserController extends ApiController
         if ($validator->fails()) {
             $this->validationFails($validator);
         } else {
-            // Updated successfully
-            if ($user->update($request->all()) ) {
-                $this->responseUpdateSuccess($user);
-            } else {
-                $this->dbError();
-            }
+            // Validation success
+            $this->updateUser($user, $request, $is_admin, $password);
         }
     }
 
+    /**
+     * Process update user.
+     *
+     * @param  User  $user
+     * @param  Request $request
+     * @param  Boolean $is_admin
+     * @param  String $password
+     * @return void
+     */
+    protected function updateUser($user, $request, $is_admin, $password) {
+        $params = $request->all();
+        $params['is_admin'] = $is_admin;            
+        if ('' != $password) {            
+            $user->password = bcrypt($password);
+            $user->save();
+        }
+        if ($user->update($params)) {
+            $this->responseUpdateSuccess($user);
+        } else {
+            $this->dbError();
+        }
+    }
 
     /**
      * Login API by passing username.
@@ -314,21 +346,31 @@ class UserController extends ApiController
             $this->validationFails($validator);
         } else {
             // Change password success
-            $user = $this->getUser($request->input('token'));
-            $user->password = bcrypt($request->input('new_password') );
-            if ($user->save()) {
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_SUCCESS'),
-                    trans('api.DESCRIPTION_CHANGE_PASS_SUCCESS'),
-                    trans('api.DESCRIPTION_CHANGE_PASS_SUCCESS')
-                );
-            } else {
-                $this->dbError();
-            }
+            $this->processChangePassword($request);
         }
         return response()->json($this->response);
     }
 
+    /**
+     * Process Action change password.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function processChangePassword(Request $request) 
+    {
+        $user = $this->getUser($request->input('token'));
+        $user->password = bcrypt($request->input('new_password') );
+        if ($user->save()) {
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.DESCRIPTION_CHANGE_PASS_SUCCESS'),
+                trans('api.DESCRIPTION_CHANGE_PASS_SUCCESS')
+            );
+        } else {
+            $this->dbError();
+        }        
+    }
 
     /**
      * Get a validator for an incoming registration request.
@@ -370,15 +412,17 @@ class UserController extends ApiController
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
+     * @param boolean $is_admin  // 0: member , 1: admin
      * @return User
      */
-    protected function createUser(array $data)
+    protected function createUser(array $data, $is_admin = 0)
     {
         $user = User::create([
             'username'   => $data['username'],
             'first_name' => $data['first_name'],
             'last_name'  => $data['last_name'],
             'email'      => $data['email'],
+            'is_admin'   => (int) $is_admin
         ]);
         $user->password = bcrypt($data['password']);
         $user->save();

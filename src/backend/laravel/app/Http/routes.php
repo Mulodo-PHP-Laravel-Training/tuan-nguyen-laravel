@@ -28,17 +28,20 @@ Route::group([
     Route::get('admin', 'HomeController@index');
     Route::get('admin/users', 'UserController@index');
     Route::get('admin/users/collection', 'UserController@getCollection');
+    Route::post('admin/users', 'UserController@store');
     Route::put('admin/users/{id}', 'UserController@update');
 
     // Post route
     Route::get('admin/posts', 'PostController@index');
     Route::get('admin/posts/collection', 'PostController@getCollection');
+    Route::post('admin/posts', 'PostController@store');    
+    Route::post('admin/posts/{id}', 'PostController@update');        
     Route::delete('admin/posts/{id}', 'PostController@destroy');
 
     // Comment route
     Route::get('admin/comments', 'CommentController@index');
     Route::get('admin/comments/collection', 'CommentController@getCollection');
-    Route::put('admin/comments/{comment_id}', 'CommentController@update');
+    Route::put('admin/posts/{post_id}/comments/{comment_id}', 'CommentController@putUpdate');
     Route::delete('admin/comments/{comment_id}', 'CommentController@destroy');
 });
 

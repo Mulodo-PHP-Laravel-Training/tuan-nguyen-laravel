@@ -15,6 +15,7 @@
 
 .zecGrid tbody td {
     overflow:hidden;
+    word-break: break-all;
 }
 
 .zecGrid .tbar {

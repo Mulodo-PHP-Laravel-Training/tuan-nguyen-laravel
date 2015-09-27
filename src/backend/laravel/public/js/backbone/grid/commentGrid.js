@@ -36,8 +36,8 @@ commentGrid = Backbone.zecGrid.extend({
         var delcommentModel = this.collection.get(commentId);
         delcommentModel.url = urlBase + '/admin/comments/' + commentId;
 
-        var ok = confirm("Are you sure want to delete this comment!");
-        if (ok) {
+        var confirmMsg = confirm("Are you sure want to delete this comment!");
+        if (confirmMsg) {
             delcommentModel.destroy({
                 data : { _token : token },
                 processData: true,
@@ -62,7 +62,7 @@ commentForm = Backbone.View.extend({
     events : {
         'click #commentBtn' : 'updComment',
         'click #resetBtn' : 'resetForm',
-        "keyup input": "createOnEnter",
+        "keyup input": "saveOnEnter",
     },
     editor: null,
     render : function() {
@@ -72,7 +72,7 @@ commentForm = Backbone.View.extend({
     },
 
     // submit form when press enter
-    createOnEnter: function (e) {
+    saveOnEnter: function (e) {
         if (e.keyCode == 13) {
             e.preventDefault();
             $(e.currentTarget).blur();
@@ -97,7 +97,7 @@ commentForm = Backbone.View.extend({
         if (isNew) {
             alert('Please select a comment to edit');
         } else {
-            this.model.urlRoot = this.model.urlUpdate;
+            //this.model.urlRoot = urlBase + '/admin/posts/' + this.model.get('post_id') + '/comments/' + this.model.get('id');
             this.model.set(data);
             // Check if the model is valid before saving
             if(this.model.isValid(true)){
@@ -109,9 +109,8 @@ commentForm = Backbone.View.extend({
     processUpdatecomment: function(data, $btn) {
         var self = this;
         $btn.button('loading');
-        console.log(data);
         $.ajax({
-            url : urlBase +'/admin/comments/' + this.model.get('id'),
+            url : urlBase + '/admin/posts/' + this.model.get('post_id') + '/comments/' + this.model.get('id'),
             type: 'PUT',
             data: data,
             success: function(result) {

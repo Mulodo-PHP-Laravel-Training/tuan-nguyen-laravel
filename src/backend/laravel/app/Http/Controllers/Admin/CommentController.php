@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use DB;
 use Validator;
-use App\Http\Controllers\Api\ApiController;
+use App\Http\Controllers\Api\CommentController as ApiController;
 use App\User;
 use App\Post;
 use App\Comment;
@@ -43,10 +43,9 @@ class CommentController extends ApiController
      */
     public function getCollection(Request $request) {
         // Pagination
-        $perPage      = ($request->input('per_page') > 0) ? (int) $request->input('per_page') : 10;
-        $page         = ($request->input('page')) ? (int) $request->input('page') : 1;
         $totalEntries = Comment::get()->count();
-        $totalPages   = ceil($totalEntries/$perPage);
+        // Pagination
+        $pagination = Utility::Pagination($request, $totalEntries);
         $sortby       = ($request->input('sort_by')) ? : 'id';
         $order        = ($request->input('order') == 'asc') ? 'asc' : 'desc';
 
@@ -56,75 +55,29 @@ class CommentController extends ApiController
                     })->leftJoin('users', function($join) {
                         $join->on('comments.author_id', '=', 'users.id');
                     })->orderBy('comments.' .$sortby, $order)
-                    ->take($perPage)
-                    ->skip($perPage * ($page-1) )
+                    ->take($pagination['per_page'])
+                    ->skip($pagination['per_page'] * ($pagination['page']-1) )
                     ->get()
                     ->toArray();
-        $return = array(
-            array(
-                'per_page'      => $perPage,
-                'total_entries' => $totalEntries,
-                'total_pages'   => $totalPages,
-                'page'          => $page,
-
-            ),
-            $data
-        );
-        return response()->json($return);
+        return response()->json(array($pagination, $data));
     }
 
 
     /**
-     * Update comment in a post
-     * URI : PUT /admin/posts/{postId}/comments/{commentId}
+     * By pass checkpermiison
      *
      * @param  Request  $request
-     * @param  Int  $postId
-     * @param  Int  $commentId
-     * @return Response
+     * @param  Comment  $comment
+     * @return void
      */
-    public function update(Request $request, $commentId)
-    {
-        // Validate postId, commentId must be an integer
-        if (!$this->validateInteger($commentId, 'Comment ID'))
-            return response()->json($this->response);
-
-        // Validate content comment
-        $validator =  Validator::make($request->all(), [
-            'content' => 'required',
-        ]);
-        if ($validator->fails()) {
-            // Validation fails
-            $this->validationFails($validator);
-        } else {
-            // Find comment
-            $comment = Comment::find($commentId);
-            if ($comment) {
-                // Update comment
-                $comment->content = $request->input('content');
-                $comment->save();
-                // Update comment successfully
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_INPUT_SUCCESS'),
-                    trans('api.DESCRIPTION_UPDATE_SUCCESS'),
-                    trans('api.MSG_UPDATE_SUCCESS',['attribute' => 'Comment', 'id' => $comment->id]),
-                    $comment->toArray()
-                );
-            } else {
-                // Comment not found
-                $this->response = MessageUtility::getResponse(
-                    trans('api.CODE_DB_NOT_FOUND'),
-                    trans('api.DESCRIPTION_DB_NOT_FOUND'),
-                    trans('api.MSG_DB_NOT_FOUND', ['attribute' => 'Comment'])
-                );
-            }
-        }
-        return response()->json($this->response);
+    protected function checkPermission($request, $comment) {
+        // Update comment
+        $comment->content = $request->input('content');
+        $this->processUpdate($comment);
     }
 
-
     /**
-     * Delet a post
+     * Delete a comment
      *
      * @param Request $request
      * @return Response
@@ -142,42 +95,10 @@ class CommentController extends ApiController
                 trans('api.MSG_DELETE_SUCCESS',['attribute' => 'Comment','id' => $id])
             );
         } else {
-            $this->response = MessageUtility::getResponse(
-                trans('api.CODE_DB_NOT_FOUND'),
-                trans('api.DESCRIPTION_DB_NOT_FOUND'),
-                trans('api.MSG_DB_NOT_FOUND',['attribute' => 'Comment'])
-            );
+            $this->itemNotFound('Comment');
         }
 
         return response()->json($this->response);
-
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data, $method, $id = null)
-    {
-        switch($method)
-        {
-            case 'PUT':
-            case 'PATCH':
-            {
-                return Validator::make($data, [
-                    'username'   => 'sometimes|required|min:3|max:50|unique:users,username,'. $id,
-                    'first_name' => 'sometimes|required|max:50',
-                    'last_name'  => 'sometimes|required|max:50',
-                    'email'      => 'sometimes|required|email|max:50|unique:users,email,'. $id,
-                    'password'   => 'min:6|max:20|confirmed',
-                    'password_confirmation'   => 'min:6|max:20',
-
-                ]);
-            }
-            default: break;
-        }
 
     }
 
