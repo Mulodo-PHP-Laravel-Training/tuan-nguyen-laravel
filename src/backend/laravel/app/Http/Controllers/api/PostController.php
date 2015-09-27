@@ -23,27 +23,27 @@ class PostController extends ApiController
      */
     public function index(Request $request)
     {
-		$posts = Post::select('posts.id','posts.title','posts.created_at','posts.updated_at','posts.author_id','posts.image',
+        $posts = Post::select('posts.id','posts.title','posts.created_at','posts.updated_at','posts.author_id','posts.image',
                         DB::raw('CONCAT(users.first_name," ", users.last_name) As author_name')
                     )->leftJoin('users', function($join) {
-						$join->on('users.id', '=','posts.author_id');
-					})->where('posts.status',1)
+                        $join->on('users.id', '=','posts.author_id');
+                    })->where('posts.status',1)
                     ->get();
 
-		if ($posts) {
-			$postsArr = array();
-			foreach ($posts as $post) {
-				$postsArr[] = $post->toArray();
-			}
-			// Get all posts successfully
-			$this->response = MessageUtility::getResponse(
-				trans('api.CODE_INPUT_SUCCESS'),
-				trans('api.DESCRIPTION_GET_SUCCESS'),
-				trans('api.MSG_GET_SUCCESS',['attribute' => 'Posts']),
-				$postsArr
-			);
+        if ($posts) {
+            $postsArr = array();
+            foreach ($posts as $post) {
+                $postsArr[] = $post->toArray();
+            }
+            // Get all posts successfully
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.DESCRIPTION_GET_SUCCESS'),
+                trans('api.MSG_GET_SUCCESS',['attribute' => 'Posts']),
+                $postsArr
+            );
 
-		}
+        }
         return response()->json($this->response);
     }
 
@@ -68,8 +68,8 @@ class PostController extends ApiController
             $this->itemNotFound('User');
         }
 
-		return response()->json($this->response);
-	}
+        return response()->json($this->response);
+    }
 
     /**
      * Get all posts by user ID.
@@ -288,17 +288,17 @@ class PostController extends ApiController
         // Validate author id must be an integer
         if (!$this->validateInteger($id,'Post ID')) return response()->json($this->response);
 
-		// Get post & Check permission
-		$post = $this->checkPostAuthor($this->getUser($request->input('token'))->id, (int) $id);
-		if ($post && $post->delete()) {
-			// Delete post successfully
-			$this->response = MessageUtility::getResponse(
-				trans('api.CODE_INPUT_SUCCESS'),
-				trans('api.DESCRIPTION_DELETE_SUCCESS'),
-				trans('api.MSG_DELETE_SUCCESS',['attribute' => 'Post','id' => $id])
-			);
-		}
-		return response()->json($this->response);
+        // Get post & Check permission
+        $post = $this->checkPostAuthor($this->getUser($request->input('token'))->id, (int) $id);
+        if ($post && $post->delete()) {
+            // Delete post successfully
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.DESCRIPTION_DELETE_SUCCESS'),
+                trans('api.MSG_DELETE_SUCCESS',['attribute' => 'Post','id' => $id])
+            );
+        }
+        return response()->json($this->response);
     }
 
     /**
@@ -416,26 +416,26 @@ class PostController extends ApiController
      */
     protected function validator(array $data, $method)
     {
-		switch($method)
+        switch($method)
         {
             case 'POST':
             {
-				return Validator::make($data, [
-					'title'   => 'required|max:255',
-					'content' => 'required',
-					'status'  => 'required|boolean',
-					'image'   => 'image|max:1000',
-				]);
+                return Validator::make($data, [
+                    'title'   => 'required|max:255',
+                    'content' => 'required',
+                    'status'  => 'required|boolean',
+                    'image'   => 'image|max:1000',
+                ]);
             }
             case 'PUT':
             case 'PATCH':
             {
-				return Validator::make($data, [
+                return Validator::make($data, [
                     'title'   => 'sometimes|required|max:255',
                     'content' => 'sometimes|required',
                     'status'  => 'sometimes|required|boolean',
                     'image'   => 'sometimes|image|max:1000',
-				]);
+                ]);
             }
             default: return false;
         }

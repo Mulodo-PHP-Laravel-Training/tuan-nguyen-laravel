@@ -2,8 +2,8 @@
 var defaults = {
     id : null,
     author_id : null,
-    title: 'abc',
-    content: 'test',
+    title: null,
+    content: null,
     image : null,
     status: 1
 }
