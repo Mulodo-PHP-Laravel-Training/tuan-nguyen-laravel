@@ -81,6 +81,18 @@ class UserController extends ApiUserController
 
 
     /**
+     * Creat a articles.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function createArticle(Request $request)
+    {
+        return view('user/createPost');
+    }
+
+
+    /**
      * Change password.
      *
      * @param Request $request
