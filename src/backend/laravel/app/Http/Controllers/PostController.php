@@ -26,6 +26,20 @@ class PostController extends ApiPostController
     public  $errors = [];
 
     /**
+     * Show post detail
+     *
+     * @param  Request  $request
+     * @return void
+     */
+    public function detail(Request $request, $id)
+    {
+        $post = Post::where('id', (int)$id)
+                    ->where('status',1)
+                    ->first();
+        return view('post/detail', ['post' => $post]);
+    }
+
+    /**
      * Create post
      *
      * @param  Request  $request
@@ -59,6 +73,72 @@ class PostController extends ApiPostController
             // Create post failed
             $this->dbError();
         }
+    }
+
+    /**
+     * Get list posts.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function getCollection(Request $request) {
+        $userId = Auth::user()->id;
+        $totalEntries = Post::where('author_id', $userId)->get()->count();
+        // Pagination
+        $pagination = Utility::Pagination($request, $totalEntries);
+
+        $sortby       = ($request->input('sort_by')) ? : 'id';
+        $order        = ($request->input('order') == 'asc') ? 'asc' : 'desc';
+
+        $data = Post::where('author_id', $userId)
+                    ->orderBy($sortby, $order)
+                    ->take($pagination['per_page'])
+                    ->skip($pagination['per_page'] * ($pagination['page']-1) )
+                    ->get()
+                    ->toArray();
+        return response()->json(array($pagination, $data));
+    }
+
+    /**
+     * Check user permission.
+     *
+     * @param  Request  $request
+     * @param  int  $id
+     * @return void
+     */
+    protected function checkPermission($request, $id)
+    {
+        // Get post & Check permission
+        $post = $this->checkPostAuthor(Auth::user()->id, $id);
+        if ($post) {
+            $this->processUpdate($request, $post);
+        }
+    }
+
+
+    /**
+     * Remove post by id.
+     * URI: DELETE /api/posts/{id}
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy(Request $request,$id)
+    {
+        // Validate author id must be an integer
+        if (!$this->validateInteger($id,'Post ID')) return response()->json($this->response);
+
+        // Get post & Check permission
+        $post = $this->checkPostAuthor(Auth::user()->id, (int) $id);
+        if ($post && $post->delete()) {
+            // Delete post successfully
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.DESCRIPTION_DELETE_SUCCESS'),
+                trans('api.MSG_DELETE_SUCCESS',['attribute' => 'Post','id' => $id])
+            );
+        }
+        return response()->json($this->response);
     }
 
 }

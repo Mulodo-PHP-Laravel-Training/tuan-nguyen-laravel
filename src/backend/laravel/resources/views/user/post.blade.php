@@ -17,7 +17,7 @@
                     </div>
                     <i>Written by <b>{{ $post->users->first_name }} {{ $post->users->last_name }}</b> on {{ $post->created_at }}</i>
                     <div class="pull-right">
-                        <a href="">Readmore ...</a>
+                        <a href="{{ url('posts/'. $post->id) }}">Readmore ...</a>
                     </div>
                 </td>
             </tr>

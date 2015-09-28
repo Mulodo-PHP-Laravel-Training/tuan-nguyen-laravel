@@ -64,7 +64,7 @@ class UserController extends ApiUserController
     }
 
     /**
-     * Get articles.
+     * Get all articles for a user.
      *
      * @param Request $request
      * @param Int $id
@@ -79,16 +79,42 @@ class UserController extends ApiUserController
         return view('user/post', ['posts' => $posts]);
     }
 
+    /**
+     * Get list articles for logged user.
+     *
+     * @param Request $request
+     * @param Int $id
+     * @return Response
+     */
+    public function listArticles(Request $request)
+    {
+        return view('user/listPost');
+    }
+
 
     /**
-     * Creat a articles.
+     * Create a articles.
      *
      * @param Request $request
      * @return Response
      */
-    public function createArticle(Request $request)
+    public function createArticles(Request $request)
     {
         return view('user/createPost');
+    }
+
+    /**
+     * Edit a articles.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function editArticles(Request $request, $id)
+    {
+        $post = Post::where('id', (int) $id)
+                    ->where('author_id', Auth::user()->id)
+                    ->first();        
+        return view('user/updatePost', ['post' => $post]);
     }
 
 

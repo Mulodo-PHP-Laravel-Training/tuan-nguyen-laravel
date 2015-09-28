@@ -58,7 +58,7 @@ postForm = Backbone.View.extend({
         var data = {
             title: $('input[name=title]', this.$el).val(),
             content: $('textarea[name=content]', this.$el).val(),
-            status: $('input[name=status]:checked', this.$el).val(),
+            status: parseInt($('input[name=status]:checked', this.$el).val()),
         };
         var picture = $('input[name="image"]')[0].files[0];
         var dataForm = new FormData();
@@ -69,7 +69,6 @@ postForm = Backbone.View.extend({
         dataForm.append('content', data.content);
         dataForm.append('status', data.status);
         dataForm.append('_token', token);
-
         this.model.set(data);
         // Check if the model is valid before saving
         if(this.model.isValid(true)){
@@ -115,17 +114,14 @@ postForm = Backbone.View.extend({
         var self = this;
         $btn.button('loading');
         $.ajax({
-            url : urlBase + '/admin/posts/' + this.model.get('id'),
+            url : urlBase + '/posts/' + $('#idInput').val(),
             cache: false,
             contentType: false,
             processData: false,
             data: data,
             type: 'POST',
-                 success: function(result) {
+            success: function(result) {
                 if (200 == result.meta.code) {
-                    app.postCollection.fetch({reset : true});
-                    self.model.set(self.model.defaults);
-                    self.render();
                     $message = $('<span class="text-success"></span>');
                     $message.html(result.meta.messages[0].message);
                     $('#errMessages').append($message);

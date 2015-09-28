@@ -261,7 +261,6 @@ class PostController extends ApiController
             $imageLink = $this->upload();
             $arrPost['image'] = URL::to('/uploads/'. $imageLink);
         }
-
         if ($post->update($arrPost)) {
             // Update post successfully
             $this->response = MessageUtility::getResponse(

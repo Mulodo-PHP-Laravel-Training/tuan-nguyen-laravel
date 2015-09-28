@@ -27,16 +27,23 @@ Route::group([
     Route::get('users/profile', 'UserController@profile');
     Route::get('users/profile/change', 'UserController@getUpdate');
     Route::get('users/password', 'UserController@getPassword');
-    Route::get('users/articles/create', 'UserController@createArticle');
+    Route::get('users/articles/create', 'UserController@createArticles');
+    Route::get('users/articles/edit/{id}', 'UserController@editArticles');
+    Route::get('users/articles', 'UserController@listArticles');
     Route::post('users/password', 'UserController@getPassword');
     Route::post('users/profile/change', 'UserController@getUpdate');
     Route::post('users/articles', 'UserController@getArticles');
 
+    Route::get('posts/collection', 'PostController@getCollection');
     Route::post('posts', 'PostController@store');
+    Route::post('posts/{id}', 'PostController@update');    
+    Route::delete('posts/{id}', 'PostController@destroy');
+
 });
 
 Route::get('users', 'UserController@index');
 Route::get('users/{id}/articles', 'UserController@getArticles');
+Route::get('posts/{id}', 'PostController@detail');
 
 
 // Admin Routes
