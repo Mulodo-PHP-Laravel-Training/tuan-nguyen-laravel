@@ -47,6 +47,7 @@ Mini Blog is small app written by Laravel 5.1. It's very simple app with 3 modul
     Params:
       + username: anh.tuan
       + password: 123456
+      + password_confirmation
       + first_name: Tuan
       + last_name: Nguyen
       + email: anh.tuan@mulodo.com
@@ -83,7 +84,6 @@ Get other user info:
     Params:
       + token: AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
       + username: anh.tuan2
-      + password: 123456
       + first_name: Tung
       + last_name: Lam
       + email: anh.tuan2@mulodo.com
@@ -96,6 +96,7 @@ Get other user info:
       + token: AO9k97YN58rGHmmTprClNKfXlpUCaGTO7pixyeSOfn40OXPqpc95mdQCszDy
       + old_password: 123456
       + new_password: 123456789
+      + new_password_confirmation: 123456789
 
 1.7 Search user by name:
 
