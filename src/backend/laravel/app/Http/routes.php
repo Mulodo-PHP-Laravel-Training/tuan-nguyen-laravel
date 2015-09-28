@@ -19,10 +19,24 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 
+// Front end routes
+
+Route::group([
+    'middleware' => 'auth'
+], function() {
+    Route::get('users/profile', 'UserController@profile');
+    Route::get('users/profile/change', 'UserController@getUpdate');
+    Route::get('users/password', 'UserController@getPassword');
+    Route::post('users/password', 'UserController@getPassword');
+    Route::post('users/profile/change', 'UserController@getUpdate');
+
+});
+
+
 // Admin Routes
 Route::group([
     'namespace' => 'Admin',
-    'middleware' => 'auth'
+    'middleware' => 'auth.admin'
 ], function() {
     // User route
     Route::get('admin', 'HomeController@index');
