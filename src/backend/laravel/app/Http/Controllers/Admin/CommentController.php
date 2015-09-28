@@ -42,10 +42,9 @@ class CommentController extends ApiController
      * @return Response
      */
     public function getCollection(Request $request) {
-        // Pagination
         $totalEntries = Comment::get()->count();
         // Pagination
-        $pagination = Utility::Pagination($request, $totalEntries);
+        $pagination   = Utility::Pagination($request, $totalEntries);
         $sortby       = ($request->input('sort_by')) ? : 'id';
         $order        = ($request->input('order') == 'asc') ? 'asc' : 'desc';
 
@@ -64,7 +63,7 @@ class CommentController extends ApiController
 
 
     /**
-     * By pass checkpermiison
+     * Bypass checkpermiison
      *
      * @param  Request  $request
      * @param  Comment  $comment

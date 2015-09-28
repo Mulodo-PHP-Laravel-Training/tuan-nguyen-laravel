@@ -129,7 +129,7 @@ class CommentController extends ApiController
         } else {
             // Validate success.
             $this->processCreateComment($request, $post);
-        }        
+        }
     }
 
 
@@ -159,7 +159,7 @@ class CommentController extends ApiController
         } else {
             // Create post failed
             $this->dbError();
-        }        
+        }
     }
 
 
@@ -212,7 +212,7 @@ class CommentController extends ApiController
         } else {
             // Comment not found
             $this->itemNotFound('Comment');
-        }        
+        }
     }
 
     /**
@@ -227,7 +227,7 @@ class CommentController extends ApiController
             // Update comment
             $comment->content = $request->input('content');
             $this->processUpdate($comment);
-        }        
+        }
     }
 
     /**

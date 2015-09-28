@@ -129,7 +129,7 @@ class UserController extends ApiController
             $this->validationFails($validator);
         } else {
             // Validation success
-            $this->processCreateUser($request);            
+            $this->processCreateUser($request);
         }
         return response()->json($this->response);
     }
@@ -138,7 +138,7 @@ class UserController extends ApiController
      * Process create user
      *
      * @param  Request  $request
-     * @return Response
+     * @return void
      */
     protected function processCreateUser($request)
     {
@@ -154,7 +154,7 @@ class UserController extends ApiController
         } else {
             // Create user failed
             $this->dbError();
-        }        
+        }
     }
 
 
@@ -176,7 +176,7 @@ class UserController extends ApiController
             // You have not permission to perform the specified operation
             $this->permissionDenied();
         } else {
-            $this->processUpdate($user, $request, $id);
+            $this->processUpdate($user, $request, $id, $user->is_admin);
         }
 
         return response()->json($this->response);
@@ -190,7 +190,7 @@ class UserController extends ApiController
      * @param  Int $id
      * @param  Boolean $is_admin | 0: member, 1: admin
      * @param  String $password
-     * @return void
+     * @return mixed
      */
     protected function processUpdate($user, $request, $id, $is_admin = 0, $password = '') {
         // Check parameters have at least one field
@@ -222,8 +222,8 @@ class UserController extends ApiController
      */
     protected function updateUser($user, $request, $is_admin, $password) {
         $params = $request->all();
-        $params['is_admin'] = $is_admin;            
-        if ('' != $password) {            
+        $params['is_admin'] = $is_admin;
+        if ('' != $password) {
             $user->password = bcrypt($password);
             $user->save();
         }
@@ -261,7 +261,7 @@ class UserController extends ApiController
      * Process login action
      *
      * @param  Request  $request
-     * @return void
+     * @return mixed
      */
     private function processLoginAction($request) {
         $throttles = $this->isUsingThrottlesLoginsTrait();
@@ -357,7 +357,7 @@ class UserController extends ApiController
      * @param  Request  $request
      * @return Response
      */
-    public function processChangePassword(Request $request) 
+    public function processChangePassword(Request $request)
     {
         $user = $this->getUser($request->input('token'));
         $user->password = bcrypt($request->input('new_password') );
@@ -369,7 +369,7 @@ class UserController extends ApiController
             );
         } else {
             $this->dbError();
-        }        
+        }
     }
 
     /**
@@ -460,6 +460,5 @@ class UserController extends ApiController
             $user->toArray()
         );
     }
-
 
 }

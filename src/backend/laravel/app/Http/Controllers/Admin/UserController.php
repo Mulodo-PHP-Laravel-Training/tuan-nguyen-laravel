@@ -53,7 +53,7 @@ class UserController extends ApiController
         } else {
             // Create user failed
             $this->dbError();
-        }        
+        }
     }
 
 
@@ -97,7 +97,7 @@ class UserController extends ApiController
         $totalEntries = $users->get()->count();
         // Pagination
         $pagination = Utility::Pagination($request, $totalEntries);
-        
+
         $sortby       = ($request->input('sort_by')) ? : 'id';
         $order        = ($request->input('order') == 'asc') ? 'asc' : 'desc';
 

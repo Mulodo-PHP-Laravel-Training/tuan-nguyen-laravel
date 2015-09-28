@@ -47,7 +47,7 @@ class PostController extends ApiController
         $post = Post::find($id);
         if ($post) {
             $this->processUpdate($request, $post);
-        }        
+        }
     }
 
     /**
@@ -57,7 +57,6 @@ class PostController extends ApiController
      * @return Response
      */
     public function getCollection(Request $request) {
-        // Pagination
         $totalEntries = Post::get()->count();
         // Pagination
         $pagination = Utility::Pagination($request, $totalEntries);

@@ -102,7 +102,7 @@ class PostController extends ApiController
                 trans('api.MSG_GET_USER_POST_SUCCESS',['attribute' => $user->id]),
                 $postsArr
             );
-        }        
+        }
     }
 
     /**
@@ -160,11 +160,11 @@ class PostController extends ApiController
         } else {
             // Create post failed
             $this->dbError();
-        }        
+        }
     }
 
     /**
-     * Get all content of post.
+     * Get all content of a post.
      *
      * @param  int  $id
      * @return Response
@@ -242,7 +242,7 @@ class PostController extends ApiController
         $post = $this->checkPostAuthor($this->getUser($request->input('token'))->id, $id);
         if ($post) {
             $this->processUpdate($request, $post);
-        }        
+        }
     }
 
     /**
@@ -273,7 +273,7 @@ class PostController extends ApiController
         } else {
             // Update post failed
             $this->dbError();
-        }        
+        }
     }
 
     /**
@@ -446,7 +446,7 @@ class PostController extends ApiController
     /**
      * Upload image.
      *
-     * @return string $imageLink
+     * @return string $fileName
      */
     protected function upload()
     {
