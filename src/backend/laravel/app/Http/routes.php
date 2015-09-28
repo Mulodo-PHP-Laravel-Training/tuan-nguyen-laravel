@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'HomeController@index');
-Route::get('home', '\Bestmomo\Scafold\Http\Controllers\HomeController@index');
+Route::get('/home', 'HomeController@home');
 
 Route::controllers([
     'auth' => 'Auth\AuthController',
@@ -34,8 +34,8 @@ Route::group([
     // Post route
     Route::get('admin/posts', 'PostController@index');
     Route::get('admin/posts/collection', 'PostController@getCollection');
-    Route::post('admin/posts', 'PostController@store');    
-    Route::post('admin/posts/{id}', 'PostController@update');        
+    Route::post('admin/posts', 'PostController@store');
+    Route::post('admin/posts/{id}', 'PostController@update');
     Route::delete('admin/posts/{id}', 'PostController@destroy');
 
     // Comment route

@@ -22,14 +22,6 @@ class Post extends Model
      */
     protected $fillable = ['author_id','title','content', 'status','image'];
 
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = true;
-
     /**
      * List date time fields
      *
@@ -42,8 +34,25 @@ class Post extends Model
      *
      * @var array
      */
-    protected $appends = array('statusName');
+    protected $appends = array('statusName', 'intro');
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = true;
+
+
+    /**
+     * Relationship with users tables
+     *
+     * @return string
+     */
+    public function users()
+    {
+        return $this->belongsTo('App\User', 'author_id', 'id');
+    }
 
     /**
      * Relationship with comments tables
@@ -55,6 +64,12 @@ class Post extends Model
         return $this->hasMany('App\Comment', 'post_id', 'id');
     }
 
+    /**
+     * Delete posts
+     * Delete comments bebfore delete posts
+     *
+     * @return string
+     */
     public function delete()
     {
         // delete all related comments
@@ -79,5 +94,13 @@ class Post extends Model
     {
         return (1 == $this->status) ? 'Active' : 'Deactive';
     }
+
+    public function getIntroAttribute()
+    {
+        $content = strip_tags($this->content);
+        $title = substr($content, 0, 100) . ' ...';
+        return $title;
+    }
+
 
 }
