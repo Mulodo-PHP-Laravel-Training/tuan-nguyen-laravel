@@ -29,8 +29,12 @@ Route::group([
     Route::get('users/password', 'UserController@getPassword');
     Route::post('users/password', 'UserController@getPassword');
     Route::post('users/profile/change', 'UserController@getUpdate');
+    Route::post('users/articles', 'UserController@getArticles');
 
 });
+
+Route::get('users', 'UserController@index');
+Route::get('users/{id}/articles', 'UserController@getArticles');
 
 
 // Admin Routes
@@ -41,7 +45,7 @@ Route::group([
     // User route
     Route::get('admin', 'HomeController@index');
     Route::get('admin/users', 'UserController@index');
-    Route::get('admin/users/collection', 'UserController@getCollection');
+
     Route::post('admin/users', 'UserController@store');
     Route::put('admin/users/{id}', 'UserController@update');
 
@@ -58,6 +62,7 @@ Route::group([
     Route::put('admin/posts/{post_id}/comments/{comment_id}', 'CommentController@putUpdate');
     Route::delete('admin/comments/{comment_id}', 'CommentController@destroy');
 });
+Route::get('admin/users/collection', 'Admin\UserController@getCollection');
 
 Route::group(['namespace' => 'api', 'middleware' => 'auth.token'], function(){
     // User route

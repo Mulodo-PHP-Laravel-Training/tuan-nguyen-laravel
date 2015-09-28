@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Api\UserController as ApiUserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Post;
 
 class UserController extends ApiUserController
 {
@@ -18,6 +19,19 @@ class UserController extends ApiUserController
      * @var array
      */
     public  $errors = [];
+
+    /**
+     * Search user by name.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+//        $user = Auth::user();
+        return view('user/search');
+    }
+
 
     /**
      * Display a user profile.
@@ -48,6 +62,23 @@ class UserController extends ApiUserController
         }
         return view('user/update', ['user' => $userArr, 'errors' => $this->errors]);
     }
+
+    /**
+     * Get articles.
+     *
+     * @param Request $request
+     * @param Int $id
+     * @return Response
+     */
+    public function getArticles(Request $request, $id)
+    {
+        $posts = Post::where('status',1)
+                    ->where('author_id', (int) $id)
+                    ->orderBy('id', 'desc')
+                    ->paginate(10);
+        return view('user/post', ['posts' => $posts]);
+    }
+
 
     /**
      * Change password.

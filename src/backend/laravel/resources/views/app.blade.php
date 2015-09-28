@@ -8,6 +8,7 @@
 
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/styles.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/zecGrid.css') }}" rel="stylesheet">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
@@ -61,10 +62,10 @@
 
     <div class="container margin-bottom-20">
         <div class="row">
-            <form class="col-md-10 col-md-offset-1" method="GET" action="{{ url('users?') }}">
+            <form class="col-md-10 col-md-offset-1" method="GET" action="{{ url('users') }}">
                 <div class="col-md-3 input-group pull-right">
 
-                    <input class="form-control" id="searchInput" type="search" placeholder="Search name" name>
+                    <input class="form-control" id="searchInput" type="search" placeholder="Search name" name="q" value="{{Request::input('q')}}">
                     <span class="input-group-btn">
                         <button class="btn btn-default btnSearch" type="submit">
                             <span class="glyphicon glyphicon-search"></span>
@@ -85,5 +86,6 @@
     <!-- Scripts -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    @yield('scripts')
 </body>
 </html>
