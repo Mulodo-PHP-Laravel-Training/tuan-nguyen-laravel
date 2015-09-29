@@ -10,7 +10,7 @@
     <div class="panel-body">
     @if($post)
         <div id="postForm"></div>
-    @else        
+    @else
         Post not found.
     @endif
     </div>
@@ -50,7 +50,7 @@
     </div>
     <div class="form-group">
         <label>Image:</label>
-        <br /><img id="imgPreview" src="@if('' != $post->image) {{ $post->image }} @else {{ asset('images/no-image.png') }} @endif" width="100px" height="100px" />
+        <br /><img id="imgPreview" src="{{ (empty($post->image)) ? asset('images/no-image.png') : $post->image }}" width="100px" height="100px" />
         <input type="file" class="form-control image" name="image" value="">
         <span class="help-block hidden"></span>
     </div>

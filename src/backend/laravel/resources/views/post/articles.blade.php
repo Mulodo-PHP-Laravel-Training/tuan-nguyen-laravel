@@ -15,7 +15,7 @@
                     <div class="intro">
                         {{ $post->intro }}
                     </div>
-                    <i>Written by <a href="{{ url('users/'. $post->author_id.'/articles') }}"><b>{{ $post->users->first_name }} {{ $post->users->last_name }}</b></a> on {{ $post->created_at }}</i>
+                    <i>Written by <b>{{ $post->users->first_name }} {{ $post->users->last_name }}</b> on {{ $post->created_at }}</i>
                     <div class="pull-right">
                         <a href="{{ url('article/'. $post->id) }}">Readmore ...</a>
                     </div>
@@ -35,7 +35,7 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Newest articles:</div>
+                <div class="panel-heading">User articles:</div>
                     <div class="panel-body">
                         @yield('articles')
                     </div>
@@ -44,4 +44,3 @@
     </div>
 </div>
 @endsection
-

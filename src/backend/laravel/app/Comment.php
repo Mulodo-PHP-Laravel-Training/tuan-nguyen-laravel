@@ -49,4 +49,14 @@ class Comment extends Model
         return 'U';
     }
 
+    /**
+     * Relationship with users tables.
+     *
+     * @return string
+     */
+    public function users()
+    {
+        return $this->belongsTo('App\User', 'author_id', 'id');
+    }
+
 }

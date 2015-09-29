@@ -7,7 +7,6 @@ userGrid = Backbone.zecGrid.extend({
         indexField : 'id',
         className : 'table table-striped table-hover',
         columns : [
-            {field : "", name :"" ,width : '32px', xtype : 'checkbox'},
             {field : "id", name : "ID", width: 50},
             {field : "username", selectedField : true,name : "Username"},
             {field : "first_name",name : "First name"},

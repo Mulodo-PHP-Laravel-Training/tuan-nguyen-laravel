@@ -55,25 +55,25 @@ class User extends Model implements AuthenticatableContract,
     public $timestamps = true;
 
     /**
-     * List date time fields
+     * List date time fields.
      *
      * @var string
      */
     protected $dates = ['created_at', 'updated_at', 'last_login'];
 
     /**
-     * Get login time with date time format
+     * Getting login time with date time format.
      *
      * @return string
      */
     public function getLastLoginAttribute($attr) {
         return ($this->attributes['last_login'] > 0)
-            ? date($this->dateFormatStr,$this->attributes['last_login'])
+            ? date($this->dateFormatStr, $this->attributes['last_login'])
             : '';
     }
 
     /**
-     * Relationship with comments tables
+     * Relationship with comments tables.
      *
      * @return string
      */
@@ -83,7 +83,7 @@ class User extends Model implements AuthenticatableContract,
     }
 
     /**
-     * Relationship with posts tables
+     * Relationship with posts tables.
      *
      * @return string
      */
@@ -93,19 +93,19 @@ class User extends Model implements AuthenticatableContract,
     }
 
     /**
-     * Delete users
-     * Delete posts before delete user
+     * Deleting users.
+     * Deleting posts before deleting user.
      *
      * @return string
      */
     public function delete()
     {
-        // delete all related comments
+        // deleting all related comments
         $this->comments()->delete();
-        // delete all related posts
+        // deleting all related posts
         $this->posts()->delete();
 
-        // delete the user
+        // deleting user
         return parent::delete();
     }
 

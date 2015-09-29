@@ -23,7 +23,7 @@ class Post extends Model
     protected $fillable = ['author_id','title','content', 'status','image'];
 
     /**
-     * List date time fields
+     * List date time fields.
      *
      * @var string
      */
@@ -45,7 +45,7 @@ class Post extends Model
 
 
     /**
-     * Relationship with users tables
+     * Relationship with users tables.
      *
      * @return string
      */
@@ -55,7 +55,7 @@ class Post extends Model
     }
 
     /**
-     * Relationship with comments tables
+     * Relationship with comments tables.
      *
      * @return string
      */
@@ -65,36 +65,46 @@ class Post extends Model
     }
 
     /**
-     * Delete posts
-     * Delete comments bebfore delete posts
+     * Deleteting posts.
+     * Deleting comments before deleting posts.
      *
      * @return string
      */
     public function delete()
     {
-        // delete all related comments
+        // deleting all related comments
         $this->comments()->delete();
 
-        // delete the post
+        // deleting posts
         return parent::delete();
     }
 
     /**
-     * Change time format to Unix timestamp
+     * Changing time format to Unix timestamp
      *
      * @return string
      */
     protected function getDateFormat()
     {
-        // return Unix timestamp (10 numbers)
+        // returning Unix timestamp (10 numbers)
         return 'U';
     }
 
+    /**
+     * Getting status name: Active or Deactive
+     *
+     * @return string
+     */
     public function getStatusNameAttribute()
     {
         return (1 == $this->status) ? 'Active' : 'Deactive';
     }
 
+    /**
+     * Getting content of intro field
+     *
+     * @return string
+     */
     public function getIntroAttribute()
     {
         $content = strip_tags($this->content);

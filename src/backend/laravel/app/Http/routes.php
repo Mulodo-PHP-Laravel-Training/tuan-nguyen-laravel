@@ -24,26 +24,26 @@ Route::controllers([
 Route::group([
     'middleware' => 'auth'
 ], function() {
+
+    Route::match ( ['get', 'post'], 'users/password', 'UserController@password');
+    Route::match ( ['get', 'post'], 'users/profile/change', 'UserController@getUpdate');
+
     Route::get('users/profile', 'UserController@profile');
-    Route::get('users/profile/change', 'UserController@getUpdate');
-    Route::get('users/password', 'UserController@getPassword');
-    Route::get('users/articles/create', 'UserController@createArticles');
-    Route::get('users/articles/edit/{id}', 'UserController@editArticles');
     Route::get('users/articles', 'UserController@listArticles');
-    Route::post('users/password', 'UserController@getPassword');
-    Route::post('users/profile/change', 'UserController@getUpdate');
     Route::post('users/articles', 'UserController@getArticles');
 
+    Route::get('users/articles/edit/{id}', 'PostController@editArticle');
+    Route::get('users/articles/create', 'PostController@createArticle');
     Route::get('posts/collection', 'PostController@getCollection');
     Route::post('posts', 'PostController@store');
-    Route::post('posts/{id}', 'PostController@update');    
+    Route::post('posts/{id}', 'PostController@update');
     Route::delete('posts/{id}', 'PostController@destroy');
-
+    Route::post('article/{id}', 'PostController@detail');
 });
 
 Route::get('users', 'UserController@index');
-Route::get('users/{id}/articles', 'UserController@getArticles');
-Route::get('posts/{id}', 'PostController@detail');
+Route::get('users/{id}/articles', 'PostController@getArticles');
+Route::get('article/{id}', 'PostController@detail');
 
 
 // Admin Routes
