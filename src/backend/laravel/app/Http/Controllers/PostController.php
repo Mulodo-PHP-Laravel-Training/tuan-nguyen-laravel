@@ -302,4 +302,39 @@ class PostController extends ApiPostController
         return response()->json($this->response);
     }
 
+    /**
+     * Removing comment by id.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroyComment(Request $request, $id) {
+        $comment = Comment::find((int) $id);
+        if ($comment) {
+            $this->processDeleteComment($comment);
+        } else {
+            $this->itemNotFound('Comment');
+        }
+        return response()->json($this->response);
+    }
+
+    /**
+     * Process deleting comment.
+     *
+     * @param  Comment $comment
+     * @return void
+     */
+    protected function processDeleteComment($comment) {
+        $post = Post::find($comment->post_id);
+        $isValid = $this->checkCommentPermission($comment, $post);
+        if ($isValid) {
+            $comment->delete();
+            $this->response = MessageUtility::getResponse(
+                trans('api.CODE_INPUT_SUCCESS'),
+                trans('api.DESCRIPTION_DELETE_SUCCESS'),
+                trans('api.MSG_DELETE_SUCCESS', ['attribute' => 'Comment', 'id' => $comment->id])
+            );
+        }
+    }
+
 }

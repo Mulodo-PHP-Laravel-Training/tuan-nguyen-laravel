@@ -78,5 +78,9 @@
 @endsection
 
 @section('scripts')
+    <script type="text/javascript">
+        var urlBase = '{{ url() }}';
+        var token = '{{ csrf_token() }}';
+    </script>
     <script type="text/javascript" src="{{ asset('js/comment.js') }}"></script>
 @endsection

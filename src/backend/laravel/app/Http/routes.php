@@ -37,8 +37,9 @@ Route::group([
     Route::get('posts/collection', 'PostController@getCollection');
     Route::post('posts', 'PostController@store');
     Route::post('posts/{id}', 'PostController@update');
-    Route::delete('posts/{id}', 'PostController@destroy');
     Route::post('article/{id}', 'PostController@detail');
+    Route::delete('posts/{id}', 'PostController@destroy');
+    Route::delete('comment/{id}', 'PostController@destroyComment');
 });
 
 Route::get('users', 'UserController@index');

@@ -6,7 +6,6 @@
         <a href="{{ url('users/password') }}" class="list-group-item">Change password</a>
         <a href="{{ url('users/articles') }}" class="list-group-item">List articles</a>
         <a href="{{ url('users/articles/create') }}" class="list-group-item">Create article</a>
-        <a href="{{ url('users/comments') }}" class="list-group-item">List comments</a>
     </div>
 </div>
 @endsection
