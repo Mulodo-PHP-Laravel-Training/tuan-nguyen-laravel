@@ -24,7 +24,6 @@
     <script type="text/javascript">
         var urlBase = '{{ url('/') }}';
         var token = '{{ csrf_token() }}';
-        var userToken = '{{ Auth::user()->remember_token }}';
         var q = '{{ Request::input('q') }}';
     </script>
     @yield('backbone')

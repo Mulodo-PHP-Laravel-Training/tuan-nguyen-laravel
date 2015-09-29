@@ -37,7 +37,7 @@ class PostController extends ApiPostController
         $post = Post::where('id', (int) $id)
                     ->where('status',1)
                     ->first();
-        if ($request->isMethod('post')) {
+        if ($request->isMethod('post') && $post) {
             $this->validatingComment($request, $post);
         }
         $comments = ($post) ? Comment::where('post_id',$post->id)
@@ -66,9 +66,58 @@ class PostController extends ApiPostController
         if ($validator->fails()) {
             $this->errors = $validator->errors();
         } else {
+            $this->processComment($request, $post);
+        }
+    }
+
+    /**
+     * Processing comment.
+     *
+     * @param  Request  $request
+     * @param  Post $post
+     * @return void
+     */
+    protected function processComment($request, $post) {
+        if ($request->input('id')) {
+            $this->updateComment($request, $post);
+        } else {
             $this->createComment($request, $post);
         }
     }
+
+    /**
+     * Updating comment
+     *
+     * @param  Request  $request
+     * @param  Post $post
+     * @return void
+     */
+    protected function updateComment($request, $post) {
+        $comment = Comment::find((int) $request->input('id'));
+        if ($this->checkCommentPermission($comment, $post)) {
+            $comment->content = $request->input('content');
+            $comment->update();
+        }
+
+    }
+
+    /**
+     * Checking user permission for a comment.
+     *
+     * Permission denied when userID different with comments.author_id and posts.author_id
+     * @param  Comment  $comment
+     * @param  Post $post
+     * @return boolean
+     */
+    protected function checkCommentPermission($comment, $post)
+    {
+        $userId = Auth::user()->id;
+        if (($userId != $comment->author_id) && ($userId != $post->author_id) ) {
+            return false;
+        }
+        return true;
+    }
+
 
     /**
      * Creating comment
