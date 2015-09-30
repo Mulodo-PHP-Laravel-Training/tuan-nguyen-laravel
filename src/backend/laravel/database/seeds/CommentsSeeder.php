@@ -15,11 +15,11 @@ class CommentsSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 100; $i++)
-        {        
+        for ($i = 0; $i < 200; $i++)
+        {
             $faker = Faker::create();
-            $user = User::all()->random(1);        
-            $post = Post::all()->random(1);        
+            $user = User::all()->random(1);
+            $post = Post::all()->random(1);
             Comment::create([
                 'author_id' => $user->id,
                 'post_id'   => $post->id,

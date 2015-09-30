@@ -42,7 +42,7 @@ class CommentController extends ApiController
      * @return Response
      */
     public function getCollection(Request $request) {
-        $totalEntries = Comment::get()->count();
+        $totalEntries = Comment::count();
         // Pagination
         $pagination   = Utility::Pagination($request, $totalEntries);
         $sortby       = ($request->input('sort_by')) ? : 'id';

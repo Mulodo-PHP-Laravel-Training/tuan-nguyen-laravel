@@ -94,7 +94,7 @@ class UserController extends ApiController
         } else {
             $users = new User();
         }
-        $totalEntries = $users->get()->count();
+        $totalEntries = $users->count();
         // Pagination
         $pagination = Utility::Pagination($request, $totalEntries);
 

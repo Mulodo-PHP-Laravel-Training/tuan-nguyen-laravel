@@ -34,7 +34,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $appends = array('statusName', 'intro');
+    protected $appends = array('status_name', 'intro', 'author_name');
 
     /**
      * Indicates if the model should be timestamped.
@@ -107,10 +107,21 @@ class Post extends Model
      */
     public function getIntroAttribute()
     {
-        $content = strip_tags($this->content);
-        $title = substr($content, 0, 100) . ' ...';
-        return $title;
+        $content = strip_tags(html_entity_decode($this->attributes['content']));
+        $content = preg_replace("/&#?[a-z0-9]+;/i","",$content);
+        $strpos  = (strlen($content) <= 100) ? strlen($content) : 100;
+        $intro = substr($content, 0, strpos($content, ' ', $strpos)) . ' ...';
+        return $intro;
     }
 
+    /**
+     * Getting author name
+     *
+     * @return string
+     */
+    public function getAuthorNameAttribute()
+    {
+        return $this->users->first_name . ' '. $this->users->last_name;
+    }
 
 }

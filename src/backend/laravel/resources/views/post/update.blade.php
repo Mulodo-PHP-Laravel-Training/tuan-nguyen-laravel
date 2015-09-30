@@ -5,7 +5,7 @@
 @section('mainContent')
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">Update Post</h3>
+        <h3 class="panel-title">Update Article</h3>
     </div>
     <div class="panel-body">
     @if($post)

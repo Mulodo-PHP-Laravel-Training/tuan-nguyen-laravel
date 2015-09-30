@@ -25,7 +25,7 @@
                     <td class="commentItem">
                         <p class="commentContent">{{ $comment->content }}</p>
                         <i>Written by <b>{{ $comment->users->first_name }} {{ $comment->users->last_name }}</b> at {{ $comment->created_at }}</i>
-                        @if (($user = Auth::user()) && ($user->id == $post->id || $user->id == $comment->author_id))
+                        @if (($user = Auth::user()) && ($user->id == $post->author_id || $user->id == $comment->author_id))
                             <div class="modifiedComment">
                                 <a href="javascript:void(0);" class="editComment" data-id="{{ $comment->id }}">Edit</a>
                                 | <a href="javascript:void(0);" class="deleteComment" data-id="{{ $comment->id }}">Delete</a>
@@ -54,7 +54,7 @@
                             @if (!empty($post->image))
                                 <img class="center-block margin-bottom-20" src="{{ $post->image }}" width="400" />
                             @endif
-                            {{ $post->content }}
+                            {!!html_entity_decode($post->content)!!}
                             <div class="clear"></div>
                             <div class="pull-right margin-bottom-20">
                                 <b>{{ $post->users->first_name }} {{ $post->users->last_name }}</b>

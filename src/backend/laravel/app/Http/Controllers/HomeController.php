@@ -40,4 +40,13 @@ class HomeController extends Controller
         return view('home');
     }
 
+
+    /**
+     * 404 page.
+     *
+     * @return Response
+     */
+    public function requestNotFound() {
+        return view('404');
+    }
 }

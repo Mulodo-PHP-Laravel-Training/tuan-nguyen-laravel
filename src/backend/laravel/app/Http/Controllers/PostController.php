@@ -98,13 +98,12 @@ class PostController extends ApiPostController
             $comment->content = $request->input('content');
             $comment->update();
         }
-
     }
 
     /**
      * Checking user permission for a comment.
      *
-     * Permission denied when userID different with comments.author_id and posts.author_id
+     * Permission denied when userID is different with comments.author_id and posts.author_id
      * @param  Comment  $comment
      * @param  Post $post
      * @return boolean
@@ -160,7 +159,6 @@ class PostController extends ApiPostController
                     ->first();
         return view('post/update', ['post' => $post]);
     }
-
 
     /**
      * Validating comment
@@ -218,7 +216,7 @@ class PostController extends ApiPostController
         $post = Post::create([
             'author_id' => Auth::user()->id,
             'title'     => $request->input('title'),
-            'content'   => $request->input('content'),
+            'content'   => htmlentities($request->input('content')),
             'status'    => $request->input('status'),
             'image'     => $image
         ]);
@@ -244,7 +242,7 @@ class PostController extends ApiPostController
      */
     public function getCollection(Request $request) {
         $userId = Auth::user()->id;
-        $totalEntries = Post::where('author_id', $userId)->get()->count();
+        $totalEntries = Post::where('author_id', $userId)->count();
         // Pagination
         $pagination = Utility::Pagination($request, $totalEntries);
 

@@ -9,7 +9,7 @@ postGrid = Backbone.zecGrid.extend({
         columns : [
             {field : "id", name : "ID", width: 50},
             {field : "title", selectedField : true,name : "Title"},
-            {field : "statusName", sortField: "status", name: "Status",width: 90},
+            {field : "status_name", sortField: "status", name: "Status",width: 90},
             {field : "id", name : "Action", width : '100px', xtype : 'template',unsortable : true,
              tpl : _.template($('#actionButtonTpl').html()) }
         ],
@@ -45,7 +45,11 @@ postGrid = Backbone.zecGrid.extend({
                 success: function(model, response) {
                     if (200 == response.meta.code) {
                         alert(response.meta.messages[0].message);
+                        app.postForm.model.set(app.postForm.model.defaults);
+                        app.postForm.render();
                         self.collection.fetch({reset:true});
+                    } else {
+                        alert(response.meta.messages[0].message);
                     }
                 }
             });
@@ -99,7 +103,7 @@ postForm = Backbone.View.extend({
         if (e.keyCode == 13) {
             e.preventDefault();
             $(e.currentTarget).blur();
-            $('#postBtn').trigger('click');            
+            $('#postBtn').trigger('click');
         }
     },
 
@@ -117,11 +121,11 @@ postForm = Backbone.View.extend({
             content: $('textarea[name=content]', this.$el).val(),
             status: $('input[name=status]:checked', this.$el).val(),
         };
-        var picture = $('input[name="image"]')[0].files[0]; 
+        var picture = $('input[name="image"]')[0].files[0];
         var dataForm = new FormData();
         if (picture) {
-            dataForm.append('image', picture);    
-        }    
+            dataForm.append('image', picture);
+        }
         dataForm.append('title', data.title);
         dataForm.append('content', data.content);
         dataForm.append('status', data.status);
@@ -161,13 +165,13 @@ postForm = Backbone.View.extend({
                 } else {
                     alert(result.meta.messages[0].message);
                     $btn.button('reset');
-                }                
+                }
             },
             error: function(data){
                 alert('System error.');
                 $btn.button('reset');
             }
-          });        
+          });
     },
 
     processUpdatePost: function(data, $btn) {
@@ -205,14 +209,14 @@ postForm = Backbone.View.extend({
     selectImage: function(e) {
         var input = e.target; // FileList object
         // Max image file size 1 MB
-        var maxsize = 1000000; 
-        
-        if (input.files && input.files[0] 
-            && (input.files[0].size < maxsize) 
+        var maxsize = 1000000;
+
+        if (input.files && input.files[0]
+            && (input.files[0].size < maxsize)
             && (input.files[0].type.indexOf('image/') == 0)) {
-            
+
             var reader = new FileReader();
-            
+
             reader.onload = function (e) {
                 $('#imgPreview').attr('src', e.target.result);
             }

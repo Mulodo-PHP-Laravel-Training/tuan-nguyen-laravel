@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Redirect;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -21,6 +22,13 @@ class Handler extends ExceptionHandler
         HttpException::class,
         ModelNotFoundException::class,
     ];
+
+    /**
+     * Response array.
+     *
+     * @var array
+     */
+    protected $response = [];
 
     /**
      * Report or log an exception.
@@ -44,8 +52,36 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        $uri = $request->path();
+        // Checking api uri
+        if(preg_match('/^api/', $uri) == 1) {
+            $response = $this->handlerAPIException($request, $e);
+            return response()->json($response);
+        } else {
+            // Blog uri
+            return $this->handlerBlogException($request, $e);
+        }
+
+        return parent::render($request, $e);
+    }
+
+    /**
+     * Handler API exception
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $e
+     * @return \Illuminate\Http\Response
+     */
+    private function handlerAPIException($request, $e)
+    {
         if ($e instanceof ModelNotFoundException) {
-            $e = new NotFoundHttpException($e->getMessage(), $e);
+//            $e = new NotFoundHttpException($e->getMessage(), $e);
+            $response = MessageUtility::getResponse(
+                trans('api.CODE_NOT_FOUND'),
+                trans('api.DESCRIPTION_NOT_FOUND'),
+                trans('api.MSG_NOT_FOUND')
+            );
+            return $response;
         }
 
         if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException){
@@ -54,7 +90,7 @@ class Handler extends ExceptionHandler
                 trans('api.DESCRIPTION_NOT_FOUND'),
                 trans('api.MSG_NOT_FOUND')
             );
-            return response()->json($response);
+            return $response;
         }
         if ($e instanceof MethodNotAllowedHttpException) {
             $response = MessageUtility::getResponse(
@@ -62,7 +98,7 @@ class Handler extends ExceptionHandler
                 trans('api.DESCRIPTION_METHOD_NOT_ALLOWED'),
                 trans('api.MSG_METHOD_NOT_ALLOWED')
             );
-            return response()->json($response);
+            return $response;
         }
 
         if ($e instanceof \Exception){
@@ -71,10 +107,24 @@ class Handler extends ExceptionHandler
                 trans('api.DESCRIPTION_SERVER_ERROR'),
                 $e->getMessage()
             );
-            return response()->json($response);
+            return $response;
         }
-        return parent::render($request, $e);
     }
 
 
+    /**
+     * Hanlder blog frontend & backend exception
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $e
+     * @return \Illuminate\Http\Response
+     */
+    private function handlerBlogException($request, $e)
+    {
+        if ($request->isMethod('get')) {
+            return Redirect::to('404');
+        } else {
+            return parent::render($request, $e);
+        }
+    }
 }

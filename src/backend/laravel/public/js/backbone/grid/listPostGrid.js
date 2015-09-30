@@ -9,10 +9,22 @@ postGrid = Backbone.zecGrid.extend({
         columns : [
             {field : "id", name : "ID", width: 50},
             {field : "title", selectedField : true,name : "Title"},
-            {field : "statusName", sortField: "status", name: "Status",width: 90},
+            {field : "status_name", sortField: "status", name: "Status",width: 90},
             {field : "id", name : "Action", width : '100px', xtype : 'template',unsortable : true,
              tpl : _.template($('#actionButtonTpl').html()) }
         ],
+        tbar : {
+            buttons : {
+                id : "btnToolbar",
+                className : "btn-toolbar pull-right",
+                data : [{
+                    id:"btnCreate",
+                    name:'Create',
+                    className : "btn btn-success",
+                    iconCls : "glyphicon glyphicon-plus"
+                }]
+            }
+        }
     },
     initialize : function() {
         Backbone.zecGrid.prototype.initialize.call(this,this.options);
@@ -22,7 +34,17 @@ postGrid = Backbone.zecGrid.extend({
         'click .detailBtn' : 'viewDetail',
         'click .updRow ' : 'updpost',
         'click .removeRow':'delpost',
+        'click #btnCreate' : 'create'
     } , Backbone.zecGrid.prototype.events),
+
+    selectedRow : function(e) {
+        $row = $(e.currentTarget).closest('tr');
+        window.location.href = urlBase+'/article/'+$row.data('id');
+    },
+
+    create: function(e) {
+        window.location.href = urlBase + '/users/articles/create';
+    },
 
     updpost : function (e) {
         $row = $(e.currentTarget);

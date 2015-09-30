@@ -2,7 +2,7 @@
 @include('user/menu')
 
 @section('userTable')
-<table class="table table-boredered">
+<table class="table table-boredered table-striped">
     <tbody>
         <tr>
             <td>Username:</td>

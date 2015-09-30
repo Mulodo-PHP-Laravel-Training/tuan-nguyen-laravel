@@ -22,7 +22,7 @@ $(document).ready(function() {
     $('.deleteComment').click(function(event) {
         $btn = $(event.currentTarget);
         var id = $btn.data('id');
-        var confirmMsg = confirm('Are you sure want to delete this comment?');
+        confirmMsg = confirm("Are you sure want to delete this comment?");
         if (confirmMsg) {
             $.ajax({
                 url: urlBase+'/comment/' + id,
