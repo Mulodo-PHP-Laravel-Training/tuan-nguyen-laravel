@@ -21,7 +21,7 @@ userGrid = Backbone.zecGrid.extend({
             search : {
                 align : 'right'
             }
-        }        
+        }
     },
     initialize : function() {
         Backbone.zecGrid.prototype.initialize.call(this,this.options);
@@ -111,7 +111,7 @@ userForm = Backbone.View.extend({
                     // not required password
                     return ['username', 'first_name', 'last_name', 'email'];
                 }
-            });                
+            });
         }
         data._token = token;
         return data;
@@ -146,12 +146,12 @@ userForm = Backbone.View.extend({
                 $btn.button('reset');
                 self.$el.zecLoading({
                     hide: true
-                });                
+                });
             }, error: function() {
                 $btn.button('reset');
                 self.$el.zecLoading({
                     hide: true
-                });                
+                });
             }
         });
 

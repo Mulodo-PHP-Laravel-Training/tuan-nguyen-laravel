@@ -1,64 +1,3 @@
-// Create post grid
-postGrid = Backbone.zecGrid.extend({
-    options : {
-        addUrl : false,
-        filter : false,
-        alphabet : false,
-        indexField : 'id',
-        className : 'table table-striped table-hover',
-        columns : [
-            {field : "id", name : "ID", width: 50},
-            {field : "title", selectedField : true,name : "Title"},
-            {field : "status_name", sortField: "status", name: "Status",width: 90},
-            {field : "id", name : "Action", width : '100px', xtype : 'template',unsortable : true,
-             tpl : _.template($('#actionButtonTpl').html()) }
-        ],
-    },
-    initialize : function() {
-        Backbone.zecGrid.prototype.initialize.call(this,this.options);
-    },
-    events : _.extend({
-        'click button#btnDelpost' : 'delposts',
-        'click .detailBtn' : 'viewDetail',
-        'click .updRow ' : 'updpost',
-        'click .removeRow':'delpost',
-    } , Backbone.zecGrid.prototype.events),
-
-    updpost : function (e) {
-        $row = $(e.currentTarget);
-        var postId = parseInt($row.data("id"));
-        app.postForm.model = app.postCollection.get(postId);
-        app.postForm.render();
-    },
-
-    delpost : function(e) {
-        $row = $(e.currentTarget);
-        var postId = parseInt($row.data("id"));
-        var self = this;
-        var delPostModel = this.collection.get(postId);
-        delPostModel.url = delPostModel.urlDelete + '/' + postId;
-        var confirmMsg = confirm("Are you sure want to delete this post!");
-        if (confirmMsg) {
-            delPostModel.destroy({
-                data : { _token : token },
-                processData: true,
-                success: function(model, response) {
-                    if (200 == response.meta.code) {
-                        alert(response.meta.messages[0].message);
-                        app.postForm.model.set(app.postForm.model.defaults);
-                        app.postForm.render();
-                        self.collection.fetch({reset:true});
-                    } else {
-                        alert(response.meta.messages[0].message);
-                    }
-                }
-            });
-        }
-    },
-
-});
-
-
 postForm = Backbone.View.extend({
     template : _.template($('#frmPostsTpl').html()),
     initialize : function() {
@@ -119,7 +58,7 @@ postForm = Backbone.View.extend({
         var data = {
             title: $('input[name=title]', this.$el).val(),
             content: $('textarea[name=content]', this.$el).val(),
-            status: $('input[name=status]:checked', this.$el).val(),
+            status: parseInt($('input[name=status]:checked', this.$el).val()),
         };
         var picture = $('input[name="image"]')[0].files[0];
         var dataForm = new FormData();
@@ -130,8 +69,6 @@ postForm = Backbone.View.extend({
         dataForm.append('content', data.content);
         dataForm.append('status', data.status);
         dataForm.append('_token', token);
-        dataForm.append('token', userToken);
-
         this.model.set(data);
         // Check if the model is valid before saving
         if(this.model.isValid(true)){
@@ -147,7 +84,7 @@ postForm = Backbone.View.extend({
         var self = this;
         $btn.button('loading');
         $.ajax({
-            url: urlBase + '/api/posts',
+            url: urlBase + '/posts',
             cache: false,
             contentType: false,
             processData: false,
@@ -155,7 +92,6 @@ postForm = Backbone.View.extend({
             type: 'POST',
             success: function(result){
                 if (200 == result.meta.code) {
-                    app.postCollection.fetch({reset : true});
                     self.model.set(self.model.defaults);
                     self.render();
                     $message = $('<span class="text-success"></span>');
@@ -178,17 +114,14 @@ postForm = Backbone.View.extend({
         var self = this;
         $btn.button('loading');
         $.ajax({
-            url : urlBase + '/admin/posts/' + this.model.get('id'),
+            url : urlBase + '/posts/' + $('#idInput').val(),
             cache: false,
             contentType: false,
             processData: false,
             data: data,
             type: 'POST',
-                 success: function(result) {
+            success: function(result) {
                 if (200 == result.meta.code) {
-                    app.postCollection.fetch({reset : true});
-                    self.model.set(self.model.defaults);
-                    self.render();
                     $message = $('<span class="text-success"></span>');
                     $message.html(result.meta.messages[0].message);
                     $('#errMessages').append($message);
@@ -229,3 +162,23 @@ postForm = Backbone.View.extend({
         this.render();
     }
 });
+
+var AppRouter = Backbone.Router.extend({
+    routes : {
+        "" : "list",
+    },
+    // Step 1.3 : Set up initialization
+    initialize : function() {
+        this.postModel = new postModel();
+        this.postForm = new postForm({
+            el: $('#postForm'),
+            model: this.postModel
+        }).render();
+    },
+
+    list: function() {
+    }
+});
+
+var app = new AppRouter();
+Backbone.history.start();

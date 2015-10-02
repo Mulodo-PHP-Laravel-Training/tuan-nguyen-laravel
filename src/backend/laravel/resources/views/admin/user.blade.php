@@ -46,7 +46,7 @@
                 <option value="1">Admin</option>
             </select>
             <span class="help-block hidden"></span>
-        </div>    
+        </div>
         <div class="form-group">
             <label>Password:</label>
             <input class="form-control" name="password" type="password" value="">

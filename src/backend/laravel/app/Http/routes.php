@@ -12,30 +12,59 @@
 */
 
 Route::get('/', 'HomeController@index');
-Route::get('home', '\Bestmomo\Scafold\Http\Controllers\HomeController@index');
+Route::get('/home', 'HomeController@home');
+Route::get('/404', 'HomeController@requestNotFound');
 
 Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
 
+// Front end routes
+
+Route::group([
+    'middleware' => 'auth'
+], function() {
+
+    Route::match ( ['get', 'post'], 'users/password', 'UserController@password');
+    Route::match ( ['get', 'post'], 'users/profile/change', 'UserController@getUpdate');
+
+    Route::get('users/profile', 'UserController@profile');
+    Route::get('users/articles', 'UserController@listArticles');
+    Route::post('users/articles', 'UserController@getArticles');
+
+    Route::get('users/articles/edit/{id}', 'PostController@editArticle');
+    Route::get('users/articles/create', 'PostController@createArticle');
+    Route::get('posts/collection', 'PostController@getCollection');
+    Route::post('posts', 'PostController@store');
+    Route::post('posts/{id}', 'PostController@update');
+    Route::post('article/{id}', 'PostController@detail');
+    Route::delete('posts/{id}', 'PostController@destroy');
+    Route::delete('comment/{id}', 'PostController@destroyComment');
+});
+
+Route::get('users', 'UserController@index');
+Route::get('users/{id}/articles', 'PostController@getArticles');
+Route::get('article/{id}', 'PostController@detail');
+
+
 // Admin Routes
 Route::group([
     'namespace' => 'Admin',
-    'middleware' => 'auth'
+    'middleware' => 'auth.admin'
 ], function() {
     // User route
     Route::get('admin', 'HomeController@index');
     Route::get('admin/users', 'UserController@index');
-    Route::get('admin/users/collection', 'UserController@getCollection');
+
     Route::post('admin/users', 'UserController@store');
     Route::put('admin/users/{id}', 'UserController@update');
 
     // Post route
     Route::get('admin/posts', 'PostController@index');
     Route::get('admin/posts/collection', 'PostController@getCollection');
-    Route::post('admin/posts', 'PostController@store');    
-    Route::post('admin/posts/{id}', 'PostController@update');        
+    Route::post('admin/posts', 'PostController@store');
+    Route::post('admin/posts/{id}', 'PostController@update');
     Route::delete('admin/posts/{id}', 'PostController@destroy');
 
     // Comment route
@@ -44,6 +73,7 @@ Route::group([
     Route::put('admin/posts/{post_id}/comments/{comment_id}', 'CommentController@putUpdate');
     Route::delete('admin/comments/{comment_id}', 'CommentController@destroy');
 });
+Route::get('admin/users/collection', 'Admin\UserController@getCollection');
 
 Route::group(['namespace' => 'api', 'middleware' => 'auth.token'], function(){
     // User route

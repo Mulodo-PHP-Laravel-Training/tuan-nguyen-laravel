@@ -35,7 +35,7 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/admin') }}">Home</a></li>
+                    <li><a href="{{ url() }}">Home</a></li>
                     <li><a href="{{ url('/admin/users') }}">Users</a></li>
                     <li><a href="{{ url('/admin/posts') }}">Posts</a></li>
                     <li><a href="{{ url('/admin/comments') }}">Comments</a></li>
@@ -75,7 +75,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/backbone-pageable/1.4.8/backbone-pageable.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.validation/0.11.5/backbone-validation-min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/alertify.js/0.5.0/alertify.min.js"></script>
     <script src="{{ asset('js/zecLoading.js') }}"></script>
     <script src="{{ asset('js/backbone/zecGrid.js') }}"></script>
     <script src="{{ asset('js/function.js') }}"></script>

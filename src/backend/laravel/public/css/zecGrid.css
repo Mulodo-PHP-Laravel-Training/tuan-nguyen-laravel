@@ -16,6 +16,7 @@
 .zecGrid tbody td {
     overflow:hidden;
     word-break: break-all;
+    height: 40px;
 }
 
 .zecGrid .tbar {
@@ -29,7 +30,7 @@
     padding : 8px 0px !important;
 }
 
-.zecGrid .pagination li {
+.zecGrid .pagination li, .zecGrid .selectedRow {
     cursor: pointer;
 }
 

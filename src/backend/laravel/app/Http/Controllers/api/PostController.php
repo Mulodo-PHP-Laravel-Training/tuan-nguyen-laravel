@@ -17,19 +17,13 @@ class PostController extends ApiController
 {
     /**
      * Get all posts in this blog.
-     * URI: GET api/users
+     * URI: GET api/posts
      *
      * @return Response
      */
     public function index(Request $request)
     {
-        $posts = Post::select('posts.id','posts.title','posts.created_at','posts.updated_at','posts.author_id','posts.image',
-                        DB::raw('CONCAT(users.first_name," ", users.last_name) As author_name')
-                    )->leftJoin('users', function($join) {
-                        $join->on('users.id', '=','posts.author_id');
-                    })->where('posts.status',1)
-                    ->get();
-
+        $posts = Post::where('posts.status',1)->get();
         if ($posts) {
             $postsArr = array();
             foreach ($posts as $post) {
@@ -145,7 +139,7 @@ class PostController extends ApiController
         $post = Post::create([
             'author_id' => $this->getUser($request->input('token'))->id,
             'title'     => $request->input('title'),
-            'content'   => $request->input('content'),
+            'content'   => htmlentities($request->input('content')),
             'status'    => $request->input('status'),
             'image'     => $image
         ]);
@@ -261,7 +255,6 @@ class PostController extends ApiController
             $imageLink = $this->upload();
             $arrPost['image'] = URL::to('/uploads/'. $imageLink);
         }
-
         if ($post->update($arrPost)) {
             // Update post successfully
             $this->response = MessageUtility::getResponse(

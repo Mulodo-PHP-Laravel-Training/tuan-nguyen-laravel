@@ -14,14 +14,14 @@ class PostsSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 20; $i++)
-        {        
+        for ($i = 0; $i < 15; $i++)
+        {
             $faker = Faker::create();
-            $user = User::all()->random(1);        
+            $user = User::all()->random(1);
             Post::create([
                 'author_id' => $user->id,
                 'title'     => $faker->text(80),
-                'content'   => $faker->paragraph($nbSentences = 5),
+                'content'   => implode('<br />',$faker->paragraphs($nb = 10)),
                 'image'     => $faker->imageUrl($width = 640, $height = 480),
                 'status'    => 1
             ]);

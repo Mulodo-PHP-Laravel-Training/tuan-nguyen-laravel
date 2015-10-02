@@ -57,7 +57,7 @@ class PostController extends ApiController
      * @return Response
      */
     public function getCollection(Request $request) {
-        $totalEntries = Post::get()->count();
+        $totalEntries = Post::count();
         // Pagination
         $pagination = Utility::Pagination($request, $totalEntries);
 
