@@ -44,7 +44,7 @@ class PostController extends ApiPostController
                                 ->orderBy('id', 'desc')
                                 ->paginate(10)
                             : [];
-        return view('post/detail', [
+        return view('post.detail', [
             'post'     => $post,
             'comments' => $comments,
             'errors'   => $this->errors
@@ -142,7 +142,7 @@ class PostController extends ApiPostController
      */
     public function createArticle(Request $request)
     {
-        return view('post/create');
+        return view('post.create');
     }
 
     /**
@@ -157,7 +157,7 @@ class PostController extends ApiPostController
         $post = Post::where('id', (int) $id)
                     ->where('author_id', Auth::user()->id)
                     ->first();
-        return view('post/update', ['post' => $post]);
+        return view('post.update', ['post' => $post]);
     }
 
     /**
@@ -195,7 +195,7 @@ class PostController extends ApiPostController
                     ->where('author_id', (int) $id)
                     ->orderBy('id', 'desc')
                     ->paginate(10);
-        return view('post/articles', ['posts' => $posts]);
+        return view('post.articles', ['posts' => $posts]);
     }
 
     /**

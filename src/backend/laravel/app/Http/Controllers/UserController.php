@@ -28,7 +28,7 @@ class UserController extends ApiUserController
      */
     public function index(Request $request)
     {
-        return view('user/search');
+        return view('user.search');
     }
 
 
@@ -40,7 +40,7 @@ class UserController extends ApiUserController
     public function profile()
     {
         $user = Auth::user();
-        return view('user/profile', ['user' => $user]);
+        return view('user.profile', ['user' => $user]);
     }
 
     /**
@@ -59,7 +59,7 @@ class UserController extends ApiUserController
         } else {
             $userArr = $user->toArray();
         }
-        return view('user/update', ['user' => $userArr, 'errors' => $this->errors]);
+        return view('user.update', ['user' => $userArr, 'errors' => $this->errors]);
     }
 
     /**
@@ -92,7 +92,7 @@ class UserController extends ApiUserController
                 'new_password_confirmation' => ''
             );
         }
-        return view('user/password', ['user' => $user, 'errors' => $this->errors]);
+        return view('user.password', ['user' => $user, 'errors' => $this->errors]);
     }
 
     /**

@@ -29,7 +29,7 @@ class UserController extends ApiController
      */
     public function index(Request $request)
     {
-        return view('admin/user');
+        return view('admin.user');
     }
 
     /**

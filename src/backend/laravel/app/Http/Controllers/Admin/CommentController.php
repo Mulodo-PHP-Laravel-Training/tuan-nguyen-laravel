@@ -31,7 +31,7 @@ class CommentController extends ApiController
      */
     public function index()
     {
-        return view('admin/comment');
+        return view('admin.comment');
     }
 
 

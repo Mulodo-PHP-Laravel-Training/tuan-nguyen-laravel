@@ -31,7 +31,7 @@ class PostController extends ApiController
      */
     public function index(Request $request)
     {
-        return view('admin/post');
+        return view('admin.post');
     }
 
     /**
